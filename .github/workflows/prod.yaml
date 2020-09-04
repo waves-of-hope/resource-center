@@ -26,7 +26,7 @@ jobs:
     - name: Run tests, collect static files and create app.yaml
       run: |
         python manage.py test --exclude-tag=functional
-        python manage.py collectstatic
+        python manage.py collectstatic --noinput
         python app.yaml.py
       env:
         # Django

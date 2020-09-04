@@ -8,7 +8,7 @@ conf = {
     'handlers': [
         {
         'url': '/static',
-        'static_dir': 'staticfiles/'
+        'static_dir': 'static/'
         }, 
         {
         'url': '/.*',
