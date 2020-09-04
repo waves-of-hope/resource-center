@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+
 from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'phonenumber_field',
 
     'resources',
     'accounts',
@@ -84,6 +87,8 @@ DATABASES = {
     }
 }
 
+# Model used for user authentication
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -125,4 +130,4 @@ STATIC_URL = '/static/'
 
 # The absolute path to the directory where collectstatic
 #  will collect static files for deployment.
-STATIC_ROOT = BASE_DIR /  'static'
+STATIC_ROOT = BASE_DIR / 'static'
