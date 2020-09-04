@@ -1,0 +1,177 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+/* end of Fonts */
+
+
+/* General styles*/
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	background-color: #F8F9F9;
+	color: #333333;
+	font-family: 'Roboto', sans-serif;
+}
+
+main {
+	margin: 40px 0 60px;
+	padding: 15px 0;
+}
+
+main nav {
+	margin: 2rem 0;
+}
+
+h1, h2, legend {
+	margin: 1.2rem 0;
+}
+
+form {
+	padding: 1rem 0 2rem;
+}
+
+.account-img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	margin-right: 2em;
+}
+
+/* end of General styles */
+
+
+/* Navbar styles */
+.bg-blue {
+	/* fallback for old browsers */
+	background: #000046;
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: -webkit-linear-gradient(to left, #1CB5E0, #000046);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: linear-gradient(to left, #1CB5E0, #000046); 
+
+}
+
+/* end of Navbar styles */
+
+
+/* Main section styles */
+.homepage-cta {
+    max-width: 300px;
+    padding: 0 30px;
+    margin: 30px auto;
+}
+
+.site-stat {
+	font-size: 3em;
+	font-weight: 300;
+}
+
+.block {
+	display: block;
+}
+
+.submit {
+	float: right;
+	margin-right: 0.2rem;
+}
+
+.card-deck {
+	margin-top: 1.2rem;
+}
+
+.card h2 {
+	margin: 0 0 0.8rem;
+}
+
+.book-card {
+	max-width: 540px;
+}
+
+.video-card {
+	max-width: 22rem;
+}
+
+.video-player {
+	min-height: 600px;
+}
+
+@media only screen and (max-width: 992px) {
+	.video-player {
+		min-height: 450px;
+	}
+}
+
+@media only screen and (max-width: 576px) {
+	.video-player {
+		min-height: auto;
+	}
+}
+
+.summary-title {
+	color: #0056b3;
+	font-size: 1.4em;
+	font-weight: 500;
+}
+
+/* end of Main section styles */
+
+
+/* Jumbotron styles */
+.jumbotron {
+	/* Image location*/
+	background-image: url(../images/Endless-Constellation.svg);
+	min-height: 420px;
+	color: whitesmoke;
+}
+
+@media only screen and (max-width: 768px) {
+	.jumbotron {
+	  min-height: 540px;
+	}
+
+	.jumbotron h1 {
+		margin: 0.5rem;
+	}
+}
+
+.jumbotron strong {
+	color: aqua;
+}
+
+.jumbotron .lead {
+	color: azure;
+	font-size: 1.4em;;
+}
+
+.jumbotron em {
+	font-weight: 500;
+}
+
+/* end of Jumbotron styles */
+
+
+/* Footer styles */
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	color: #E5E7E9;
+	background: #000046;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #1CB5E0, #000046);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #1CB5E0, #000046); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+footer a {
+	color: rgba(250, 250, 250, 0.6);
+}
+
+footer a:hover {
+	color: rgba(250, 250, 250, 0.8);
+}
+
+/* end of Footer styles */

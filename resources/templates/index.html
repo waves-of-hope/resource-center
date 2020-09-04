@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Waves Resource Center {% endblock title %}
+
+{% block content %}
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+      <h1 class="display-4">
+        Be Empowered <strong class="highlight">Today</strong> For <strong class="highlight">Free</strong>
+      </h1>
+      <p class="lead">
+        Find books, videos and opportunities that will <em>change your life forever</em>
+      </p>
+      
+      <!-- Call to action -->
+      <div class="homepage-cta">
+        <a class="btn btn-success btn-lg float-left" href="#">Register</a>
+        <a class="btn btn-success btn-lg float-right" href="#">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center my-3 site-stat">
+    <div class="row">
+      <div class="col-sm">
+        <span class="block">20</span>
+        <i class="fas fa-book-open"></i>
+        <span class="block">Books</span>
+      </div>
+
+      <div class="col-sm">
+        <span class="block">13</span>
+        <i class="fas fa-video"></i>
+        <span class="block">Videos</span>
+      </div>
+
+      <div class="col-sm">
+        <span class="block">25</span>
+        <i class="fas fa-users"></i>
+        <span class="block">Members</span>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
