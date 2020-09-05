@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from decouple import config, Csv
@@ -31,10 +32,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # A list of people who get code error notifications
-ADMINS = config('ADMINS', cast=Csv())
+ADMINS = config('ADMINS', default=[], cast=Csv())
 
 # A list of people who get broken link notifications
-MANAGERS = config('MANAGERS', cast=Csv())
+MANAGERS = config('MANAGERS', default=[], cast=Csv())
 
 # Application definition
 
@@ -88,12 +89,39 @@ WSGI_APPLICATION = 'resource_center.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv('GAE_APPLICATION', None):
+    # If running on production App Engine, connect to Google
+    # Cloud SQL using the unix socket
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/' + config('INSTANCE_CONNECTION_NAME'),
+            'USER': config('USER'),
+            'PASSWORD': config('PASSWORD'),
+            'NAME': config('DATABASE'),
+        }
     }
-}
+else:
+    # If running locally, use sqlite for development and testing
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+    # Alternatively, connect to either a local MySQL instance
+    #  or connect to Cloud SQL via the proxy.
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'HOST': '127.0.0.1',
+    #         'PORT': '3306',
+    #         'NAME': config('DATABASE'),
+    #         'USER': config('USER'),
+    #         'PASSWORD': config('PASSWORD'),
+    #     }
+    # }
 
 # Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
