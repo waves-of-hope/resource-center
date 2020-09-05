@@ -6,6 +6,8 @@ A digital platform for sharing educational resources
     - `SECRET_KEY`
     - `DEBUG`
     - `ALLOWED_HOSTS`
+    - [`ADMINS`](https://docs.djangoproject.com/en/3.1/ref/settings/#admins)
+    - [`MANAGERS`](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-MANAGERS)
     - `EMAIL_HOST_USER` - a gmail account
     - `EMAIL_HOST_PASSWORD` - password to the gmail account
     - <a id='gs-bucket-name'>`GS_BUCKET_NAME`</a> - Google Cloud

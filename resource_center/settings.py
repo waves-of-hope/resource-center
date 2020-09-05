@@ -32,10 +32,10 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # A list of people who get code error notifications
-ADMINS = config('ADMINS', default=[], cast=Csv())
+ADMINS = config('ADMINS', cast=Csv())
 
 # A list of people who get broken link notifications
-MANAGERS = config('MANAGERS', default=[], cast=Csv())
+MANAGERS = config('MANAGERS', cast=Csv())
 
 # Application definition
 
