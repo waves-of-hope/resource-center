@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'phonenumber_field',
+    'crispy_forms',
 
     'resources',
     'accounts',
@@ -131,3 +132,6 @@ STATIC_URL = '/static/'
 # The absolute path to the directory where collectstatic
 #  will collect static files for deployment.
 STATIC_ROOT = BASE_DIR / 'static'
+
+# Set crispy-forms to use Bootstrap 4
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
