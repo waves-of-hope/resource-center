@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} Login | Waves Resource Center {% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form class="container col-md-6" method='POST'>
+    {% csrf_token %}
+    
+    <fieldset>
+      <legend class="border-bottom">Login</legend>
+      {{ form|crispy }}
+    </fieldset>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-success submit">Login</button>
+      <a class="block" href="{% url 'password_reset' %}">Forgot password?</a>
+    </div>
+  </form>
+
+  <div class="container col-md-6 border-top pt-2">
+    <p>
+      Don't have an account?
+      <a href="{% url 'register' %}">Register</a>
+    </p>
+  </div>
+{% endblock content %}

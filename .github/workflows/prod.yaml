@@ -23,6 +23,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
+    - name: Decrypt Cloud Storage service account
+      run: |
+        chmod +x .github/scripts/decrypt.sh
+        ./.github/scripts/decrypt.sh
+      env:
+        SECRET_FILE_PASSPHRASE: ${{secrets.GS_SA_PASSPHRASE}}
+        SECRET_FILE: ${{secrets.GS_SA_KEY}}
+    
     - name: Run tests, collect static files and create app.yaml
       run: |
         python manage.py test --exclude-tag=functional
@@ -33,6 +41,22 @@ jobs:
         SECRET_KEY: ${{secrets.SECRET_KEY}}
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
         DEBUG: ${{secrets.DEBUG}}
+
+        # Email
+        EMAIL_HOST_USER: ${{secrets.EMAIL_HOST_USER}}
+        EMAIL_HOST_PASSWORD: ${{secrets.EMAIL_HOST_PASSWORD}}
+        ADMINS: ${{secrets.ADMINS}}
+        MANAGERS: ${{secrets.MANAGERS}}
+
+        # Cloud Storage
+        GS_BUCKET_NAME: ${{secrets.GS_BUCKET_NAME}}
+        GS_SA_KEY: ${{secrets.GS_SA_KEY}}
+
+        # Cloud SQL
+        INSTANCE_CONNECTION_NAME: ${{secrets.INSTANCE_CONNECTION_NAME}}
+        DATABASE: ${{secrets.DATABASE}}
+        USER: ${{secrets.USER}}
+        PASSWORD: ${{secrets.PASSWORD}}
       
     - name: Decrypt App Engine service account
       run: |

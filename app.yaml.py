@@ -27,15 +27,21 @@ conf = {
         'DEBUG': config('DEBUG', default=False, cast=bool),
         'ALLOWED_HOSTS': config('ALLOWED_HOSTS'),
 
+        # Email
+        'EMAIL_HOST_USER': config('EMAIL_HOST_USER'),
+        'EMAIL_HOST_PASSWORD': config('EMAIL_HOST_PASSWORD'),
+        'ADMINS': config('ADMINS'),
+        'MANAGERS': config('MANAGERS'),
+
         # Cloud Storage
-        # 'GS_BUCKET_NAME': config('GS_BUCKET_NAME'),
-        # 'GS_SA_KEY': config('GS_SA_KEY'),
+        'GS_BUCKET_NAME': config('GS_BUCKET_NAME'),
+        'GS_SA_KEY': config('GS_SA_KEY'),
 
         # Cloud SQL
-        # 'INSTANCE_CONNECTION_NAME': config('INSTANCE_CONNECTION_NAME'),
-        # 'DATABASE': config('DATABASE'),
-        # 'USER': config('USER'),
-        # 'PASSWORD': config('PASSWORD'),
+        'INSTANCE_CONNECTION_NAME': config('INSTANCE_CONNECTION_NAME'),
+        'DATABASE': config('DATABASE'),
+        'USER': config('USER'),
+        'PASSWORD': config('PASSWORD'),
     }
 }
 
