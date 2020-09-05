@@ -30,6 +30,11 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+# A list of people who get code error notifications
+ADMINS = config('ADMINS', cast=Csv())
+
+# A list of people who get broken link notifications
+MANAGERS = config('MANAGERS', cast=Csv())
 
 # Application definition
 
@@ -151,3 +156,11 @@ GS_FILE_OVERWRITE  = False
 
 # Set crispy-forms to use Bootstrap 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
