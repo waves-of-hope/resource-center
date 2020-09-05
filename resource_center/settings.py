@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 from decouple import config, Csv
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
 
     'phonenumber_field',
     'crispy_forms',
+    'storages',
 
     'resources',
     'accounts',
@@ -132,6 +134,20 @@ STATIC_URL = '/static/'
 # The absolute path to the directory where collectstatic
 #  will collect static files for deployment.
 STATIC_ROOT = BASE_DIR / 'static'
+
+# Media (images)
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+
+# To upload media files to Cloud Storage:
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+# Google Cloud Storage bucket settings
+GS_BUCKET_NAME = config('GS_BUCKET_NAME')
+GS_CREDENTIALS = service_account.Credentials.\
+    from_service_account_file(config('GS_SA_KEY'))
+GS_DEFAULT_ACL = 'publicRead'
+GS_FILE_OVERWRITE  = False
 
 # Set crispy-forms to use Bootstrap 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
