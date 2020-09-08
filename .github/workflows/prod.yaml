@@ -31,10 +31,9 @@ jobs:
         SECRET_FILE_PASSPHRASE: ${{secrets.GS_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GS_SA_KEY}}
     
-    - name: Run tests, collect static files and create app.yaml
+    - name: Run tests and create app.yaml
       run: |
         python manage.py test --exclude-tag=functional
-        python manage.py collectstatic --noinput
         python app.yaml.py
       env:
         # Django
