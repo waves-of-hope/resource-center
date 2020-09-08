@@ -166,9 +166,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# a list of directories where Django will also look for static files
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 # The absolute path to the directory where collectstatic
 #  will collect static files for deployment.
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media (images)
 MEDIA_ROOT = BASE_DIR / 'media'
