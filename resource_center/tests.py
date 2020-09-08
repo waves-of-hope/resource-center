@@ -1,21 +1,17 @@
-from django.test import tag
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriver
+from django.contrib.auth import get_user_model
+from django.test import LiveServerTestCase, tag
 
+from selenium import webdriver
 
 @tag('functional')
-class MemberTestCase(StaticLiveServerTestCase):
+class MemberTestCase(LiveServerTestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.selenium = WebDriver()
-        cls.selenium.implicitly_wait(2)
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(2)
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.selenium.quit()
-        super().tearDownClass()
+    def tearDown(self):
+        self.browser.quit()
 
     def test_member_find_book(self):
         """
@@ -24,21 +20,21 @@ class MemberTestCase(StaticLiveServerTestCase):
         # John is a member of Waves of Hope Foundation who would like
         # to read Christian books to grow Spiritually. He visits the
         # home page of Waves Resource Center.
-        home_page = self.selenium.get(self.live_server_url + '/')
+        home_page =self.browser.get(self.live_server_url + '/')
 
         # He knows he's in the right place because he can see
         # the name of the site in the navbar, as well as a
         # call-to-action message in the heading and lead paragraph.
-        brand_element = self.selenium.\
+        brand_element =self.browser.\
             find_element_by_css_selector('.navbar-brand')
         self.assertEqual('Waves Resource Center', brand_element.text)
 
-        heading1 = self.selenium.find_element_by_tag_name('h1')
+        heading1 =self.browser.find_element_by_tag_name('h1')
         self.assertEqual('Be Empowered Today For Free',
             heading1.text
         )
 
-        lead_paragraph = self.selenium.\
+        lead_paragraph =self.browser.\
             find_element_by_css_selector('p.lead')
         self.assertEqual('Find books, videos and opportunities '
                 + 'that will change your life forever',
@@ -47,7 +43,7 @@ class MemberTestCase(StaticLiveServerTestCase):
 
         # He sees two call-to-action buttons, which are links for
         #  the register and login pages.
-        cta_buttons = self.selenium.\
+        cta_buttons =self.browser.\
             find_elements_by_css_selector('.homepage-cta .btn')
         self.assertEqual(len(cta_buttons), 2)
 
