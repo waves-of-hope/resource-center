@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import resolve, reverse
 
@@ -5,13 +6,21 @@ from accounts import views
 
 class AccountsURLsTestCase(TestCase):
 
-    def test_register_url_uses(self):
+    def test_register_url(self):
         """
         Test that the URL for register resolves to the
         correct view function
         """
         register = resolve(reverse('register'))
         self.assertEqual(register.func, views.register)
+
+    def test_profile_url(self):
+        """
+        Test that the URL for profile resolves to the
+        correct view function
+        """
+        register = resolve(reverse('profile'))
+        self.assertEqual(register.func, views.profile)
 
     def test_login_url(self):
         """
@@ -20,6 +29,14 @@ class AccountsURLsTestCase(TestCase):
         """
         login = resolve(reverse('login'))
         self.assertEqual(login.func.__name__, 'LoginView')
+
+    def test_logout_url(self):
+        """
+        Test that the URL for logout resolves to the
+        correct view function
+        """
+        login = resolve(reverse('logout'))
+        self.assertEqual(login.func.__name__, 'LogoutView')
 
     def test_password_reset_url(self):
         """
