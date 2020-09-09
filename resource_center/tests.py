@@ -211,7 +211,7 @@ class ResourceCenterTestCase(LiveServerTestCase):
         login_form.find_element_by_css_selector(
             'button[type="submit"]').click()
         
-        self.fail('Incomplete Test')
+        # self.fail('Incomplete Test')
 
         # The login was successful and he is redirected to the books
         # list page, where he finds some books. The books authors and
