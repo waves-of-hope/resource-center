@@ -35,10 +35,10 @@
         {% if user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ user.username }}'s Account
+              {{ user.first_name }}'s Account
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <img class="account-img" src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s profile picture">
+              <img class="account-img" src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}'s profile picture">
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
               <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
