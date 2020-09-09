@@ -32,18 +32,19 @@
           <a class="nav-link" href="#">Gallery</a>
         </li>
 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Account
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            {% load static %}
-            <img class="account-img" src="{% static 'images/default.png' %}" alt="User's profile picture">
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Logout</a>
-            <a class="dropdown-item" href="#">Profile</a>
-          </div>
-        </li>
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ user.first_name }}'s Account
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <img class="account-img" src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}'s profile picture">
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+            </div>
+          </li>
+        {% endif %}
       </ul>
     </div>
   </div>
