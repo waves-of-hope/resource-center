@@ -26,6 +26,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
+    - name: Set up headless firefox and install geckodriver
+      run: |
+        chmod +x .github/scripts/selenium-setup.sh
+        ./.github/scripts/selenium-setup.sh
+    
     - name: Decrypt service account credentials
       run: |
         chmod +x .github/scripts/decrypt.sh
@@ -36,7 +41,7 @@ jobs:
     
     - name: Run Tests
       run: |
-        python manage.py test --exclude-tag=functional
+        python manage.py test
       env:
         # Django
         SECRET_KEY: ${{secrets.SECRET_KEY}}
