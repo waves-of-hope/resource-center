@@ -69,7 +69,7 @@ jobs:
         SECRET_FILE_PASSPHRASE: ${{secrets.GAE_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GAE_SA_KEY}}
       
-    - name: Deploy the app to App Engine Standard
+    - name: Deploy the project to App Engine Standard
       run: |
         chmod +x .github/scripts/deploy-gae.sh
         ./.github/scripts/deploy-gae.sh

@@ -31,7 +31,7 @@ jobs:
         chmod +x .github/scripts/selenium-setup.sh
         ./.github/scripts/selenium-setup.sh
     
-    - name: Decrypt service account credentials
+    - name: Decrypt Cloud Storage service account credentials
       run: |
         chmod +x .github/scripts/decrypt.sh
         ./.github/scripts/decrypt.sh

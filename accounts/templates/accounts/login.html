@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <form class="container col-md-6" method='POST'>
+  <form id='login_form' class="container col-md-6" method='POST'>
     {% csrf_token %}
     
     <fieldset>
