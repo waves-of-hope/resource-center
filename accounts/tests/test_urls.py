@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
 from accounts import views
 
-class AccountsURLsTestCase(TestCase):
+class AccountsURLsTestCase(SimpleTestCase):
 
     def test_register_url(self):
         """
