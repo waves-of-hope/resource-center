@@ -117,10 +117,7 @@ class UserModelTestCase(TestCase):
         """
         Test creation of a normal user account
         """
-        try:
-            self.assertIsNone(self.user.username)
-        except AttributeError:
-            pass
+        self.assertIsNone(self.user.username)
         
         # Type Errors - missing email or password
         with self.assertRaises(TypeError):
@@ -320,16 +317,22 @@ class UserModelTestCase(TestCase):
         """
         Test creation of a superuser account
         """
-        try:
-            self.assertIsNone(self.admin_user.username)
-        except AttributeError:
-            pass
+        self.assertIsNone(self.admin_user.username)
+
         # not superuser
         with self.assertRaises(ValueError):
             self.User.objects.create_superuser(
                 email='super@user.com',
                 password='foo',
                 is_superuser=False
+                )
+
+        # not staff
+        with self.assertRaises(ValueError):
+            self.User.objects.create_superuser(
+                email='super@user.com',
+                password='foo',
+                is_staff=False
                 )
         
         # Type Errors - missing email or password
