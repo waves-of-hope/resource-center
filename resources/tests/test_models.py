@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
-from resources.models import Category, Tag, Book
+from resources.models import Category, Tag, Book, Video
 
 class CategoryModelTestCase(TestCase):
     """
@@ -60,6 +60,8 @@ class CategoryModelTestCase(TestCase):
         """
         slug__meta = self.category._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
+        self.assertEqual(slug__meta.help_text,
+            'Enter a URL-friendly name for this resource group')
         self.assertEqual(slug__meta.max_length, 30)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
@@ -74,20 +76,15 @@ class TagModelTestCase(TestCase):
         super().setUpClass()
 
         cls.tag = Tag.objects.create(
-            name='Getting born again',
-            description='Addresses why and how to accept God\'s '
-                'free gift of salvation',
-            slug='getting-born-again'
+            name='Salvation',
+            slug='salvation'
         )
     
     def test_tag_basic(self):
         """
         Test the basic functionality of Tag
         """
-        self.assertEqual(self.tag.name, 'Getting born again')
-        self.assertEqual(self.tag.description,
-            'Addresses why and how to accept God\'s '
-                'free gift of salvation')
+        self.assertEqual(self.tag.name, 'Salvation')
         
     def test_tag_object_name(self):
         """
@@ -106,22 +103,14 @@ class TagModelTestCase(TestCase):
         self.assertEqual(name__meta.null, False)
         self.assertEqual(name__meta.blank, False)
 
-    def test_description_meta(self):
-        """
-        Test meta attributes of the description field
-        """
-        description__meta = self.tag._meta.get_field('description')
-        self.assertEqual(description__meta.verbose_name, 'description')
-        self.assertEqual(description__meta.max_length, 100)
-        self.assertEqual(description__meta.null, True)
-        self.assertEqual(description__meta.blank, True)
-
     def test_slug_meta(self):
         """
         Test meta attributes of the slug field
         """
         slug__meta = self.tag._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
+        self.assertEqual(slug__meta.help_text,
+            'Enter a URL-friendly name for this resource group')
         self.assertEqual(slug__meta.max_length, 30)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
@@ -142,8 +131,6 @@ class ResourceModelsTestCase(TestCase):
 
         cls.tag1 = Tag.objects.create(
             name='Christian finance',
-            description='Explores the topic of finance from '
-                'a Christian perspective',
             slug='christian-finance'
         )
 
@@ -173,11 +160,23 @@ class ResourceModelsTestCase(TestCase):
             summary='A step-by-step guide on how to handle money'
                 'as God has instructed in His Word',
             category=cls.category,
-            slug='a-christians-guide-to-wealth-creation'
-        )        
+            slug='a-christians-guide-to-wealth-creation',
+            file_upload='book.pdf'
+        )
         # Direct assignment of many-to-many types not allowed.
         cls.book.authors.add(cls.admin_user, cls.user)
         cls.book.tags.add(cls.tag1, cls.tag2)
+
+        cls.video = Video.objects.create(
+            title='A Christian\'s guide to wealth creation',
+            summary='A step-by-step guide on how to handle money'
+                'as God has instructed in His Word',
+            category=cls.category,
+            slug='a-christians-guide-to-wealth-creation',
+            url='https://youtu.be/rAKLiE658m0'
+        )
+        cls.video.authors.add(cls.admin_user, cls.user)
+        cls.video.tags.add(cls.tag1, cls.tag2)
     
 
 class BookModelTestCase(ResourceModelsTestCase):
@@ -201,6 +200,10 @@ class BookModelTestCase(ResourceModelsTestCase):
         self.assertQuerysetEqual(list(self.book.tags.all()),
             ['<Tag: Christian finance>', '<Tag: Wealth creation>']
         )
+        self.assertEqual(self.book.slug,
+            'a-christians-guide-to-wealth-creation')
+        self.assertEqual(self.book.cover_image, 'book-cover.png')
+        self.assertEqual(self.book.file_upload, 'book.pdf')
         self.assertEqual(self.book.date_posted.date(),
             timezone.now().date())
         self.assertEqual(self.book.date_posted.strftime('%H:%M:%S'),
@@ -260,15 +263,17 @@ class BookModelTestCase(ResourceModelsTestCase):
         self.assertEqual(tags__meta.verbose_name, 'tags')
         self.assertEqual(tags__meta.blank, True)
         self.assertEqual(tags__meta.help_text, 
-            'Select some tags for this book'
+            'Select some tags for this resource'
         )
 
     def test_slug_meta(self):
         """
         Test meta attributes of the slug field
         """
-        slug__meta = self.book._meta.get_field('slug')
+        slug__meta = self.video._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
+        self.assertEqual(slug__meta.help_text,
+            'Enter a URL-friendly name for this resource')
         self.assertEqual(slug__meta.max_length, 50)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
@@ -279,15 +284,13 @@ class BookModelTestCase(ResourceModelsTestCase):
         """
         cover_image__meta = self.book._meta.\
             get_field('cover_image')
-        self.assertEqual(cover_image__meta.verbose_name,
-            'Upload the book\'s cover here'
-        )
+        self.assertEqual(cover_image__meta.verbose_name, 'cover image')
         self.assertEqual(cover_image__meta.default,
-            'book-cover.png'
-        )
+            'book-cover.png')
         self.assertEqual(cover_image__meta.upload_to,
-            'book_covers'
-        )
+            'book_covers')
+        self.assertEqual(cover_image__meta.help_text,
+            'Upload the book\'s cover here')
         self.assertEqual(cover_image__meta.null, False)
         self.assertEqual(cover_image__meta.blank, False)
 
@@ -298,11 +301,11 @@ class BookModelTestCase(ResourceModelsTestCase):
         file_upload__meta = self.book._meta.\
             get_field('file_upload')
         self.assertEqual(file_upload__meta.verbose_name,
-            'Upload the book here'
-        )
+            'file upload')
         self.assertEqual(file_upload__meta.upload_to,
-            'books'
-        )
+            'books')
+        self.assertEqual(file_upload__meta.help_text,
+            'Upload the book here')
         self.assertEqual(file_upload__meta.null, False)
         self.assertEqual(file_upload__meta.blank, False)
 
@@ -320,6 +323,136 @@ class BookModelTestCase(ResourceModelsTestCase):
         Test meta attributes of the last edit field
         """
         last_edit__meta = self.book._meta.get_field('last_edit')
+        self.assertEqual(last_edit__meta.verbose_name, 'last edit')
+        self.assertEqual(last_edit__meta.null, True)
+        self.assertEqual(last_edit__meta.blank, True)
+
+
+class VideoModelTestCase(ResourceModelsTestCase):
+    """
+    Tests for the Video model
+    """
+    def test_video_basic(self):
+        """
+        Test the basic functionality of Video
+        """
+        self.assertEqual(self.video.title,
+            'A Christian\'s guide to wealth creation')
+        self.assertIsNotNone(self.video.authors)
+        self.assertQuerysetEqual(list(self.video.authors.all()), 
+            ['<User: Kelvin>', '<User: Alvin>']
+        )
+        self.assertEqual(self.video.summary,
+            'A step-by-step guide on how to handle money'
+                'as God has instructed in His Word')
+        self.assertEqual(self.video.category.name, 'Finance')
+        self.assertQuerysetEqual(list(self.video.tags.all()),
+            ['<Tag: Christian finance>', '<Tag: Wealth creation>']
+        )
+        self.assertEqual(self.video.slug,
+            'a-christians-guide-to-wealth-creation')
+        self.assertEqual(self.video.url,
+            'https://youtu.be/rAKLiE658m0')
+        self.assertEqual(self.video.date_posted.date(),
+            timezone.now().date())
+        self.assertEqual(self.video.date_posted.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
+        self.assertEqual(self.video.last_edit, None)
+
+    def test_video_object_name(self):
+        """
+        Test the name of the Video object that will
+        be shown in django admin
+        """
+        self.assertEqual(self.video.title, str(self.video))
+
+    def test_title_meta(self):
+        """
+        Test meta attributes of the title field
+        """
+        title__meta = self.video._meta.get_field('title')
+        self.assertEqual(title__meta.verbose_name, 'title')
+        self.assertEqual(title__meta.max_length, 50)
+        self.assertEqual(title__meta.null, False)
+        self.assertEqual(title__meta.blank, False)
+
+    def test_authors_meta(self):
+        """
+        Test meta attributes of the authors field
+        """
+        authors__meta = self.video._meta.get_field('authors')
+        self.assertEqual(authors__meta.verbose_name, 'authors')
+        self.assertEqual(authors__meta.null, False)
+        self.assertEqual(authors__meta.blank, False)
+
+    def test_summary_meta(self):
+        """
+        Test meta attributes of the summary field
+        """
+        summary__meta = self.video._meta.get_field('summary')
+        self.assertEqual(summary__meta.verbose_name, 'summary')
+        self.assertEqual(summary__meta.max_length, 200)
+        self.assertEqual(summary__meta.null, True)
+        self.assertEqual(summary__meta.blank, True)
+    
+    def test_category_meta(self):
+        """
+        Test meta attributes of the category field
+        """
+        category__meta = self.video._meta.get_field('category')
+        self.assertEqual(category__meta.verbose_name, 'category')
+        self.assertEqual(category__meta.null, False)
+        self.assertEqual(category__meta.blank, False)
+
+    def test_tags_meta(self):
+        """
+        Test meta attributes of the tags field
+        """
+        tags__meta = self.video._meta.get_field('tags')
+        self.assertEqual(tags__meta.verbose_name, 'tags')
+        self.assertEqual(tags__meta.blank, True)
+        self.assertEqual(tags__meta.help_text, 
+            'Select some tags for this resource'
+        )
+
+    def test_slug_meta(self):
+        """
+        Test meta attributes of the slug field
+        """
+        slug__meta = self.video._meta.get_field('slug')
+        self.assertEqual(slug__meta.verbose_name, 'slug')
+        self.assertEqual(slug__meta.help_text,
+            'Enter a URL-friendly name for this resource')
+        self.assertEqual(slug__meta.max_length, 50)
+        self.assertEqual(slug__meta.null, False)
+        self.assertEqual(slug__meta.blank, False)
+
+    def test_url_meta(self):
+        """
+        Test meta attributes of the url field
+        """
+        url__meta = self.video._meta.get_field('url')
+        self.assertEqual(url__meta.verbose_name, 'url')
+        self.assertEqual(url__meta.help_text,
+            'Enter the video URL here')
+        self.assertEqual(url__meta.max_length, 200)
+        self.assertEqual(url__meta.null, False)
+        self.assertEqual(url__meta.blank, False)
+
+    def test_date_posted_meta(self):
+        """
+        Test meta attributes of the date posted field
+        """
+        date_posted__meta = self.video._meta.get_field('date_posted')
+        self.assertEqual(date_posted__meta.verbose_name, 'date posted')
+        self.assertEqual(date_posted__meta.null, False)
+        self.assertEqual(date_posted__meta.blank, False)
+
+    def test_last_edit_meta(self):
+        """
+        Test meta attributes of the last edit field
+        """
+        last_edit__meta = self.video._meta.get_field('last_edit')
         self.assertEqual(last_edit__meta.verbose_name, 'last edit')
         self.assertEqual(last_edit__meta.null, True)
         self.assertEqual(last_edit__meta.blank, True)

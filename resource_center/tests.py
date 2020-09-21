@@ -8,7 +8,7 @@ from pathlib import WindowsPath
 from shutil import rmtree
 from .settings import BASE_DIR
 
-from resources.models import Category, Tag, Book
+from resources.models import Category, Tag, Book, Video
 
 @tag('functional')
 @override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
@@ -29,25 +29,6 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
 
         # location of files for tesing user uploads
         cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
-
-    def get_abs_test_file_path(self, rel_file_path):
-        """
-        Returns the absolute file path of files in the
-        `test_files` directory as a string
-        """
-        try:
-            abs_path = self.TEST_FILES_DIR.joinpath(rel_file_path)
-            abs_path_str = str(abs_path.as_posix())
-        except TypeError as e:
-            print('TypeError: {}'.format(e))
-
-        if abs_path.exists():
-            if isinstance(abs_path, WindowsPath):
-                return abs_path_str.replace('/', '\\')
-            return abs_path_str
-        else:
-            raise ValueError("'{}' does not exist".\
-                format(abs_path_str))
 
     def setUp(self):
         # set up browser in GitHub runner
@@ -132,8 +113,6 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
 
         self.tag5 = Tag.objects.create(
             name='Christian finance',
-            description='Explores the topic of finance from '
-                'a Christian perspective',
             slug='christian-finance'
         )
 
@@ -147,7 +126,8 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
             summary='A step-by-step guide on how to handle money'
                 'as God has instructed in His Word',
             category=self.category1,
-            slug='a-christians-guide-to-wealth-creation'
+            slug='a-christians-guide-to-wealth-creation',
+            file_upload='book.pdf'
         ) 
         self.book1.authors.add(self.admin_user, self.user1,
             self.user2, self.user3)
@@ -158,7 +138,9 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
             summary='A guide to get started in Hydroponics '
                 'with little capital',
             category=self.category2,
-            slug='the-hydroponics-handbook'
+            slug='the-hydroponics-handbook',
+            cover_image='book-cover.jpg',
+            file_upload='book.pdf'
         ) 
         self.book2.authors.add(self.admin_user)
         self.book2.tags.add(self.tag6)
@@ -168,10 +150,46 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
             summary='Explains why and how to recieve God\'s '
                 'free gift of salvation',
             category=self.category1,
-            slug='the-gift'
+            slug='the-gift',
+            file_upload='book.pdf'
         )
         self.book3.authors.add(self.admin_user, self.user3)
         self.book3.tags.add(self.tag1, self.tag2,
+            self.tag3, self.tag4)
+
+        self.video1 = Video.objects.create(
+            title='A Christian\'s guide to wealth creation',
+            summary='A step-by-step guide on how to handle money'
+                'as God has instructed in His Word',
+            category=self.category1,
+            slug='a-christians-guide-to-wealth-creation',
+            url='https://youtu.be/rAKLiE658m0'
+        ) 
+        self.video1.authors.add(self.admin_user, self.user1,
+            self.user2, self.user3)
+        self.video1.tags.add(self.tag5)
+
+        self.video2 = Video.objects.create(
+            title='The Hydroponics handbook',
+            summary='A guide to get started in Hydroponics '
+                'with little capital',
+            category=self.category2,
+            slug='the-hydroponics-handbook',
+            url='https://youtu.be/rAKLiE658m0'
+        ) 
+        self.video2.authors.add(self.admin_user)
+        self.video2.tags.add(self.tag6)
+
+        self.video3 = Video.objects.create(
+            title='The Gift',
+            summary='Explains why and how to recieve God\'s '
+                'free gift of salvation',
+            category=self.category1,
+            slug='the-gift',
+            url='https://youtu.be/rAKLiE658m0'
+        )
+        self.video3.authors.add(self.admin_user, self.user3)
+        self.video3.tags.add(self.tag1, self.tag2,
             self.tag3, self.tag4)
 
     def tearDown(self):
@@ -182,6 +200,25 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
         super().tearDownClass()
         # remove test media directory
         rmtree(cls.MEDIA_ROOT)
+
+    def get_abs_test_file_path(self, rel_file_path):
+        """
+        Returns the absolute file path of files in the
+        `test_files` directory as a string
+        """
+        try:
+            abs_path = self.TEST_FILES_DIR.joinpath(rel_file_path)
+            abs_path_str = str(abs_path.as_posix())
+        except TypeError as e:
+            print('TypeError: {}'.format(e))
+
+        if abs_path.exists():
+            if isinstance(abs_path, WindowsPath):
+                return abs_path_str.replace('/', '\\')
+            return abs_path_str
+        else:
+            raise ValueError("'{}' does not exist".\
+                format(abs_path_str))
 
 
 class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
@@ -352,12 +389,8 @@ class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
             'button[type="submit"]').click()
         
         # The login was successful and he is redirected to the books
-        # list page, where he finds some books. The books authors and
-        # cover images are indicated together with the titles.
-
-        # The books also have categories and tags which one can use to view
-        #  resources in a particular area of interest.
-
+        # list page, where he finds some books.
+        
         # He clicks on a book with a category of Spiritual ...
 
         # ... and is taken to the book's detail page which has a link
@@ -514,7 +547,7 @@ class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
             )
 
 
-class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
+class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase): 
     """
     Test the functionality of the Resource Center to superusers
     and users with staff permissions
@@ -604,6 +637,13 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
                 find_element_by_link_text('Books').\
                     get_attribute('href'),
             self.live_server_url + '/admin/resources/book/'
+        )
+
+        self.assertEqual(
+            self.browser.\
+                find_element_by_link_text('Videos').\
+                    get_attribute('href'),
+            self.live_server_url + '/admin/resources/video/'
         )
 
         # He clicks on the Groups link
@@ -710,9 +750,9 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
             'True'
         )
 
-        # Kelvin wants to add a record and a number of
-        # books and videos to Waves Resource Center. He goes
-        # back to the homepage of the admin site
+        # Kelvin wants to add a record and a number of books
+        # and videos to Waves Resource Center. He goes back to
+        # the homepage of the admin site
         self.browser.find_element_by_css_selector(
             '#site-name a').click()     
 
@@ -946,3 +986,135 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
             'Getting started with programming in Python '
             'Technology Programming, Python'
         )
+        
+        # He goes back to the root of the admin site and
+        # clicks on 'Videos'
+        self.browser.find_element_by_css_selector(
+            '#site-name a').click()
+        self.browser.find_element_by_link_text('Videos').click()
+
+        # He's sees the title, Category and Tags of each video
+        # listed with the latest videos first
+        video_rows = self.browser.find_elements_by_css_selector(
+            '#result_list tr')
+
+        self.assertEqual(video_rows[1].text,
+            'The Gift Spiritual Faith, Healing, Love ...')
+        self.assertEqual(video_rows[2].text,
+            'The Hydroponics handbook Agribusiness Hydroponics')
+        self.assertEqual(video_rows[3].text,
+            'A Christian\'s guide to wealth creation Spiritual Christian finance')
+        
+        # He adds a Video to a Category, Tag and User
+        # that already exists
+        self.browser.find_element_by_link_text('ADD VIDEO').click()
+        video_form = self.browser.find_element_by_id('video_form')
+
+        video_form.find_element_by_name('title').\
+            send_keys('Divine Healing')
+        video_form.find_element_by_name('authors').\
+            find_elements_by_tag_name('option')[3].click()
+        video_form.find_element_by_name('summary').\
+            send_keys('Outlines how to claim divine healing '
+            'that is available to us by faith')
+        video_form.find_element_by_name('category').\
+            find_elements_by_tag_name('option')[3].click()
+        
+        tags_to_choose = [1,2]
+        for tag in tags_to_choose:
+            video_form.find_element_by_name('tags').\
+                find_elements_by_tag_name('option')[tag].click()
+        video_form.find_element_by_name('slug').\
+            send_keys('divine-healing')
+        video_form.find_element_by_name('url').\
+            send_keys('https://youtu.be/rAKLiE658m0')
+        video_form.find_element_by_css_selector(
+            '.submit-row input').click()
+        
+        self.assertEqual(
+            self.browser.find_elements_by_css_selector(
+                '#result_list tr')[1].text,
+            'Divine Healing Spiritual Faith, Healing'
+        )
+
+        # He then adds a Video for which the Category, Tags and 
+        # Author do not yet exist
+        self.browser.find_element_by_link_text('ADD VIDEO').click()
+
+        # He adds a Category from the Video page
+        self.browser.find_element_by_id('video_form')\
+            .find_element_by_id('add_id_category').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        category_form = self.browser.find_element_by_id('category_form')
+        category_form.find_element_by_name('name').\
+            send_keys('Music')
+        category_form.find_element_by_name('slug').\
+            send_keys('music')
+        category_form.find_element_by_css_selector(
+            '.submit-row input').click()
+
+        # He adds some Tags from the Video page
+        self.browser.switch_to.window(self.browser.window_handles[0])    
+        self.browser.find_element_by_id('video_form').\
+            find_element_by_id('add_id_tags').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
+        tag_form.find_element_by_name('name').\
+            send_keys('Praise')
+        tag_form.find_element_by_name('slug').\
+            send_keys('praise')
+        tag_form.find_element_by_css_selector(
+            '.submit-row input').click()
+        
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        self.browser.find_element_by_id('video_form').\
+            find_element_by_id('add_id_tags').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
+        tag_form.find_element_by_name('name').\
+            send_keys('Worship')
+        tag_form.find_element_by_name('slug').\
+            send_keys('worship')
+        tag_form.find_element_by_css_selector(
+            '.submit-row input').click()
+
+        # He adds an Author from the Video page
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        self.browser.find_element_by_id('video_form').\
+            find_element_by_id('add_id_authors').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        user_form = self.browser.find_element_by_id('user_form')
+        user_form.find_element_by_css_selector(
+            'input#id_first_name').send_keys('Peter')
+        user_form.find_element_by_css_selector(
+            'input#id_last_name').send_keys('Macharia')
+        user_form.find_element_by_css_selector(
+            'input#id_email').send_keys('peter@macharia.com')
+        user_form.find_element_by_css_selector(
+            'input#id_phone_number').send_keys('+254 767 890 123')
+        user_form.find_element_by_css_selector(
+            'input#id_password1').send_keys('peterpassword')
+        user_form.find_element_by_css_selector(
+            'input#id_password2').send_keys('peterpassword')        
+        user_form.find_element_by_css_selector(
+            '.submit-row input').click()
+        
+        # He adds the Video's details and saves it
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        video_form = self.browser.find_element_by_id('video_form')
+        video_form.find_element_by_name('title').\
+            send_keys('Mastering African Praise and Worship Music')
+        video_form.find_element_by_name('slug').\
+            send_keys('mastering-african-praise-and-worship-music')
+        video_form.find_element_by_name('url').\
+            send_keys('https://youtu.be/rAKLiE658m0')
+        video_form.find_element_by_css_selector(
+            '.submit-row input').click()
+        
+        self.assertEqual(
+            self.browser.find_elements_by_css_selector(
+                '#result_list tr')[1].text,
+            'Mastering African Praise and Worship Music '
+            'Music Praise, Worship'
+        )
+
