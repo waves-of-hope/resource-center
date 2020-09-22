@@ -18,13 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from resources.views import index
-
 admin.site.site_header = 'Waves Resource Center administration'
 admin.site.site_title = 'Waves Resource Center site admin'
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', include('resources.urls')),
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
