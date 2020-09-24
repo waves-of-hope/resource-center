@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'crispy_forms',
     'storages',
+    'embed_video',
 
     'resources',
     'accounts',
