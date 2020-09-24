@@ -1,0 +1,42 @@
+<div class="card book-card">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <a href="{{ book.get_absolute_url }}">
+        <img src="{{ book.cover_image.url }}" class="card-img" alt="{{ book.title }}'s cover">
+      </a>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+        </h2>
+        <p>Category: <a href="#">{{ book.category }}</a></p>
+        {% if book.tags.all|length > 0 %}
+          <ul class="unstyled-list inline-flex m2m-attribute">
+            <li><i class="fas fa-tags"></i></li>
+            {% for tag in book.tags.all %}
+              <li>
+                <a class="btn btn-light btn-sm" href="#">{{ tag | lower }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <p class="ml-1">
+          <i class="far fa-calendar-alt icon"></i>
+          <time datetime="{{ book.date_posted | date:'Y-m-d' }}">
+            {{ book.date_posted | date:'F j, Y' }}
+          </time>
+        </p>
+        <ul class="unstyled-list inline-flex m2m-attribute">
+          By
+          {% for author in book.authors.all %}
+            <li>
+              <a href="#">{{ author }}</a>
+              {% if not forloop.last %}, {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

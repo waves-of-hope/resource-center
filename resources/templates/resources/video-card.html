@@ -1,0 +1,38 @@
+<div class="card video-card">
+  <a href="{{ video.get_absolute_url }}">
+    {% load embed_video_tags %}
+    <img class="card-img-top" 
+      src="{% video video.url as v %}{{ v.thumbnail }}{% endvideo %}" 
+      alt="Video">
+  </a>
+  <div class="card-body">
+    <h2 class="card-title">
+      <a href="{{ video.get_absolute_url }}">{{ video.title }}</a>
+    </h2>
+    <p>Category: <a href="#">{{ video.category }}</a></p>
+    {% if video.tags.all|length > 0 %}
+      <ul class="unstyled-list inline-flex m2m-attribute">
+        <li><i class="fas fa-tags icon"></i></li>
+        {% for tag in video.tags.all %}
+          <li>
+            <a class="btn btn-light btn-sm" href="#">{{ tag | lower }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <p>
+      <i class="far fa-calendar-alt icon"></i>
+      <time datetime="{{ video.date_posted | date:'Y-m-d' }}">
+        {{ video.date_posted | date:'F j, Y' }}
+      </time>
+    </p>
+    <ul class="unstyled-list inline-flex m2m-attribute">
+      By
+      {% for author in video.authors.all %}
+        <li>
+          <a href="#">{{ author }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
