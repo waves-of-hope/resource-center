@@ -1,15 +1,27 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
-class ResourceGroup(models.Model):
+class ResourcesBaseModel(models.Model):
     """
-    Abstract model for creating Resource Group models
+    Defines repetitive fields for both resources and resource groups
+    """
+    slug = models.SlugField(unique=True,
+        help_text='Enter a URL-friendly name')
+    last_edit = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class ResourceGroup(ResourcesBaseModel):
+    """
+    Defines repetitive fields for resource groups
     """
     name = models.CharField(max_length=30)
     description = models.TextField(max_length=100, blank=True, null=True)
-    slug = models.SlugField(max_length=30,
-        help_text='Enter a URL-friendly name for this resource group')
+    date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -35,9 +47,9 @@ class Tag(ResourceGroup):
     description = None
 
 
-class Resource(models.Model):
+class Resource(ResourcesBaseModel):
     """
-    Abstract model for creating Resource models
+    Defines repetitive fields for resources
     """
     title = models.CharField(max_length=50)
     authors = models.ManyToManyField(settings.AUTH_USER_MODEL,
@@ -51,9 +63,7 @@ class Resource(models.Model):
         related_name="%(app_label)s_%(class)s_tags",
         related_query_name="%(app_label)s_%(class)s_tag"
         )
-    slug = models.SlugField(help_text='Enter a URL-friendly name for this resource')
     date_posted = models.DateTimeField(default=timezone.now)
-    last_edit = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -65,7 +75,7 @@ class Resource(models.Model):
     def display_tags(self):
         """
         Create a string for the Tags to be displayed in
-        the admin site.
+        the admin site list display.
         """
         tags = self.tags.all()
         if len(tags) < 3:
@@ -81,14 +91,20 @@ class Book(Resource):
     """
     cover_image = models.ImageField(default='book-cover.png',
         upload_to='book_covers',
-        help_text='Upload the book\'s cover here'
+        help_text="Upload the book's cover here"
     )
     file_upload = models.FileField(upload_to='books',
         help_text='Upload the book here')
+
+    def get_absolute_url(self):
+        return reverse('book', kwargs={'slug': self.slug})
 
 
 class Video(Resource):
     """
     Model for videos
     """
-    url = models.URLField(help_text='Enter the video URL here')
+    url = models.URLField('URL', help_text='Enter the video URL here')
+
+    def get_absolute_url(self):
+        return reverse('video', kwargs={'slug': self.slug})
