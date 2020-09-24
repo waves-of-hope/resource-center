@@ -31,11 +31,14 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
+# A helper function for ADMINS and MANAGERS settings
+list_of_tuples = lambda str: list(eval(str))
+
 # A list of people who get code error notifications
-ADMINS = [config('ADMINS')]
+ADMINS = config('ADMINS', cast=list_of_tuples)
 
 # A list of people who get broken link notifications
-MANAGERS = [config('MANAGERS')]
+MANAGERS = config('MANAGERS', cast=list_of_tuples)
 
 # Application definition
 
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'crispy_forms',
     'storages',
+    'embed_video',
 
     'resources',
     'accounts',
@@ -127,6 +131,10 @@ else:
 
 # Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
+
+# Login and Logout redirect views
+LOGIN_REDIRECT_URL = 'books'
+LOGOUT_REDIRECT_URL = 'index'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

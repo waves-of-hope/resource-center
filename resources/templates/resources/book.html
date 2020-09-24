@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %} {{ book.title }} | Waves Resource Center {% endblock title %}
+
+{% block content %}
+  <div class="card mt-5">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="{{ book.cover_image.url }}" class="card-img" alt="{{ book.title }}'s cover">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h1 class="card-title">{{ book.title }}</h1>              
+          <p>Category: <a href="#">{{ book.category }}</a></p>
+          {% if book.tags.all|length > 0 %}
+            <ul class="unstyled-list inline-flex m2m-attribute">
+              <li><i class="fas fa-tags"></i></li>
+              {% for tag in book.tags.all %}
+                <li>
+                  <a class="btn btn-light btn-sm" href="#">{{ tag | lower }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <p class="ml-1">
+            <i class="far fa-calendar-alt icon"></i>
+            <time datetime="{{ book.date_posted | date:'Y-m-d' }}">
+              {{ book.date_posted | date:'F j, Y' }}
+            </time>
+          </p>
+          <ul class="unstyled-list inline-flex m2m-attribute">
+            By
+            {% for author in book.authors.all %}
+              <li>
+                <a href="#">{{ author }}</a>
+                {% if not forloop.last %}, {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          {% if book.summary %}
+            <p class="card-text">
+              <span class="block summary-title border-bottom">Book summary</span>
+              {{ book.summary }}
+            </p>
+          {% endif %}
+          <div class="card-text">
+            <a class="btn btn-success btn-lg btn-block" href="{{ book.file_upload.url }}">
+              Download {{ book.title }} ({{ book.file_upload.size | filesizeformat }})
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,25 +1,28 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-
 class UserModelTestCase(TestCase):
-    def setUp(self):
-        self.User = get_user_model()
+    
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.User = get_user_model()
 
         # create a normal user
-        self.user = self.User.objects.create_user(
+        cls.user = cls.User.objects.create_user(
             first_name='Normal',
             last_name='User',
             email='normal@user.com',
             phone_number='+2540110234567',
             password='foo'
-            )
+        )
 
         # create a superuser
-        self.admin_user = self.User.objects.create_superuser(
+        cls.admin_user = cls.User.objects.create_superuser(
             email='super@user.com',
             password='foo'
-            )
+        )
 
     def test_normal_user_basic(self):
         """
@@ -42,7 +45,7 @@ class UserModelTestCase(TestCase):
         self.assertTrue(self.admin_user.is_staff)
         self.assertTrue(self.admin_user.is_superuser)
 
-    def test_object_name(self):
+    def test_user_object_name(self):
         """
         Test the name of the User object that will
         be shown in django admin
@@ -55,6 +58,8 @@ class UserModelTestCase(TestCase):
         """
         email__meta = self.user._meta.get_field('email')
         self.assertEqual(email__meta.verbose_name, 'email address')
+        self.assertEqual(email__meta.null, False)
+        self.assertEqual(email__meta.blank, False)
 
     def test_first_name_meta(self):
         """
@@ -63,6 +68,8 @@ class UserModelTestCase(TestCase):
         first_name__meta = self.user._meta.get_field('first_name')
         self.assertEqual(first_name__meta.verbose_name, 'first name')
         self.assertEqual(first_name__meta.max_length, 30)
+        self.assertEqual(first_name__meta.null, False)
+        self.assertEqual(first_name__meta.blank, False)
 
     def test_last_name_meta(self):
         """
@@ -71,6 +78,8 @@ class UserModelTestCase(TestCase):
         last_name__meta = self.user._meta.get_field('last_name')
         self.assertEqual(last_name__meta.verbose_name, 'last name')
         self.assertEqual(last_name__meta.max_length, 30)
+        self.assertEqual(last_name__meta.null, False)
+        self.assertEqual(last_name__meta.blank, False)
 
     def test_phone_number_meta(self):
         """
@@ -85,6 +94,8 @@ class UserModelTestCase(TestCase):
         self.assertEqual(phone_number__meta.help_text,
             'Enter a valid phone number'
         )
+        self.assertEqual(phone_number__meta.null, False)
+        self.assertEqual(phone_number__meta.blank, False)
 
     def test_bio_meta(self):
         """
@@ -96,6 +107,8 @@ class UserModelTestCase(TestCase):
         self.assertEqual(bio__meta.help_text, 
             'Enter a brief summary of yourself'
         )
+        self.assertEqual(bio__meta.null, True)
+        self.assertEqual(bio__meta.blank, True)
 
     def test_profile_picture_meta(self):
         """
@@ -112,15 +125,14 @@ class UserModelTestCase(TestCase):
         self.assertEqual(profile_picture__meta.upload_to,
             'profile_pictures'
         )
+        self.assertEqual(profile_picture__meta.null, False)
+        self.assertEqual(profile_picture__meta.blank, False)
 
     def test_create_user(self):
         """
         Test creation of a normal user account
         """
-        try:
-            self.assertIsNone(self.user.username)
-        except AttributeError:
-            pass
+        self.assertIsNone(self.user.username)
         
         # Type Errors - missing email or password
         with self.assertRaises(TypeError):
@@ -320,16 +332,22 @@ class UserModelTestCase(TestCase):
         """
         Test creation of a superuser account
         """
-        try:
-            self.assertIsNone(self.admin_user.username)
-        except AttributeError:
-            pass
+        self.assertIsNone(self.admin_user.username)
+
         # not superuser
         with self.assertRaises(ValueError):
             self.User.objects.create_superuser(
                 email='super@user.com',
                 password='foo',
                 is_superuser=False
+                )
+
+        # not staff
+        with self.assertRaises(ValueError):
+            self.User.objects.create_superuser(
+                email='super@user.com',
+                password='foo',
+                is_staff=False
                 )
         
         # Type Errors - missing email or password
