@@ -1,11 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.test import LiveServerTestCase, tag, override_settings
+from django.utils import timezone
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+
+import datetime
 import os
 from pathlib import WindowsPath
-from shutil import rmtree
+from shutil import rmtree, copy
 from .settings import BASE_DIR
 
 from resources.models import Category, Tag, Book, Video
@@ -23,12 +26,18 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
         # create some test users
         cls.User = get_user_model()
 
+        # location of files for tesing
+        cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
+
         # set up test media directory
         cls.MEDIA_ROOT = BASE_DIR / 'test_media'
         cls.MEDIA_ROOT.mkdir()
-
-        # location of files for tesing user uploads
-        cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
+        test_images = cls.TEST_FILES_DIR / 'images'
+        copy(test_images.joinpath('default.png'), cls.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.png'), cls.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.jpg'), cls.MEDIA_ROOT)
+        copy(cls.TEST_FILES_DIR.joinpath('documents/book.pdf'),
+            cls.MEDIA_ROOT)
 
     def setUp(self):
         # set up browser in GitHub runner
@@ -127,7 +136,8 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
                 'as God has instructed in His Word',
             category=self.category1,
             slug='a-christians-guide-to-wealth-creation',
-            file_upload='book.pdf'
+            file_upload='book.pdf',
+            date_posted=timezone.now() - datetime.timedelta(days=5)
         ) 
         self.book1.authors.add(self.admin_user, self.user1,
             self.user2, self.user3)
@@ -140,7 +150,8 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
             category=self.category2,
             slug='the-hydroponics-handbook',
             cover_image='book-cover.jpg',
-            file_upload='book.pdf'
+            file_upload='book.pdf',
+            date_posted=timezone.now() - datetime.timedelta(days=1)
         ) 
         self.book2.authors.add(self.admin_user)
         self.book2.tags.add(self.tag6)
@@ -163,7 +174,8 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
                 'as God has instructed in His Word',
             category=self.category1,
             slug='a-christians-guide-to-wealth-creation',
-            url='https://youtu.be/rAKLiE658m0'
+            url='https://youtu.be/rAKLiE658m0',
+            date_posted=timezone.now() - datetime.timedelta(days=5)
         ) 
         self.video1.authors.add(self.admin_user, self.user1,
             self.user2, self.user3)
@@ -175,7 +187,8 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
                 'with little capital',
             category=self.category2,
             slug='the-hydroponics-handbook',
-            url='https://youtu.be/rAKLiE658m0'
+            url='https://youtu.be/rAKLiE658m0',
+            date_posted=timezone.now() - datetime.timedelta(days=1)
         ) 
         self.video2.authors.add(self.admin_user)
         self.video2.tags.add(self.tag6)
@@ -390,14 +403,107 @@ class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
         
         # The login was successful and he is redirected to the books
         # list page, where he finds some books.
+        self.assertEqual(
+            self.browser.current_url,
+            '{}/books/'.format(self.live_server_url)
+        )
+
+        books = self.browser.\
+            find_elements_by_css_selector('.book-card')
+        self.assertGreater(len(books), 0)
+
+        # He clicks on the first book and is taken to the book's
+        # detail page which has a link to download the book.
+        books[0].find_element_by_css_selector(
+            '.card-title a').click()        
+        self.assertEqual(
+            self.browser.current_url,
+            '{}/b/the-gift/'.format(self.live_server_url)
+        )
+
+        self.assertEqual(
+            self.browser.find_element_by_css_selector(
+                '.card-title').text,
+            'The Gift'
+        )
+
+        m2m_attributes = self.browser.\
+            find_elements_by_css_selector('.m2m-attribute')
+        tags = m2m_attributes[0].\
+            find_elements_by_css_selector('a.btn')
+        self.assertEqual(tags[0].text, 'faith')
+        self.assertEqual(tags[1].text, 'healing')
+        self.assertEqual(tags[2].text, 'love')
+        self.assertEqual(tags[3].text, 'salvation')
+
+        authors = m2m_attributes[1].\
+            find_elements_by_css_selector('a')
+        self.assertEqual(authors[0].text, 'Kelvin')
+        self.assertEqual(authors[1].text, 'Christine')
         
-        # He clicks on a book with a category of Spiritual ...
+        download_link = self.browser.find_element_by_link_text(
+            'Download The Gift (13.0 KB)')
+        self.assertEqual(
+            download_link.get_attribute('href'),
+            '{}/media/book.pdf'.format(
+                self.live_server_url)
+        )
 
-        # ... and is taken to the book's detail page which has a link
-        # to download the book.
+        # He finds a videos link in the navbar, clicks it and
+        # is redirected to the videos list page, where he finds
+        # some videos.
+        navbar = self.browser.\
+            find_element_by_css_selector('.navbar')
+        videos_link = navbar.find_element_by_link_text('Videos')
+        self.assertEqual(
+            videos_link.get_attribute('href'),
+            '{}/videos/'.format(self.live_server_url)
+        )
 
-        # He clicks on the link and gets a copy of the e-book, 
-        # which he starts reading.
+        videos_link.click()
+        self.assertEqual(
+            self.browser.current_url,
+            '{}/videos/'.format(self.live_server_url)
+        )
+
+        videos = self.browser.\
+            find_elements_by_css_selector('.video-card')
+        self.assertGreater(len(videos), 0)
+
+        # He clicks on the first video and is taken to the video's
+        # detail page where he can watch it.
+        videos[0].find_element_by_css_selector(
+            '.card-title a').click()      
+        self.assertEqual(
+            self.browser.current_url,
+            '{}/v/the-gift/'.format(self.live_server_url)
+        )
+
+        self.assertEqual(
+            self.browser.find_element_by_css_selector(
+                '.card-title').text,
+            'The Gift'
+        )
+
+        m2m_attributes = self.browser.\
+            find_elements_by_css_selector('.m2m-attribute')
+        tags = m2m_attributes[0].\
+            find_elements_by_css_selector('a.btn')
+        self.assertEqual(tags[0].text, 'faith')
+        self.assertEqual(tags[1].text, 'healing')
+        self.assertEqual(tags[2].text, 'love')
+        self.assertEqual(tags[3].text, 'salvation')
+
+        authors = m2m_attributes[1].\
+            find_elements_by_css_selector('a')
+        self.assertEqual(authors[0].text, 'Kelvin')
+        self.assertEqual(authors[1].text, 'Christine')
+
+        youtube_iframe = self.browser.\
+            find_element_by_tag_name('iframe')
+        self.assertEqual(youtube_iframe.get_attribute('src'),
+            'http://www.youtube.com/embed/rAKLiE658m0?wmode=opaque'
+        )
 
     def test_member_can_update_profile(self):
         """
@@ -662,7 +768,7 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         
         permissions_to_add = group_form.\
             find_element_by_name('permissions_old')
-        options_to_choose = [0, 0, 1]        
+        options_to_choose = [1, -1]     
         for choice in options_to_choose:
             permissions_to_add.\
                 find_elements_by_tag_name('option')[choice].click()
@@ -891,8 +997,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         book_form.find_element_by_css_selector(
             'input#id_file_upload').send_keys(
                 self.get_abs_test_file_path('documents/book.pdf'))
-        book_form.find_element_by_name('slug').\
-            send_keys('divine-healing')
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
         
@@ -913,8 +1017,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         category_form = self.browser.find_element_by_id('category_form')
         category_form.find_element_by_name('name').\
             send_keys('Technology')
-        category_form.find_element_by_name('slug').\
-            send_keys('technology')
         category_form.find_element_by_css_selector(
             '.submit-row input').click()
 
@@ -926,8 +1028,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Programming')
-        tag_form.find_element_by_name('slug').\
-            send_keys('programming')
         tag_form.find_element_by_css_selector(
             '.submit-row input').click()
         
@@ -938,8 +1038,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Python')
-        tag_form.find_element_by_name('slug').\
-            send_keys('python')
         tag_form.find_element_by_css_selector(
             '.submit-row input').click()
 
@@ -975,8 +1073,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         book_form.find_element_by_css_selector(
             'input#id_file_upload').send_keys(
                 self.get_abs_test_file_path('documents/book.pdf'))
-        book_form.find_element_by_name('slug').\
-            send_keys('getting-started-with-programming-in-python')
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
         
@@ -1024,8 +1120,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         for tag in tags_to_choose:
             video_form.find_element_by_name('tags').\
                 find_elements_by_tag_name('option')[tag].click()
-        video_form.find_element_by_name('slug').\
-            send_keys('divine-healing')
         video_form.find_element_by_name('url').\
             send_keys('https://youtu.be/rAKLiE658m0')
         video_form.find_element_by_css_selector(
@@ -1048,8 +1142,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         category_form = self.browser.find_element_by_id('category_form')
         category_form.find_element_by_name('name').\
             send_keys('Music')
-        category_form.find_element_by_name('slug').\
-            send_keys('music')
         category_form.find_element_by_css_selector(
             '.submit-row input').click()
 
@@ -1061,8 +1153,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Praise')
-        tag_form.find_element_by_name('slug').\
-            send_keys('praise')
         tag_form.find_element_by_css_selector(
             '.submit-row input').click()
         
@@ -1073,8 +1163,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Worship')
-        tag_form.find_element_by_name('slug').\
-            send_keys('worship')
         tag_form.find_element_by_css_selector(
             '.submit-row input').click()
 
@@ -1104,8 +1192,6 @@ class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase):
         video_form = self.browser.find_element_by_id('video_form')
         video_form.find_element_by_name('title').\
             send_keys('Mastering African Praise and Worship Music')
-        video_form.find_element_by_name('slug').\
-            send_keys('mastering-african-praise-and-worship-music')
         video_form.find_element_by_name('url').\
             send_keys('https://youtu.be/rAKLiE658m0')
         video_form.find_element_by_css_selector(
