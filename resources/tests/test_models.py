@@ -26,6 +26,11 @@ class CategoryModelTestCase(TestCase):
         self.assertEqual(self.category.name, 'Spiritual')
         self.assertEqual(self.category.description,
             'Materials that can help you grow Spiritually')
+        self.assertEqual(self.category.slug, 'spiritual')
+        self.assertEqual(self.category.date_created.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
+        self.assertEqual(self.category.last_edit.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
 
     def test_category_object_name(self):
         """
@@ -61,10 +66,28 @@ class CategoryModelTestCase(TestCase):
         slug__meta = self.category._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
         self.assertEqual(slug__meta.help_text,
-            'Enter a URL-friendly name for this resource group')
-        self.assertEqual(slug__meta.max_length, 30)
+            'Enter a URL-friendly name')
+        self.assertEqual(slug__meta.max_length, 50)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
+
+    def test_date_created_meta(self):
+        """
+        Test meta attributes of the date created field
+        """
+        date_created__meta = self.category._meta.get_field('date_created')
+        self.assertEqual(date_created__meta.verbose_name, 'date created')
+        self.assertEqual(date_created__meta.null, False)
+        self.assertEqual(date_created__meta.blank, True)
+
+    def test_last_edit_meta(self):
+        """
+        Test meta attributes of the last edit field
+        """
+        last_edit__meta = self.category._meta.get_field('last_edit')
+        self.assertEqual(last_edit__meta.verbose_name, 'last edit')
+        self.assertEqual(last_edit__meta.null, False)
+        self.assertEqual(last_edit__meta.blank, True)
 
 
 class TagModelTestCase(TestCase):
@@ -85,6 +108,11 @@ class TagModelTestCase(TestCase):
         Test the basic functionality of Tag
         """
         self.assertEqual(self.tag.name, 'Salvation')
+        self.assertEqual(self.tag.slug, 'salvation')
+        self.assertEqual(self.tag.date_created.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
+        self.assertEqual(self.tag.last_edit.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
         
     def test_tag_object_name(self):
         """
@@ -110,15 +138,33 @@ class TagModelTestCase(TestCase):
         slug__meta = self.tag._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
         self.assertEqual(slug__meta.help_text,
-            'Enter a URL-friendly name for this resource group')
-        self.assertEqual(slug__meta.max_length, 30)
+            'Enter a URL-friendly name')
+        self.assertEqual(slug__meta.max_length, 50)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
+
+    def test_date_created_meta(self):
+        """
+        Test meta attributes of the date created field
+        """
+        date_created__meta = self.tag._meta.get_field('date_created')
+        self.assertEqual(date_created__meta.verbose_name, 'date created')
+        self.assertEqual(date_created__meta.null, False)
+        self.assertEqual(date_created__meta.blank, True)
+
+    def test_last_edit_meta(self):
+        """
+        Test meta attributes of the last edit field
+        """
+        last_edit__meta = self.tag._meta.get_field('last_edit')
+        self.assertEqual(last_edit__meta.verbose_name, 'last edit')
+        self.assertEqual(last_edit__meta.null, False)
+        self.assertEqual(last_edit__meta.blank, True)
 
 
 class ResourceModelsTestCase(TestCase):
     """
-    Sets up data to be shared across Resource Model tests
+    Sets up data to be shared across Resource Models tests
     """
     @classmethod
     def setUpClass(cls):
@@ -208,7 +254,8 @@ class BookModelTestCase(ResourceModelsTestCase):
             timezone.now().date())
         self.assertEqual(self.book.date_posted.strftime('%H:%M:%S'),
             timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.book.last_edit, None)
+        self.assertEqual(self.book.last_edit.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
 
     def test_book_object_name(self):
         """
@@ -273,7 +320,7 @@ class BookModelTestCase(ResourceModelsTestCase):
         slug__meta = self.video._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
         self.assertEqual(slug__meta.help_text,
-            'Enter a URL-friendly name for this resource')
+            'Enter a URL-friendly name')
         self.assertEqual(slug__meta.max_length, 50)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
@@ -324,7 +371,7 @@ class BookModelTestCase(ResourceModelsTestCase):
         """
         last_edit__meta = self.book._meta.get_field('last_edit')
         self.assertEqual(last_edit__meta.verbose_name, 'last edit')
-        self.assertEqual(last_edit__meta.null, True)
+        self.assertEqual(last_edit__meta.null, False)
         self.assertEqual(last_edit__meta.blank, True)
 
 
@@ -357,7 +404,8 @@ class VideoModelTestCase(ResourceModelsTestCase):
             timezone.now().date())
         self.assertEqual(self.video.date_posted.strftime('%H:%M:%S'),
             timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.video.last_edit, None)
+        self.assertEqual(self.video.last_edit.strftime('%H:%M:%S'),
+            timezone.now().strftime('%H:%M:%S'))
 
     def test_video_object_name(self):
         """
@@ -422,7 +470,7 @@ class VideoModelTestCase(ResourceModelsTestCase):
         slug__meta = self.video._meta.get_field('slug')
         self.assertEqual(slug__meta.verbose_name, 'slug')
         self.assertEqual(slug__meta.help_text,
-            'Enter a URL-friendly name for this resource')
+            'Enter a URL-friendly name')
         self.assertEqual(slug__meta.max_length, 50)
         self.assertEqual(slug__meta.null, False)
         self.assertEqual(slug__meta.blank, False)
@@ -432,7 +480,7 @@ class VideoModelTestCase(ResourceModelsTestCase):
         Test meta attributes of the url field
         """
         url__meta = self.video._meta.get_field('url')
-        self.assertEqual(url__meta.verbose_name, 'url')
+        self.assertEqual(url__meta.verbose_name, 'URL')
         self.assertEqual(url__meta.help_text,
             'Enter the video URL here')
         self.assertEqual(url__meta.max_length, 200)
@@ -454,5 +502,5 @@ class VideoModelTestCase(ResourceModelsTestCase):
         """
         last_edit__meta = self.video._meta.get_field('last_edit')
         self.assertEqual(last_edit__meta.verbose_name, 'last edit')
-        self.assertEqual(last_edit__meta.null, True)
+        self.assertEqual(last_edit__meta.null, False)
         self.assertEqual(last_edit__meta.blank, True)
