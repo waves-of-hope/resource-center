@@ -125,67 +125,105 @@ class BookListViewTestCase(ResourceViewsTestCase):
     """
     Tests for the BookList view
     """
-    def test_book_list_view_basic(self):
+    def test_redirect_if_not_logged_in(self):
+        """
+        Test that the book list view redirects to the login page
+        first when a user is not logged in
+        """
+        response = self.client.get('/books/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/books/')
+
+    def test_book_list_view_logged_in_basic(self):
         """
         Test that the book list view returns a 200 response
-        and uses the correct template
+        and uses the correct template when a user is logged in
         """
-        request = self.factory.get('/books/')
-        response = views.BookListView.as_view()(request)
+        self.client.login(email = 'christine@kyalo.com',
+            password = 'christinepassword'
+        )
+        response = self.client.get('/books/')
         self.assertEqual(response.status_code, 200)
-        with self.assertTemplateUsed('resources/resource_list.html'):
-            response.render()
+        self.assertTemplateUsed('resources/resource_list.html')
 
 
 class VideoListViewTestCase(ResourceViewsTestCase):
     """
     Tests for the VideoList view
     """
-    def test_video_list_view_basic(self):
+    def test_redirect_if_not_logged_in(self):
+        """
+        Test that the video list view redirects to the login page
+        first when a user is not logged in
+        """
+        response = self.client.get('/videos/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/videos/')
+
+    def test_video_list_view_logged_in_basic(self):
         """
         Test that the video list view returns a 200 response
-        and uses the correct template
+        and uses the correct template when a user is logged in
         """
-        request = self.factory.get('/videos/')
-        response = views.VideoListView.as_view()(request)
+        self.client.login(email = 'christine@kyalo.com',
+            password = 'christinepassword'
+        )
+        response = self.client.get('/videos/')
         self.assertEqual(response.status_code, 200)
-        with self.assertTemplateUsed('resources/resource_list.html'):
-            response.render()
+        self.assertTemplateUsed('resources/resource_list.html')
         
 
 class BookDetailViewTestCase(ResourceViewsTestCase):
     """
     Tests for the BookDetail view
     """
-    def test_book_detail_view_basic(self):
+    def test_redirect_if_not_logged_in(self):
         """
-        Test that the book list view returns a 200 response
-        and uses the correct template
+        Test that the book detail view redirects to the login page
+        first when a user is not logged in
         """
-        request = self.factory.get('/b/the-hydroponics-handbook/')
-        response = views.BookDetailView.as_view()(
-            request,
-            slug=self.the_hydroponics_handbook.slug
+        response = self.client.get('/b/the-hydroponics-handbook/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/b/the-hydroponics-handbook/')
+
+    def test_book_detail_view_logged_in_basic(self):
+        """
+        Test that the book detail view returns a 200 response
+        and uses the correct template when a user is logged in
+        """
+        self.client.login(email = 'christine@kyalo.com',
+            password = 'christinepassword'
         )
+        response = self.client.get('/b/the-hydroponics-handbook/')
         self.assertEqual(response.status_code, 200)
-        with self.assertTemplateUsed('resources/book.html'):
-            response.render()
+        self.assertTemplateUsed('resources/resource_list.html')
 
 
 class VideoDetailViewTestCase(ResourceViewsTestCase):
     """
-    Tests for the VideoList view
+    Tests for the VideoDetail view
     """
-    def test_video_detail_view_basic(self):
+    def test_redirect_if_not_logged_in(self):
         """
-        Test that the video list view returns a 200 response
-        and uses the correct template
+        Test that the video detail view redirects to the login page
+        first when a user is not logged in
         """
-        request = self.factory.get('/v/the-gift/')
-        response = views.VideoDetailView.as_view()(
-            request,
-            slug=self.the_gift.slug         
+        response = self.client.get('/v/the-gift/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/v/the-gift/')
+
+    def test_video_detail_view_logged_in_basic(self):
+        """
+        Test that the video detail view returns a 200 response
+        and uses the correct template when a user is logged in
+        """
+        self.client.login(email = 'christine@kyalo.com',
+            password = 'christinepassword'
         )
+        response = self.client.get('/v/the-gift/')
         self.assertEqual(response.status_code, 200)
-        with self.assertTemplateUsed('resources/video.html'):
-            response.render()
+        self.assertTemplateUsed('resources/resource_list.html')

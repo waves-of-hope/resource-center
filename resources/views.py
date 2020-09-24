@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
@@ -15,7 +16,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-class BookListView(ListView):
+class BookListView(LoginRequiredMixin, ListView):
     """
     Creates the book list page
     """
@@ -28,7 +29,7 @@ class BookListView(ListView):
         return context
 
 
-class VideoListView(ListView):
+class VideoListView(LoginRequiredMixin, ListView):
     """
     Creates the video list page
     """
@@ -41,7 +42,7 @@ class VideoListView(ListView):
         return context
 
 
-class BookDetailView(DetailView):
+class BookDetailView(LoginRequiredMixin, DetailView):
     """
     Creates the book detail pages
     """
@@ -49,7 +50,7 @@ class BookDetailView(DetailView):
     template_name = 'resources/book.html'
 
 
-class VideoDetailView(DetailView):
+class VideoDetailView(LoginRequiredMixin, DetailView):
     """
     Creates the video detail pages
     """
