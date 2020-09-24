@@ -131,6 +131,10 @@ else:
 # Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
 
+# Login and Logout redirect views
+LOGIN_REDIRECT_URL = 'books'
+LOGOUT_REDIRECT_URL = 'index'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
