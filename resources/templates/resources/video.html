@@ -14,39 +14,11 @@
 
     <div class="card-body">
       <h1 class="card-title mx-3">{{ video.title }}</h1>
-      <ul class="container row unstyled-list resource-meta">
-        <li class="col-sm">
-          Category: <a href="#">{{ video.category }}</a>
-        </li>
-        {% if video.tags.all|length > 0 %}        
-          <li>
-            <ul class="unstyled-list inline-flex m2m-attribute">
-              <li><i class="fas fa-tags icon"></i></li>
-              {% for tag in video.tags.all %}
-                <li>
-                  <a class="btn btn-light btn-sm" href="#">{{ tag | lower }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% endif %}
-        <li>
-          <i class="far fa-calendar-alt icon"></i>
-          <time datetime="{{ video.date_posted | date:'Y-m-d' }}">
-            {{ video.date_posted | date:'F j, Y' }}
-          </time>
-        </li>
-        <li>
-          <ul class="unstyled-list inline-flex m2m-attribute">
-            By
-            {% for author in video.authors.all %}
-              <li>
-                <a href="#">{{ author }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
+      <div class="container row unstyled-list resource-meta mx-3">
+        {% with video as resource %}
+          {% include "resources/meta.html" %}
+        {% endwith %}
+      </div>
       {% if video.summary %}
         <p class="card-text mx-3">
           <span class="block summary-title border-bottom">Video summary</span>
