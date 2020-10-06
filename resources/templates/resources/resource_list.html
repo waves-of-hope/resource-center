@@ -5,10 +5,10 @@
 {% endblock title %}
 
 {% block content %}
-  <!-- Page title -->
+  {% comment %} Page title {% endcomment %}
   <h1>{{ resources|title }}</h1>
 
-  <!-- Resources -->
+  {% comment %} Resources {% endcomment %}
   <div class="card-deck">
   {% if resources == "books" and book_list|length > 0 %}
     {% for book in book_list %}
