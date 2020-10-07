@@ -16,7 +16,7 @@ from resources.models import Category, Tag, Book, Video
 @tag('functional')
 @override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
 @override_settings(MEDIA_ROOT=BASE_DIR / 'test_media')
-class ResourceCenterBaseTestCase(LiveServerTestCase):
+class ResourceCenterTestCase(LiveServerTestCase):
     """
     Set up data to be shared across Resource Center functional tests
     """
@@ -234,7 +234,7 @@ class ResourceCenterBaseTestCase(LiveServerTestCase):
                 format(abs_path_str))
 
 
-class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
+class MemberTestCase(ResourceCenterTestCase):
     """
     Test the functionality of the Resource Center to members
     and unregistered users
@@ -653,7 +653,7 @@ class ResourceCenterMemberTestCase(ResourceCenterBaseTestCase):
             )
 
 
-class ResourceCenterAdminTestCase(ResourceCenterBaseTestCase): 
+class AdminTestCase(ResourceCenterTestCase): 
     """
     Test the functionality of the Resource Center to superusers
     and users with staff permissions
