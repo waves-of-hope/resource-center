@@ -137,7 +137,7 @@ class ResourceCenterTestCase(LiveServerTestCase):
             category=self.category1,
             slug='a-christians-guide-to-wealth-creation',
             file_upload='book.pdf',
-            date_posted=timezone.now() - datetime.timedelta(days=5)
+            date_posted=timezone.now() - datetime.timedelta(days=2)
         ) 
         self.book1.authors.add(self.admin_user, self.user1,
             self.user2, self.user3)
@@ -167,6 +167,19 @@ class ResourceCenterTestCase(LiveServerTestCase):
         self.book3.authors.add(self.admin_user, self.user3)
         self.book3.tags.add(self.tag1, self.tag2,
             self.tag3, self.tag4)
+        
+        # Create 20 books for pagination tests
+        number_of_books = 20
+        for i in range(number_of_books):
+            prayer_devotion = Book.objects.create(
+                title='Prayer Devotion {}'.format(i),
+                category=self.category1,
+                slug='prayer-devotion-{}'.format(i),
+                cover_image='book-cover.jpg',
+                file_upload='book.pdf',
+                date_posted=timezone.now() - datetime.timedelta(days=3+i)
+            ) 
+            prayer_devotion.authors.add(self.admin_user)
 
         self.video1 = Video.objects.create(
             title='A Christian\'s guide to wealth creation',
@@ -175,7 +188,7 @@ class ResourceCenterTestCase(LiveServerTestCase):
             category=self.category1,
             slug='a-christians-guide-to-wealth-creation',
             url='https://youtu.be/rAKLiE658m0',
-            date_posted=timezone.now() - datetime.timedelta(days=5)
+            date_posted=timezone.now() - datetime.timedelta(days=2)
         ) 
         self.video1.authors.add(self.admin_user, self.user1,
             self.user2, self.user3)
@@ -204,6 +217,18 @@ class ResourceCenterTestCase(LiveServerTestCase):
         self.video3.authors.add(self.admin_user, self.user3)
         self.video3.tags.add(self.tag1, self.tag2,
             self.tag3, self.tag4)
+        
+        # Create 30 videos for pagination tests
+        number_of_videos = 30
+        for i in range(number_of_videos):
+            the_gift_chapter = Video.objects.create(
+                title='The Gift Chapter {}'.format(i),
+                category=self.category1,
+                slug='the-gift-chapter-{}'.format(i),
+                url='https://youtu.be/rAKLiE658m0',
+                date_posted=timezone.now() - datetime.timedelta(days=3+i)
+            ) 
+            the_gift_chapter.authors.add(self.admin_user)
 
     def tearDown(self):
         self.browser.quit()
@@ -412,6 +437,26 @@ class MemberTestCase(ResourceCenterTestCase):
             find_elements_by_css_selector('.book-card')
         self.assertGreater(len(books), 0)
 
+        # The books list page is paginated
+        pagination = self.browser.find_element_by_css_selector(
+            'nav ul.pagination')
+        page_links, page_link_addresses = list(), list()
+        for i in range(7):
+            if i == 0:
+                page_links.append('Previous')
+                page_link_addresses.append('/books/#')
+            elif i == 7:
+                page_links.append('Next')
+            else:
+                page_link_addresses.append('/books/?page={}/'.\
+                    format(i))
+        
+        for i, link in enumerate(page_links):
+            self.assertEqual(pagination.find_element_by_link_text(
+                    page_links[i]).get_attribute('href'),
+                self.live_server_url + page_link_addresses[i]
+            )
+
         # He clicks on the first book and is taken to the book's
         # detail page which has a link to download the book.
         books[0].find_element_by_css_selector(
@@ -469,6 +514,26 @@ class MemberTestCase(ResourceCenterTestCase):
         videos = self.browser.\
             find_elements_by_css_selector('.video-card')
         self.assertGreater(len(videos), 0)
+
+        # The videos list page is paginated
+        pagination = self.browser.find_element_by_css_selector(
+            'nav ul.pagination')
+        page_links, page_link_addresses = list(), list()
+        for i in range(7):
+            if i == 0:
+                page_links.append('Previous')
+                page_link_addresses.append('/videos/#')
+            elif i == 7:
+                page_links.append('Next')
+            else:
+                page_link_addresses.append('/videos/?page={}/'.\
+                    format(i))
+        
+        for i, link in enumerate(page_links):
+            self.assertEqual(pagination.find_element_by_link_text(
+                    page_links[i]).get_attribute('href'),
+                self.live_server_url + page_link_addresses[i]
+            )
 
         # He clicks on the first video and is taken to the video's
         # detail page where he can watch it.
