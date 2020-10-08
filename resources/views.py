@@ -22,6 +22,7 @@ class BookListView(LoginRequiredMixin, ListView):
     """
     model = Book
     template_name = 'resources/resource_list.html'
+    paginate_by = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -35,6 +36,7 @@ class VideoListView(LoginRequiredMixin, ListView):
     """
     model = Video
     template_name = 'resources/resource_list.html'
+    paginate_by = 9
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
