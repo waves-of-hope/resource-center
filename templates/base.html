@@ -28,7 +28,15 @@
 
     {% comment %} Main content {% endcomment %}
     <main {% if index != True %} class="container" {% endif %}>
+      {% comment %} Content {% endcomment %}
       {% block content %}{% endblock content %}
+
+      {% comment %} Pagination {% endcomment %}
+      {% block pagination %}
+      {% if is_paginated %}
+        {% include "pagination.html" %}
+      {% endif %}
+      {% endblock pagination %}
     </main>
 
     {% comment %} Footer {% endcomment %}
