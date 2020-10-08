@@ -19,7 +19,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=30)
     phone_number = PhoneNumberField(max_length=20, help_text='Enter a valid phone number' )
     bio = models.TextField(max_length=1000, help_text='Enter a brief summary of yourself', null=True, blank=True)
-    profile_picture = models.ImageField(default='default.png', upload_to="profile_pictures")
+    profile_picture = models.ImageField(default='default.png', upload_to='profile_pictures')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name',]

@@ -1,11 +1,12 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import SimpleTestCase
 from django.urls import resolve, reverse
 
 from accounts import views
 
-class AccountsURLsTestCase(TestCase):
-
+class AccountsURLsTestCase(SimpleTestCase):
+    """
+    Test URL configuration of accounts
+    """
     def test_register_url(self):
         """
         Test that the URL for register resolves to the
@@ -19,8 +20,8 @@ class AccountsURLsTestCase(TestCase):
         Test that the URL for profile resolves to the
         correct view function
         """
-        register = resolve(reverse('profile'))
-        self.assertEqual(register.func, views.profile)
+        profile = resolve(reverse('profile'))
+        self.assertEqual(profile.func, views.profile)
 
     def test_login_url(self):
         """

@@ -5,7 +5,9 @@ from django.test import TestCase, RequestFactory
 from accounts import views
 
 class AccountsBaseTestCase(TestCase):
-
+    """
+    Set up data to be shared across tests for accounts.views
+    """
     def setUp(self):
         self.factory = RequestFactory()
 
@@ -23,11 +25,13 @@ class AccountsBaseTestCase(TestCase):
 
 
 class RegisterViewTestCase(AccountsBaseTestCase):
-    
+    """
+    Tests for the register view
+    """    
     def test_register_view_basic(self):
         """
-        Test that register view returns a 200 response and uses
-        the correct template
+        Test that the register view returns a 200 response
+        and uses the correct template
         """
         request = self.factory.get('/accounts/register/')
         with self.assertTemplateUsed('accounts/register.html'):
@@ -36,12 +40,24 @@ class RegisterViewTestCase(AccountsBaseTestCase):
 
 
 class ProfileViewTestCase(AccountsBaseTestCase):
-
+    """
+    Tests for the profile view
+    """
     def test_redirect_if_not_logged_in(self):
-        response = self.client.get('/accounts/profile')
-        self.assertEqual(response.status_code, 301)
+        """
+        Test that the profile view redirects to the login page first
+        when a user is not logged in
+        """
+        response = self.client.get('/accounts/profile/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/accounts/profile/')
 
-    def test_logged_in_uses_correct_template(self):
+    def test_profile_view_logged_in_basic(self):
+        """
+        Test that the profile view returns a 200 response
+        and uses the correct template when a user is logged in
+        """
         self.client.login(email = 'alvin@mukuna.com',
             password = 'alvinpassword'
         )
@@ -52,7 +68,9 @@ class ProfileViewTestCase(AccountsBaseTestCase):
 
 
 class LoginViewTestCase(AccountsBaseTestCase):
-    
+    """
+    Tests for the Login view
+    """    
     def test_login_view_basic(self):
         """
         Test that the login view returns a 200 response and
@@ -66,22 +84,35 @@ class LoginViewTestCase(AccountsBaseTestCase):
 
 
 class LogoutViewTestCase(AccountsBaseTestCase):
-
+    """
+    Tests for the Logout view
+    """
     def test_redirect_if_not_logged_in(self):
-        response = self.client.get('/accounts/logout')
-        self.assertEqual(response.status_code, 301)
+        """
+        Test that the logout view redirects to the home page
+        when a user is not logged in
+        """
+        response = self.client.get('/accounts/logout/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
 
-    def test_logged_in_uses_correct_template(self):
+    def test_logout_redirect_url(self):
+        """
+        Test that the logout view redirects to the home page
+        when a user is logged in
+        """
         self.client.login(email = 'alvin@mukuna.com',
             password = 'alvinpassword'
         )
-        with self.assertTemplateUsed('accounts/logout.html'):
-            response = self.client.get('/accounts/logout/')
-            self.assertEqual(response.status_code, 200)
+        response = self.client.get('/accounts/logout/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
 
 
 class PasswordResetViewTestCase(AccountsBaseTestCase):
-    
+    """
+    Tests for the PasswordReset view
+    """    
     def test_password_reset_view_basic(self):
         """
         Test that the password reset view returns a 200 response
@@ -95,7 +126,9 @@ class PasswordResetViewTestCase(AccountsBaseTestCase):
 
 
 class PasswordResetDoneViewTestCase(AccountsBaseTestCase):
-    
+    """
+    Tests for the PasswordResetDone view
+    """
     def test_password_reset_done_view_basic(self):
         """
         Test that the password reset done view returns 
@@ -109,7 +142,9 @@ class PasswordResetDoneViewTestCase(AccountsBaseTestCase):
 
 
 class PasswordResetCompleteViewTestCase(AccountsBaseTestCase):
-    
+    """
+    Tests for the PasswordResetComplete view
+    """    
     def test_password_reset_complete_view_basic(self):
         """
         Test that the password reset complete view returns 

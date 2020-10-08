@@ -1,9 +1,18 @@
 import yaml
-from decouple import config
+import os
+from decouple import config, Csv
+
+# Add the domain name of the version to ALLOWED HOSTS
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+VERSION = os.getenv('VERSION', '')
+if VERSION != '':
+    for domain in set(ALLOWED_HOSTS[1:]):
+        ALLOWED_HOSTS.append('{}-dot-{}'.format(VERSION, domain))
+ALLOWED_HOSTS = ', '.join(ALLOWED_HOSTS)
 
 # create configurations for app.yaml
 conf = {
-    'service': 'waves-resource-center',
+    'service': 'default',
     'runtime': 'python38',
     'handlers': [
         {
@@ -25,7 +34,7 @@ conf = {
         # Django
         'SECRET_KEY': config('SECRET_KEY'),
         'DEBUG': config('DEBUG', default=False, cast=bool),
-        'ALLOWED_HOSTS': config('ALLOWED_HOSTS'),
+        'ALLOWED_HOSTS': ALLOWED_HOSTS,
 
         # Email
         'EMAIL_HOST_USER': config('EMAIL_HOST_USER'),

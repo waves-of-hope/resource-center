@@ -12,7 +12,7 @@
         Find books, videos and opportunities that will <em>change your life forever</em>
       </p>
       
-      <!-- Call to action -->
+      {% comment %} Call to action {% endcomment %}
       <div class="homepage-cta">
         <a class="btn btn-success btn-lg float-left" href="{% url 'register' %}">Register</a>
         <a class="btn btn-success btn-lg float-right" href="{% url 'login' %}">Login</a>
@@ -23,21 +23,21 @@
   <div class="container text-center my-3 site-stat">
     <div class="row">
       <div class="col-sm">
-        <span class="block">20</span>
+        <span class="block">{{ num_books }}</span>
         <i class="fas fa-book-open"></i>
-        <span class="block">Books</span>
+        <span class="block">Book{{ num_books|pluralize }}</span>
       </div>
 
       <div class="col-sm">
-        <span class="block">13</span>
+        <span class="block">{{ num_videos }}</span>
         <i class="fas fa-video"></i>
-        <span class="block">Videos</span>
+        <span class="block">Video{{ num_videos|pluralize }}</span>
       </div>
 
       <div class="col-sm">
-        <span class="block">25</span>
+        <span class="block">{{ num_users }}</span>
         <i class="fas fa-users"></i>
-        <span class="block">Members</span>
+        <span class="block">Member{{ num_users|pluralize }}</span>
       </div>
     </div>
   </div>

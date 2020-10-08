@@ -73,6 +73,14 @@ form {
 	display: block;
 }
 
+.inline-flex {
+	display: inline-flex;
+}
+
+.unstyled-list {
+	list-style: none;
+}
+
 .submit {
 	float: right;
 	margin-right: 0.2rem;
@@ -90,12 +98,33 @@ form {
 	max-width: 540px;
 }
 
+.book-card img {
+	height: 100%;
+}
+
 .video-card {
 	max-width: 22rem;
 }
 
 .video-player {
 	min-height: 600px;
+	border: 0rem;
+}
+
+.resource-meta {
+	line-height: 2rem;
+}
+
+.m2m-attribute {
+	margin-left: -2.2rem;
+}
+
+.m2m-attribute a {
+	margin-left: 0.5rem;
+}
+
+.icon {
+	margin-right: 0.6rem;
 }
 
 @media only screen and (max-width: 992px) {

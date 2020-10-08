@@ -38,6 +38,7 @@ jobs:
     - name: Run tests and create app.yaml
       run: |
         python manage.py test
+        export VERSION=$(git rev-parse --short HEAD)
         python app.yaml.py
       env:
         # Django
