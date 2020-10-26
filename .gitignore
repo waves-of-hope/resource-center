@@ -134,3 +134,6 @@ media/
 
 # geckodriver
 geckodriver*
+
+# VS Code settings
+.vscode
