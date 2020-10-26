@@ -102,8 +102,8 @@ if os.getenv('GAE_APPLICATION', None):
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/' + config('INSTANCE_CONNECTION_NAME'),
-            'USER': config('USER'),
-            'PASSWORD': config('PASSWORD'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
             'NAME': config('DATABASE'),
         }
     }
@@ -124,8 +124,8 @@ else:
     #         'HOST': '127.0.0.1',
     #         'PORT': '3306',
     #         'NAME': config('DATABASE'),
-    #         'USER': config('USER'),
-    #         'PASSWORD': config('PASSWORD'),
+    #         'USER': config('DB_USER'),
+    #         'PASSWORD': config('DB_PASSWORD'),
     #     }
     # }
 
@@ -195,7 +195,7 @@ GS_BUCKET_NAME = config('GS_BUCKET_NAME')
 GS_CREDENTIALS = service_account.Credentials.\
     from_service_account_file(config('GS_SA_KEY'))
 GS_DEFAULT_ACL = 'publicRead'
-GS_FILE_OVERWRITE  = False
+GS_FILE_OVERWRITE = False
 
 # Set crispy-forms to use Bootstrap 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
