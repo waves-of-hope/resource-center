@@ -49,8 +49,8 @@ conf = {
         # Cloud SQL
         'INSTANCE_CONNECTION_NAME': config('INSTANCE_CONNECTION_NAME'),
         'DATABASE': config('DATABASE'),
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
     }
 }
 
