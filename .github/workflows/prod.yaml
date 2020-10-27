@@ -59,8 +59,8 @@ jobs:
         # Cloud SQL
         INSTANCE_CONNECTION_NAME: ${{secrets.INSTANCE_CONNECTION_NAME}}
         DATABASE: ${{secrets.DATABASE}}
-        DB_USER: ${{secrets.DB_USER}}
-        DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+        USER: ${{secrets.USER}}
+        PASSWORD: ${{secrets.PASSWORD}}
       
     - name: Decrypt App Engine service account
       run: |
