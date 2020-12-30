@@ -1,4 +1,4 @@
-name: Production Workflow - Build and deploy to production
+name: Production Workflow
 
 on:
   pull_request:
