@@ -109,25 +109,25 @@ if os.getenv('GAE_APPLICATION', None):
     }
 else:
     # If running locally, use sqlite for development and testing
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': BASE_DIR / 'db.sqlite3',
-    #     }
-    # }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
     # Alternatively, connect to either a local MySQL instance
     #  or connect to Cloud SQL via the proxy.
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': config('DATABASE'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-        }
-    }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'HOST': '127.0.0.1',
+    #         'PORT': '3306',
+    #         'NAME': config('DATABASE'),
+    #         'USER': config('DB_USER'),
+    #         'PASSWORD': config('DB_PASSWORD'),
+    #     }
+    # }
 
 # Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
