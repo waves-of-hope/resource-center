@@ -7,7 +7,57 @@ Project waves_resource_center {
     '''
 }
 
-// accounts.models
+// admin.models
+Table "django_admin_log" {
+  "id" integer [pk, not null, increment]
+  "action_time" datetime(6) [not null]
+  "object_id" longtext
+  "object_repr" varchar(200) [not null]
+  "action_flag" smallint [not null]
+  "change_message" longtext [not null]
+  "content_type_id" integer
+  "user_id" integer [not null]
+}
+
+// auth.models
+Table "auth_permission" {
+  "id" integer [pk, not null, increment]
+  "name" varchar(50) [not null]
+  "content_type_id" integer [not null]
+  "codename" varchar(100) [not null]
+}
+
+Table "auth_group" {
+  "id" integer [pk, not null, increment]
+  "name" varchar(80) [unique, not null]
+}
+
+Table "auth_group_permissions" {
+  "id" integer [pk, not null, increment]
+  "group_id" integer [not null]
+  "permission_id" integer [not null]
+}
+
+// contenttype.models
+Table "django_content_type" {
+  "id" integer [pk, not null, increment]
+  "name" varchar(100) [not null]
+  "app_label" varchar(100) [not null]
+  "model" varchar(100) [not null]
+}
+
+// sessions.models
+Table "django_session" {
+  "session_key" varchar(40) [pk, not null]
+  "session_data" longtext [not null]
+  "expire_date" datetime(6) [not null]
+
+Indexes {
+  expire_date [name: "django_session_expire_date_a5c62663"]
+}
+}
+
+// acccounts.models
 Table "accounts_user" {
   "id" integer [pk, not null, increment]
   "password" varchar(128) [not null]
@@ -100,3 +150,42 @@ Table "resources_book_tags" {
   "book_id" integer [not null]
   "tag_id" integer [not null]
 }
+
+// relations between the models
+Ref:"django_content_type"."id" < "django_admin_log"."content_type_id"
+
+Ref:"accounts_user"."id" < "django_admin_log"."user_id"
+
+Ref:"django_content_type"."id" < "auth_permission"."content_type_id"
+
+Ref:"auth_group"."id" < "auth_group_permissions"."group_id"
+
+Ref:"auth_permission"."id" < "auth_group_permissions"."permission_id"
+
+Ref:"accounts_user"."id" < "accounts_user_groups"."user_id"
+
+Ref:"auth_group"."id" < "accounts_user_groups"."group_id"
+
+Ref:"accounts_user"."id" < "accounts_user_user_permissions"."user_id"
+
+Ref:"auth_permission"."id" < "accounts_user_user_permissions"."permission_id"
+
+Ref:"resources_category"."id" < "resources_video"."category_id"
+
+Ref:"resources_video"."id" < "resources_video_authors"."video_id"
+
+Ref:"accounts_user"."id" < "resources_video_authors"."user_id"
+
+Ref:"resources_video"."id" < "resources_video_tags"."video_id"
+
+Ref:"resources_tag"."id" < "resources_video_tags"."tag_id"
+
+Ref:"resources_category"."id" < "resources_book"."category_id"
+
+Ref:"resources_book"."id" < "resources_book_authors"."book_id"
+
+Ref:"accounts_user"."id" < "resources_book_authors"."user_id"
+
+Ref:"resources_book"."id" < "resources_book_tags"."book_id"
+
+Ref:"resources_tag"."id" < "resources_book_tags"."tag_id"
