@@ -1,0 +1,102 @@
+Project waves_resource_center {
+    database_type: 'MySQL'
+    note: '''
+        # Waves Resource Center Database
+        The table names follow the following convention:
+        `table name` = `app name` + `_` + `model name`
+    '''
+}
+
+// accounts.models
+Table "accounts_user" {
+  "id" integer [pk, not null, increment]
+  "password" varchar(128) [not null]
+  "last_login" datetime(6)
+  "is_superuser" bool [not null]
+  "is_staff" bool [not null]
+  "is_active" bool [not null]
+  "date_joined" datetime(6) [not null]
+  "email" varchar(254) [unique, not null]
+  "first_name" varchar(30) [not null]
+  "last_name" varchar(30) [not null]
+  "phone_number" varchar(20) [not null]
+  "bio" longtext
+  "profile_picture" varchar(100) [not null]
+}
+
+Table "accounts_user_groups" {
+  "id" integer [pk, not null, increment]
+  "user_id" integer [not null]
+  "group_id" integer [not null]
+}
+
+Table "accounts_user_user_permissions" {
+  "id" integer [pk, not null, increment]
+  "user_id" integer [not null]
+  "permission_id" integer [not null]
+}
+
+// resources.models
+Table "resources_category" {
+  "id" integer [pk, not null, increment]
+  "slug" varchar(50) [unique, not null]
+  "last_edit" datetime(6) [not null]
+  "name" varchar(30) [not null]
+  "description" longtext
+  "date_created" datetime(6) [not null]
+}
+
+Table "resources_tag" {
+  "id" integer [pk, not null, increment]
+  "slug" varchar(50) [unique, not null]
+  "last_edit" datetime(6) [not null]
+  "name" varchar(30) [not null]
+  "date_created" datetime(6) [not null]
+}
+
+Table "resources_video" {
+  "id" integer [pk, not null, increment]
+  "slug" varchar(50) [unique, not null]
+  "last_edit" datetime(6) [not null]
+  "title" varchar(50) [not null]
+  "summary" longtext
+  "date_posted" datetime(6) [not null]
+  "url" varchar(200) [not null]
+  "category_id" integer [not null]
+}
+
+Table "resources_video_authors" {
+  "id" integer [pk, not null, increment]
+  "video_id" integer [not null]
+  "user_id" integer [not null]
+}
+
+Table "resources_video_tags" {
+  "id" integer [pk, not null, increment]
+  "video_id" integer [not null]
+  "tag_id" integer [not null]
+}
+
+Table "resources_book" {
+  "id" integer [pk, not null, increment]
+  "slug" varchar(50) [unique, not null]
+  "last_edit" datetime(6) [not null]
+  "title" varchar(50) [not null]
+  "summary" longtext
+  "date_posted" datetime(6) [not null]
+  "cover_image" varchar(100) [not null]
+  "file_upload" varchar(100) [not null]
+  "category_id" integer [not null]
+}
+
+Table "resources_book_authors" {
+  "id" integer [pk, not null, increment]
+  "book_id" integer [not null]
+  "user_id" integer [not null]
+}
+
+Table "resources_book_tags" {
+  "id" integer [pk, not null, increment]
+  "book_id" integer [not null]
+  "tag_id" integer [not null]
+}
