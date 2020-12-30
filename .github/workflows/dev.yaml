@@ -2,7 +2,7 @@ name: Development Workflow - Testing
 
 on:
   push:
-    branches: [ master, dev, 'issue-*', 'feature/*' ]
+    branches: [ master, dev, '*' ]
   pull_request:
     branches: [ master, dev ]
 
