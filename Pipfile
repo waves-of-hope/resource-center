@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-crispy-forms = "*"
+django-embed-video = "*"
+mysqlclient = "*"
+python-decouple = "*"
+Django = "*"
+Pillow = "*"
+django-storages = {extras = ["google"], version = "*"}
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
+pyyaml = "*"
+
+[dev-packages]
+coverage = "*"
+selenium = "*"
+
+[requires]
+python_version = "3.9"

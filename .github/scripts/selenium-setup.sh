@@ -16,8 +16,8 @@ Xvfb :10 -ac &
 export DISPLAY=:10
 
 # Get the latest version of geckodriver
-wget https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.28.0/geckodriver-v0.28.0-linux64.tar.gz
 
 # Unzip the geckodriver download and make it executable
-tar -xzf geckodriver-v0.27.0-linux64.tar.gz
+tar -xzf geckodriver*
 chmod +x geckodriver

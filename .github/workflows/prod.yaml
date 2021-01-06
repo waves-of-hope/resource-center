@@ -1,4 +1,4 @@
-name: Production Workflow
+name: GAE Deployment
 
 on:
   pull_request:
@@ -12,15 +12,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: 3.9
       
     - name: Install Dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        python -m pip install pipenv
+        pipenv install --dev
 
     - name: Set up headless firefox and install geckodriver
       run: |
@@ -37,9 +37,9 @@ jobs:
     
     - name: Run tests and create app.yaml
       run: |
-        python manage.py test
+        pipenv run python manage.py test
         export VERSION=$(git rev-parse --short HEAD)
-        python app.yaml.py
+        pipenv run python app.yaml.py
       env:
         # Django
         SECRET_KEY: ${{secrets.SECRET_KEY}}
