@@ -44,6 +44,7 @@ MANAGERS = config('MANAGERS', cast=list_of_tuples)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

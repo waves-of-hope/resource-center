@@ -13,6 +13,8 @@ Pillow = "*"
 django-storages = {extras = ["google"], version = "*"}
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 pyyaml = "*"
+docutils = "*"
+pygments = "*"
 
 [dev-packages]
 coverage = "*"
