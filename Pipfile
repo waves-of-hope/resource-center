@@ -21,6 +21,7 @@ coverage = "*"
 selenium = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+recommonmark = "*"
 
 [requires]
 python_version = "3.9"
