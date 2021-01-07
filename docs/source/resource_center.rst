@@ -1,0 +1,53 @@
+resource\_center package
+========================
+
+Submodules
+----------
+
+resource\_center.asgi module
+----------------------------
+
+.. automodule:: resource_center.asgi
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+resource\_center.settings module
+--------------------------------
+
+.. automodule:: resource_center.settings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+resource\_center.tests module
+-----------------------------
+
+.. automodule:: resource_center.tests
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+resource\_center.urls module
+----------------------------
+
+.. automodule:: resource_center.urls
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+resource\_center.wsgi module
+----------------------------
+
+.. automodule:: resource_center.wsgi
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: resource_center
+   :members:
+   :undoc-members:
+   :show-inheritance:
