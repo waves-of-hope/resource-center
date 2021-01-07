@@ -53,3 +53,9 @@ jobs:
         # Cloud Storage
         GS_BUCKET_NAME: ${{secrets.GS_BUCKET_NAME}}
         GS_SA_KEY: ${{secrets.GS_SA_KEY}}
+
+    - name: Build Documentation
+      run: |
+        cd docs
+        pipenv run make clean
+        pipenv run make html
