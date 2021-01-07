@@ -1,7 +1,8 @@
 # Waves Resource Center
 A digital platform for sharing educational resources
 
-![Production Workflow](https://github.com/Waves-of-Hope-Foundation/resource-center/workflows/Production%20Workflow%20-%20Build%20and%20deploy%20to%20production/badge.svg)
+![Django CI](https://github.com/Waves-of-Hope-Foundation/resource-center/workflows/Django%20CI/badge.svg)
+[![Documentation Status](https://readthedocs.org/projects/resource-center/badge/?version=latest)](https://resource-center.readthedocs.io/en/latest/?badge=latest)
 
 ## Local Setup
 1. Create the following [environment variables](#env-vars):
