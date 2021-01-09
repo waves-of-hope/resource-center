@@ -7,7 +7,7 @@ on:
     branches: [master, dev]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -67,12 +67,7 @@ jobs:
       env:
         SECRET_FILE_PASSPHRASE: ${{secrets.GAE_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GAE_SA_KEY}}
-  
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-      
-    steps:
+
     - name: Deploy to App Engine Standard
       run: |
         chmod +x .github/scripts/deploy-gae.sh
