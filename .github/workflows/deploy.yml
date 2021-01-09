@@ -4,7 +4,8 @@ on:
   pull_request:
     types:
     - closed
-    branches: [master, dev]
+    branches:
+      - master
 
 jobs:
   deploy:
@@ -23,8 +24,7 @@ jobs:
         pipenv install --dev
 
     - name: Create requirements.txt
-      run: |
-        pipenv lock -r > requirements.txt
+      run: pipenv lock -r > requirements.txt
     
     - name: Decrypt Cloud Storage service account
       run: |
@@ -33,7 +33,18 @@ jobs:
       env:
         SECRET_FILE_PASSPHRASE: ${{secrets.GS_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GS_SA_KEY}}
+      
+    - name: Decrypt App Engine service account
+      run: |
+        chmod +x .github/scripts/decrypt.sh
+        ./.github/scripts/decrypt.sh
+      env:
+        SECRET_FILE_PASSPHRASE: ${{secrets.GAE_SA_PASSPHRASE}}
+        SECRET_FILE: ${{secrets.GAE_SA_KEY}}
     
+    - name: Collect Static Files
+      run: pipenv run python manage.py collectstatic --no-input
+
     - name: Create app.yaml
       run: |
         export VERSION=$(git rev-parse --short HEAD)
@@ -59,14 +70,6 @@ jobs:
         DATABASE: ${{secrets.DATABASE}}
         DB_USER: ${{secrets.DB_USER}}
         DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-      
-    - name: Decrypt App Engine service account
-      run: |
-        chmod +x .github/scripts/decrypt.sh
-        ./.github/scripts/decrypt.sh
-      env:
-        SECRET_FILE_PASSPHRASE: ${{secrets.GAE_SA_PASSPHRASE}}
-        SECRET_FILE: ${{secrets.GAE_SA_KEY}}
 
     - name: Deploy to App Engine Standard
       run: |
@@ -75,3 +78,6 @@ jobs:
       env:
         GAE_SA_KEY: ${{secrets.GAE_SA_KEY }}
         GCP_PROJECT_ID: ${{secrets.GCP_PROJECT_ID}}
+    
+    - name: Run Database Migrations
+      run: pipenv run python manage.py migrate
