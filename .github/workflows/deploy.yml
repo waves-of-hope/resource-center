@@ -1,4 +1,4 @@
-name: GAE Deployment
+name: Google App Engine Continous Deployment
 
 on:
   pull_request:
@@ -25,11 +25,6 @@ jobs:
     - name: Create requirements.txt
       run: |
         pipenv lock -r > requirements.txt
-
-    - name: Set up headless firefox and install geckodriver
-      run: |
-        chmod +x .github/scripts/selenium-setup.sh
-        ./.github/scripts/selenium-setup.sh
     
     - name: Decrypt Cloud Storage service account
       run: |
@@ -39,9 +34,8 @@ jobs:
         SECRET_FILE_PASSPHRASE: ${{secrets.GS_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GS_SA_KEY}}
     
-    - name: Run tests and create app.yaml
+    - name: Create app.yaml
       run: |
-        pipenv run python manage.py test
         export VERSION=$(git rev-parse --short HEAD)
         pipenv run python app.yaml.py
       env:
@@ -73,8 +67,13 @@ jobs:
       env:
         SECRET_FILE_PASSPHRASE: ${{secrets.GAE_SA_PASSPHRASE}}
         SECRET_FILE: ${{secrets.GAE_SA_KEY}}
+  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
       
-    - name: Deploy the project to App Engine Standard
+    steps:
+    - name: Deploy to App Engine Standard
       run: |
         chmod +x .github/scripts/deploy-gae.sh
         ./.github/scripts/deploy-gae.sh
