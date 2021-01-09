@@ -1,13 +1,11 @@
-name: Django CI
+name: Django Continuous Integration
 
 on:
   push:
     branches: ['*']
-  pull_request:
-    branches: [ master, dev ]
 
 jobs:
-  build:
+  test_new_code:
     runs-on: ubuntu-latest
 
     steps:
