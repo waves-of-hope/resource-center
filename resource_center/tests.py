@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.test import LiveServerTestCase, tag, override_settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import tag, override_settings
 from django.utils import timezone
 
 from selenium import webdriver
@@ -16,7 +17,7 @@ from resources.models import Category, Tag, Book, Video
 @tag('functional')
 @override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
 @override_settings(MEDIA_ROOT=BASE_DIR / 'test_media')
-class ResourceCenterTestCase(LiveServerTestCase):
+class ResourceCenterTestCase(StaticLiveServerTestCase):
     """
     Set up data to be shared across Resource Center functional tests
     """
