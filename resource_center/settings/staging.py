@@ -1,4 +1,4 @@
-from .base import *
+from .production import *
 
 if os.getenv('GAE_APPLICATION', None):
     # If running on App Engine, connect to Google
@@ -30,12 +30,9 @@ else:
 
 # Google Cloud Storage bucket settings
 GS_BUCKET_NAME = config('STAGING_GCP_STORAGE_BUCKET_NAME')
-GS_DEFAULT_ACL = 'publicRead'
 
 # Static files
 STATIC_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/static/'
-STATICFILES_STORAGE = 'utils.storages.StaticRootGoogleCloudStorage'
 
 # Media
 MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/media/'
-DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'

@@ -30,12 +30,6 @@ DEBUG = config('DJANGO_DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-# A list of people who get code error notifications
-ADMINS = eval(config('ADMINS'))
-
-# A list of people who get broken link notifications
-MANAGERS = ADMINS
-
 # Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -174,3 +168,15 @@ EMAIL_PORT = config('DJANGO_EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('DJANGO_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('DJANGO_EMAIL_HOST_PASSWORD')
+
+# A list of people who get code error notifications
+ADMINS = eval(config('ADMINS'))
+
+# A list of people who get broken link notifications
+MANAGERS = ADMINS
+
+# URL of the admin site
+ADMIN_URL = 'admin/'
+
+# In browser tests
+HEADLESS_BROWSER_TESTS = config('HEADLESS_BROWSER_TESTS', cast=bool, default=False)
