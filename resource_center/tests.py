@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import tag, override_settings
 from django.utils import timezone
@@ -10,13 +10,10 @@ import datetime
 import os
 from pathlib import WindowsPath
 from shutil import rmtree, copy
-from .settings import BASE_DIR
 
 from resources.models import Category, Tag, Book, Video
 
 @tag('functional')
-@override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
-@override_settings(MEDIA_ROOT=BASE_DIR / 'test_media')
 class ResourceCenterTestCase(StaticLiveServerTestCase):
     """
     Set up data to be shared across Resource Center functional tests
@@ -28,10 +25,10 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         cls.User = get_user_model()
 
         # location of files for tesing
-        cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
+        cls.TEST_FILES_DIR = settings.BASE_DIR / 'test_files'
 
         # set up test media directory
-        cls.MEDIA_ROOT = BASE_DIR / 'test_media'
+        cls.MEDIA_ROOT = settings.BASE_DIR / 'test_media'
         cls.MEDIA_ROOT.mkdir()
         test_images = cls.TEST_FILES_DIR / 'images'
         copy(test_images.joinpath('default.png'), cls.MEDIA_ROOT)
