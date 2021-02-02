@@ -14,35 +14,30 @@ import os
 from pathlib import Path
 
 from decouple import config, Csv
-from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DJANGO_DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-# A helper function for ADMINS and MANAGERS settings
-list_of_tuples = lambda str: list(eval(str))
-
 # A list of people who get code error notifications
-ADMINS = config('ADMINS', cast=list_of_tuples)
+ADMINS = eval(config('ADMINS'))
 
 # A list of people who get broken link notifications
-MANAGERS = config('MANAGERS', cast=list_of_tuples)
+MANAGERS = ADMINS
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -50,20 +45,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+]
+THIRD_PARTY_APPS = [
     'phonenumber_field',
     'crispy_forms',
     'storages',
     'embed_video',
-
+]
+LOCAL_APPS = [
     'resources',
     'accounts',
 ]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -96,39 +95,16 @@ WSGI_APPLICATION = 'resource_center.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if os.getenv('GAE_APPLICATION', None):
-    # If running on production App Engine, connect to Google
-    # Cloud SQL using the unix socket
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/' + config('INSTANCE_CONNECTION_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'NAME': config('DATABASE'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'NAME': config('DATABASE'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
     }
-else:
-    # If running locally, use sqlite for development and testing
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
-    # Alternatively, connect to either a local MySQL instance
-    #  or connect to Cloud SQL via the proxy.
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         'HOST': '127.0.0.1',
-    #         'PORT': '3306',
-    #         'NAME': config('DATABASE'),
-    #         'USER': config('DB_USER'),
-    #         'PASSWORD': config('DB_PASSWORD'),
-    #     }
-    # }
+}
 
 # Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
@@ -188,23 +164,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = "/media/"
 
-# To upload media files to Cloud Storage:
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-
-# Google Cloud Storage bucket settings
-GS_BUCKET_NAME = config('GS_BUCKET_NAME')
-GS_CREDENTIALS = service_account.Credentials.\
-    from_service_account_file(config('GS_SA_KEY'))
-GS_DEFAULT_ACL = 'publicRead'
-GS_FILE_OVERWRITE = False
-
 # Set crispy-forms to use Bootstrap 4
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = config('DJANGO_EMAIL_HOST')
+EMAIL_PORT = config('DJANGO_EMAIL_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('DJANGO_EMAIL_HOST_PASSWORD')
