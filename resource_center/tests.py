@@ -1,10 +1,10 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.test import tag, override_settings
+from django.test import tag
 from django.utils import timezone
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 
 import datetime
 import os
@@ -38,19 +38,10 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
             cls.MEDIA_ROOT)
 
     def setUp(self):
-        # set up browser in GitHub runner
-        if os.getenv('SELENIUM_JAR_PATH'):
-            options = Options()
-            options.add_argument('-headless')
-            self.browser = webdriver.Firefox(
-                executable_path='geckodriver',
-                options=options
-            )
-            self.browser.implicitly_wait(2)
-
-        else:
-            self.browser = webdriver.Firefox()
-            self.browser.implicitly_wait(2)
+        options = webdriver.firefox.options.Options()
+        options.headless = settings.HEADLESS_BROWSER_TESTS
+        self.browser = webdriver.Firefox(options=options)
+        self.browser.implicitly_wait(2)
 
         self.admin_user = self.User.objects.create_superuser(
             first_name = 'Kelvin',
