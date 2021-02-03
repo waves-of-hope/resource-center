@@ -29,10 +29,9 @@ jobs:
     
     - name: Run Tests
       run: |
-        pipenv run python manage.py test
+        pipenv run python manage.py test --settings=resource_center.settings.test
       env:
         # Django
-        DJANGO_SETTINGS_MODULE: resource_center.settings.test
         DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
         HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}
