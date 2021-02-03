@@ -1,11 +1,11 @@
-name: Google App Engine Continous Deployment
+name: Staging Deploy
 
 on:
   pull_request:
     types:
     - closed
     branches:
-      - master
+      - dev
 
 jobs:
   deploy:

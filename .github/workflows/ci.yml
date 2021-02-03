@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: [dev, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+      
+    - name: Install Dependencies
+      run: |
+        pip install pipenv
+        pipenv install --dev --ignore-pipfile
+    
+    - name: Run Tests
+      run: |
+        pipenv run python manage.py test
+      env:
+        # Django
+        DJANGO_SETTINGS_MODULE: resource_center.settings.test
+        SECRET_KEY: ${{secrets.SECRET_KEY}}
+        ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
+        HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}
