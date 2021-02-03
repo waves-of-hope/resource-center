@@ -57,3 +57,17 @@ DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'
 
 # Admin URL
 ADMIN_URL = config('ADMIN_URL')
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('DJANGO_EMAIL_HOST')
+EMAIL_PORT = config('DJANGO_EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('DJANGO_EMAIL_HOST_PASSWORD')
+
+# A list of people who get code error notifications
+ADMINS = eval(config('ADMINS'))
+
+# A list of people who get broken link notifications
+MANAGERS = ADMINS
