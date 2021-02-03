@@ -180,3 +180,6 @@ ADMIN_URL = 'admin/'
 
 # In browser tests
 HEADLESS_BROWSER_TESTS = config('HEADLESS_BROWSER_TESTS', cast=bool, default=False)
+
+# Location of files used for testing
+TEST_FILES_DIR = BASE_DIR / 'test_files'

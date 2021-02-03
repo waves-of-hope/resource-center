@@ -7,7 +7,6 @@ from django.utils import timezone
 from selenium import webdriver
 
 import datetime
-import os
 from pathlib import WindowsPath
 from shutil import rmtree, copy
 
@@ -24,18 +23,16 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         # create some test users
         cls.User = get_user_model()
 
-        # location of files for tesing
-        cls.TEST_FILES_DIR = settings.BASE_DIR / 'test_files'
-
         # set up test media directory
-        cls.MEDIA_ROOT = settings.BASE_DIR / 'test_media'
-        cls.MEDIA_ROOT.mkdir()
-        test_images = cls.TEST_FILES_DIR / 'images'
-        copy(test_images.joinpath('default.png'), cls.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.png'), cls.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.jpg'), cls.MEDIA_ROOT)
-        copy(cls.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            cls.MEDIA_ROOT)
+        settings.MEDIA_ROOT.mkdir()
+        test_images = settings.TEST_FILES_DIR / 'images'
+        copy(test_images.joinpath('default.png'), settings.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.png'), settings.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.jpg'), settings.MEDIA_ROOT)
+        copy(
+            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
+            settings.MEDIA_ROOT
+        )
 
     def setUp(self):
         options = webdriver.firefox.options.Options()
@@ -226,7 +223,7 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         # remove test media directory
-        rmtree(cls.MEDIA_ROOT)
+        rmtree(settings.MEDIA_ROOT)
 
     def get_abs_test_file_path(self, rel_file_path):
         """
@@ -234,7 +231,7 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         `test_files` directory as a string
         """
         try:
-            abs_path = self.TEST_FILES_DIR.joinpath(rel_file_path)
+            abs_path = settings.TEST_FILES_DIR.joinpath(rel_file_path)
             abs_path_str = str(abs_path.as_posix())
         except TypeError as e:
             print('TypeError: {}'.format(e))

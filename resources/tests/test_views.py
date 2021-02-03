@@ -17,11 +17,11 @@ class ResourceViewsTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.TEST_FILES_DIR = settings.BASE_DIR / 'test_files'
-        cls.MEDIA_ROOT = settings.BASE_DIR / 'test_media'
-        cls.MEDIA_ROOT.mkdir()
-        copy(cls.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            cls.MEDIA_ROOT)
+        settings.MEDIA_ROOT.mkdir()
+        copy(
+            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
+            settings.MEDIA_ROOT
+        )
 
         # users
         cls.User = get_user_model()
@@ -115,7 +115,7 @@ class ResourceViewsTestCase(TestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         # remove test media directory
-        rmtree(cls.MEDIA_ROOT)
+        rmtree(settings.MEDIA_ROOT)
 
 
 class IndexViewTestCase(ResourceViewsTestCase):
