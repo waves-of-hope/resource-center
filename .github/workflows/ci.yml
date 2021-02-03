@@ -33,6 +33,6 @@ jobs:
       env:
         # Django
         DJANGO_SETTINGS_MODULE: resource_center.settings.test
-        SECRET_KEY: ${{secrets.SECRET_KEY}}
+        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
         HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}
