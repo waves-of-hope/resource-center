@@ -10,10 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 
-from decouple import config, Csv
+from decouple import config, Csv, UndefinedValueError
+
+from utils.appengine import AppEngineConfig
+
+# Django Settings
+# ===============
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -21,6 +25,15 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+
+# Set environment variables from a config in datastore if running
+# in Google App Engine
+try:
+    config('ALLOWED_HOSTS')
+
+except UndefinedValueError:
+    app_engine_config = AppEngineConfig()
+    app_engine_config.set_environment_variables_from_config()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('DJANGO_SECRET_KEY')
@@ -40,18 +53,23 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 THIRD_PARTY_APPS = [
     'phonenumber_field',
     'crispy_forms',
     'storages',
     'embed_video',
 ]
+
 LOCAL_APPS = [
     'resources',
     'accounts',
 ]
+
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+# https://docs.djangoproject.com/en/3.1/topics/http/middleware/
+# https://docs.djangoproject.com/en/3.1/ref/middleware/#middleware-ordering
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,21 +104,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'resource_center.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# Auth
+# https://docs.djangoproject.com/en/3.1/ref/settings/#auth
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Model used for user authentication
 AUTH_USER_MODEL = 'accounts.User'
 
-# Login and Logout redirect views
 LOGIN_REDIRECT_URL = 'books'
+
 LOGOUT_REDIRECT_URL = 'index'
 
 # Password validation
@@ -122,6 +132,53 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Database
+# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+# Email
+# https://docs.djangoproject.com/en/3.1/ref/settings/#email
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = config('DJANGO_EMAIL_HOST', default='smtp.gmail.com')
+
+EMAIL_PORT = config('DJANGO_EMAIL_PORT', default=587)
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = config('DJANGO_EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = config('DJANGO_EMAIL_HOST_PASSWORD')
+
+
+# Media (user uploaded files)
+# https://docs.djangoproject.com/en/3.1/ref/settings/#file-uploads
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_URL = "/media/"
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/ref/settings/#static-files
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -136,31 +193,20 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+# Third Party Apps Settings
+# =========================
 
-# a list of directories where Django will also look for static files
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
-# The absolute path to the directory where collectstatic
-#  will collect static files for deployment.
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Media (images)
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = "/media/"
-
-# Set crispy-forms to use Bootstrap 4
+# https://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# URL of the admin site
+
+
+# Project Specific Settings
+# =========================
+
 ADMIN_URL = 'admin/'
 
-# In browser tests
 HEADLESS_BROWSER_TESTS = config('HEADLESS_BROWSER_TESTS', cast=bool, default=False)
 
 # Location of files used for testing

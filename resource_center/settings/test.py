@@ -1,5 +1,10 @@
 from .base import *
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Django Settings
+# ===============
+
+EMAIL_HOST = 'localhost'
+
+EMAIL_PORT = 25
 
 MEDIA_ROOT = BASE_DIR / 'test_media'
