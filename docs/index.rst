@@ -10,7 +10,11 @@ Welcome to Waves Resource Center's documentation!
    :maxdepth: 2
    :glob:
 
-   *
+   installation
+   modules
+   deployment
+   gcloud 
+   documentation
 
 
 
