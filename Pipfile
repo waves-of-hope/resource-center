@@ -15,6 +15,7 @@ django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 pyyaml = "*"
 docutils = "*"
 pygments = "*"
+google-cloud-datastore = "*"
 
 [dev-packages]
 coverage = "*"
