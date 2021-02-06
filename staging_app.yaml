@@ -1,0 +1,15 @@
+service: staging
+runtime: python38
+
+handlers:
+- url: /static
+  static_dir: staticfiles/
+- url: /.*
+  script: auto
+
+automatic_scaling:
+  max_instances: 15
+  target_cpu_utilization: 0.75
+
+env_variables:
+  ENVIRONMENT: staging
