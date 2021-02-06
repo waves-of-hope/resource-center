@@ -30,6 +30,9 @@
 - Set a default region/zone for the project: \
     `$ gcloud config set compute/region [REGION]`
 
+- Enable the Cloud Storage service: \
+    `$ gcloud services enable storage-component.googleapis.com`
+
 - Create a bucket: \
     `$ gsutil mb gs://[BUCKET_NAME]`
 
@@ -49,3 +52,9 @@
 
 - Create an app: \
     `$ gcloud app create --region=[REGION]`
+
+- Enable the App Engine Admin API: \
+    `$ gcloud services enable appengine.googleapis.com`
+
+- Enable the Cloud Datastore API: \
+    `$ gcloud services enable datastore.googleapis.com`

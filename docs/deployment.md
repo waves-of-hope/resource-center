@@ -38,4 +38,9 @@
     - Use Git bash or WSL if using Windows OS.
 
 ## Notes
-You need the Google Cloud SDK installed on your machine.
+- You need the Google Cloud SDK installed on your machine.
+- [App Engine currently doesn't support `Pipfile`](https://cloud.google.com/appengine/docs/standard/python3/runtime#dependencies).
+    Instead of doing the deployment manually, we recommend
+    you use the utility script for deployment: `deploy_to_app_engine.sh`
+    stored in the `scripts` directory. It does set up operations before
+    deployment and clean up after deployment.
