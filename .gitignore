@@ -131,3 +131,6 @@ dmypy.json
 
 # Local media directory
 media/
+
+# Unencrypted secrets
+secrets/raw/
