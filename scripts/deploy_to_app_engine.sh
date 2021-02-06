@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
+export RAW_SECRET_FILEPATH=$HOME/secrets
+
 # Authenticate using service account
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
@@ -13,15 +16,22 @@ export VERSION=$(git rev-parse --short HEAD)
 pipenv lock -r > requirements.txt
 
 # Rename Pipfile and Pipfile.lock
-mv Pipfile secrets/raw/
-mv Pipfile.lock secrets/raw/
+mv Pipfile Pipfile.txt
+mv Pipfile.lock Pipfile.lock.txt
+
+# Copy the raw credentials for deployment
+mkdir ./secrets/raw/
+cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
 
 # Deploy the application
 gcloud -q app deploy $APP_YAML --version $VERSION --promote
 
+# Delete the raw credentials from the repo to avoid accidental commit
+rm -rf ./secrets/raw/
+
 # Restore Pipfile and Pipfile.lock
-mv secrets/raw/Pipfile .
-mv secrets/raw/Pipfile.lock .
+mv Pipfile.txt Pipfile
+mv Pipfile.lock.txt Pipfile.lock
 
 # Delete requirements.txt
 rm requirements.txt
