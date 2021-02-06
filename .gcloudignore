@@ -23,3 +23,22 @@ Pipfile*
 
 # Documentation
 docs/
+
+# documentation config
+.readthedocs.yml
+
+# github workflows
+.github/
+
+# logs
+*.log
+
+# test coverage reports
+.coverage
+htmlcov/
+
+# utility scripts
+scripts/
+
+# test/local db
+*.sqlite3
