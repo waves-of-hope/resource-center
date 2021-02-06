@@ -1,4 +1,4 @@
-name: CI
+name: Continuous Integration
 
 on:
   push:
@@ -31,7 +31,13 @@ jobs:
       run: |
         pipenv run python manage.py test --settings=resource_center.settings.test
       env:
-        # Django
-        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+        # Django Core
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
+        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+
+        # Email
+        DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
+        DJANGO_EMAIL_HOST_PASSWORD: ${{secrets.DJANGO_EMAIL_HOST_PASSWORD}}
+
+        # Running tests
         HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}

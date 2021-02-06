@@ -15,7 +15,8 @@
     - `DB_USER`
     - `DB_PASSWORD`
     - `DJANGO_EMAIL_HOST_USER` - a gmail account
-    - `DJANGO_EMAIL_HOST_PASSWORD` - password to the gmail account
+    - `DJANGO_EMAIL_HOST_PASSWORD` - password to the gmail account (prefarably an
+      app password)
 
 1. Create and activate a virtual environment using `pipenv`
    by running `$ pipenv shell`
