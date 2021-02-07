@@ -5,6 +5,12 @@ from .base import *
 # Django Settings
 # ===============
 
+# Email
+ADMINS = eval(config('ADMINS'))
+
+MANAGERS = ADMINS
+
+
 # Cloud SQL Database with App Engine
 # https://cloud.google.com/python/django/appengine#understanding_the_code
 
@@ -90,4 +96,4 @@ DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'
 # Project Specific Settings
 # =========================
 
-ADMIN_URL = config('ADMIN_URL')
+ADMIN_URL = config('admin_URL')
