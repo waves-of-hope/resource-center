@@ -28,8 +28,14 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 # Set environment variables from a config in datastore if running
 # in Google App Engine
+base_config_vars = [
+    'DJANGO_SECRET_KEY', 'ALLOWED_HOSTS',
+    'DJANGO_EMAIL_HOST_USER', 'DJANGO_EMAIL_HOST_PASSWORD'
+]
+
 try:
-    config('ALLOWED_HOSTS')
+    for var in base_config_vars:
+        config(var)
 
 except UndefinedValueError:
     app_engine_config = AppEngineConfig()

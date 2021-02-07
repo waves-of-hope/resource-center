@@ -1,7 +1,4 @@
-import json
 import os
-
-from google.oauth2 import service_account
 
 from .base import *
 
@@ -55,18 +52,19 @@ GS_BUCKET_NAME = config('GCP_STORAGE_BUCKET_NAME')
 ## files uploaded by another entity (user/ service account)
 # GS_DEFAULT_ACL = 'publicRead'
 
-# GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-#     config('GOOGLE_APPLICATION_CREDENTIALS')
-# )
+## The default authentication method is getting credentials from
+## the env var GOOGLE_APPLICATION_CREDENTIALS
+## For environments where storage of files isn't allowed, e.g: Heroku
+## TODO: Test if this works
+# try:
+#     import json
+#     from google.oauth2 import service_account
 
-# For environments where storage of files isn't allowed, e.g: Heroku
-# TODO: Test if this works
-try:
-    GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-        json.loads(config('GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_CREDENTIALS'))
-    )
-except Exception as e:
-    print(e)
+#     GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+#         json.loads(config('GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_CREDENTIALS'))
+#     )
+# except Exception as e:
+#     print(e)
 
 
 # Django Settings that depend on 3rd party app settings
