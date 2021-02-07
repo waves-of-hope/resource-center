@@ -3,7 +3,7 @@ from google.cloud import datastore as cloud_datastore
 
 from . import datastore
 
-DATASTORE_KIND = 'App Engine Config'
+DATASTORE_KIND = 'Application Configuration'
 
 
 class AppEngineConfig(object):
@@ -21,9 +21,9 @@ class AppEngineConfig(object):
 
         # The environment that the app will run in
         #  e.g: staging, test, production
-        self.environment = os.getenv('ENVIRONMENT', 'production')
+        self.environment = os.getenv('APP_SERVICE', 'default')
         self.kind = kind
-        self.name = self.environment + '-config'
+        self.name = self.environment + '-service-config'
 
     def __str__(self):
         """Returns a string representation of the object
@@ -139,7 +139,7 @@ if __name__ == '__main__':
         'ALLOWED_HOSTS': os.getenv('ALLOWED_HOSTS', ''),
     }
     debug = True
-    os.environ['ENVIRONMENT'] = 'test'
+    os.environ['APP_SERVICE'] = 'test'
 
     test_env_config = AppEngineConfig(debug=debug)
     test_env_config.create(config_vars)
