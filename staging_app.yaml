@@ -12,4 +12,4 @@ automatic_scaling:
   target_cpu_utilization: 0.75
 
 env_variables:
-  ENVIRONMENT: staging
+  APP_SERVICE: staging
