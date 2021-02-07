@@ -7,7 +7,7 @@ export RAW_SECRET_FILEPATH=$HOME/secrets
 gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
 # Set project id
-# gcloud config set project $GOOGLE_CLOUD_PROJECT
+gcloud config set project $GOOGLE_CLOUD_PROJECT
 
 # Create a version using the latest commit hash
 export VERSION=$(git rev-parse --short HEAD)
@@ -23,8 +23,14 @@ mv Pipfile.lock Pipfile.lock.txt
 mkdir ./secrets/raw/
 cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
 
+# Add the environment variable to app.yaml
+echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${SECRET_FILE}" >> $APP_YAML
+
 # Deploy the application
-gcloud -q app deploy $APP_YAML --version $VERSION --promote
+gcloud -q app deploy $APP_YAML --version $VERSION
+
+# Undo changes made to app.yaml
+git checkout -- $APP_YAML
 
 # Delete the raw credentials from the repo to avoid accidental commit
 rm -rf ./secrets/raw/
