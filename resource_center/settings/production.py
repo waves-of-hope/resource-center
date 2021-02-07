@@ -2,11 +2,13 @@ import os
 
 from .base import *
 
+from .helpers import list_of_tuples
+
 # Django Settings
 # ===============
 
 # Email
-ADMINS = eval(config('ADMINS'))
+ADMINS = config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
 
@@ -96,4 +98,4 @@ DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'
 # Project Specific Settings
 # =========================
 
-ADMIN_URL = config('admin_URL')
+ADMIN_URL = config('ADMIN_URL')
