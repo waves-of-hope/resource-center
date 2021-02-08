@@ -24,7 +24,8 @@ mkdir ./secrets/raw/
 cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
 
 # Add the environment variables to app.yaml
-echo "\nenv_variables:" >> $APP_YAML
+echo "" >> $APP_YAML
+echo "env_variables:" >> $APP_YAML
 echo "  ADMINS: ${ADMINS}" >> $APP_YAML
 echo "  ADMIN_URL: ${ADMIN_URL}" >> $APP_YAML
 echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> $APP_YAML
