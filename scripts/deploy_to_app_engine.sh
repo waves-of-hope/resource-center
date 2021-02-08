@@ -11,9 +11,13 @@ else
     # Authenticate using service account
     gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
-    # Set project id
-    gcloud config set project $GOOGLE_CLOUD_PROJECT
+    # Copy the raw credentials for deployment
+    mkdir ./secrets/raw/
+    cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
 fi
+
+# Set project id
+gcloud config set project $GOOGLE_CLOUD_PROJECT
 
 # Create a version using the latest commit hash
 export VERSION=$(git rev-parse --short HEAD)
@@ -24,10 +28,6 @@ pipenv lock -r > requirements.txt
 # Rename Pipfile and Pipfile.lock
 mv Pipfile Pipfile.txt
 mv Pipfile.lock Pipfile.lock.txt
-
-# Copy the raw credentials for deployment
-mkdir ./secrets/raw/
-cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
 
 # Add the environment variables to app.yaml
 echo "" >> $APP_YAML
