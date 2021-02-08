@@ -3,11 +3,18 @@
 export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
 export RAW_SECRET_FILEPATH=$HOME/secrets
 
-# Authenticate using service account
-gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+# different settings for CI
+if [ "$CI" == true ]
+then
+    # use a different raw secret directory in GitHub actions
+    export RAW_SECRET_FILEPATH=./secrets/raw
+else
+    # Authenticate using service account
+    gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
-# Set project id
-gcloud config set project $GOOGLE_CLOUD_PROJECT
+    # Set project id
+    gcloud config set project $GOOGLE_CLOUD_PROJECT
+fi
 
 # Create a version using the latest commit hash
 export VERSION=$(git rev-parse --short HEAD)
