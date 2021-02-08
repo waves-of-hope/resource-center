@@ -26,8 +26,8 @@ jobs:
 
     - name: Authenticate gcloud
       run: |
-        chmod +x .github/scripts/decrypt.sh
-        ./.github/scripts/decrypt.sh
+        chmod +x ./scripts/decrypt_secret.sh
+        ./scripts/decrypt_secret.sh
         gcloud auth activate-service-account --key-file=$SECRET_FILE
       env:
         SECRET_FILE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
