@@ -1,14 +1,11 @@
 name: Staging Deploy
 
 on:
-  push:
+  pull_request:
+    types:
+    - closed
     branches:
-      - "*"
-  # pull_request:
-  #   types:
-  #   - closed
-  #   branches:
-  #     - dev
+      - dev
 
 jobs:
   deploy:
@@ -38,7 +35,7 @@ jobs:
 
     - name: Deploy to App Engine Standard
       run: |
-        pipenv run python manage.py collectstatic --no-input
+        pipenv run python manage.py collectstatic --no-input --settings=resource_center.settings.production
         chmod +x ./scripts/deploy_to_app_engine.sh
         ./scripts/deploy_to_app_engine.sh
       env:
@@ -60,6 +57,3 @@ jobs:
         DB_PASSWORD: ${{secrets.STAGING_DB_PASSWORD}}
         GCP_STORAGE_BUCKET_NAME: ${{secrets.STAGING_GCP_STORAGE_BUCKET_NAME}}
         ALLOWED_HOSTS: ${{secrets.STAGING_ALLOWED_HOSTS}}
-
-    - name: Run Database Migrations
-      run: pipenv run python manage.py migrate

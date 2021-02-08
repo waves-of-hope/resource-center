@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-
+  
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -28,16 +28,14 @@ jobs:
       run: |
         chmod +x ./scripts/decrypt_secret.sh
         ./scripts/decrypt_secret.sh
-        gcloud auth activate-service-account --key-file=$RAW_SECRET_FILEPATH/$SECRET_FILE
+        gcloud auth activate-service-account --key-file=./secrets/raw/$SECRET_FILE
       env:
         SECRET_FILE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         SECRET_FILE_PASSPHRASE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_PASSPHRASE}}
 
-    - name: Collect Static Files
-      run: pipenv run python manage.py collectstatic --no-input
-
     - name: Deploy to App Engine Standard
       run: |
+        pipenv run python manage.py collectstatic --no-input --settings=resource_center.settings.production
         chmod +x ./scripts/deploy_to_app_engine.sh
         ./scripts/deploy_to_app_engine.sh
       env:
@@ -59,6 +57,3 @@ jobs:
         DB_PASSWORD: ${{secrets.PRODUCTION_DB_PASSWORD}}
         GCP_STORAGE_BUCKET_NAME: ${{secrets.PRODUCTION_GCP_STORAGE_BUCKET_NAME}}
         ALLOWED_HOSTS: ${{secrets.PRODUCTION_ALLOWED_HOSTS}}
-
-    - name: Run Database Migrations
-      run: pipenv run python manage.py migrate
