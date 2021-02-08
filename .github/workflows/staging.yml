@@ -1,14 +1,11 @@
 name: Staging Deploy
 
 on:
-  push:
+  pull_request:
+    types:
+    - closed
     branches:
-      - "*"
-  # pull_request:
-  #   types:
-  #   - closed
-  #   branches:
-  #     - dev
+      - dev
 
 jobs:
   deploy:
