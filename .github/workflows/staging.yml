@@ -31,7 +31,7 @@ jobs:
       run: |
         chmod +x ./scripts/decrypt_secret.sh
         ./scripts/decrypt_secret.sh
-        gcloud auth activate-service-account --key-file=$RAW_SECRET_FILEPATH/$SECRET_FILE
+        gcloud auth activate-service-account --key-file=./secrets/raw/$SECRET_FILE
       env:
         SECRET_FILE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         SECRET_FILE_PASSPHRASE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_PASSPHRASE}}
