@@ -36,11 +36,9 @@ jobs:
         SECRET_FILE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
         SECRET_FILE_PASSPHRASE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS_PASSPHRASE}}
 
-    - name: Collect Static Files
-      run: pipenv run python manage.py collectstatic --no-input
-
     - name: Deploy to App Engine Standard
       run: |
+        pipenv run python manage.py collectstatic --no-input
         chmod +x ./scripts/deploy_to_app_engine.sh
         ./scripts/deploy_to_app_engine.sh
       env:
