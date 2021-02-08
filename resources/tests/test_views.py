@@ -1,13 +1,12 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory, override_settings, tag
 
-from resource_center.settings import BASE_DIR
 from resources import views
 from resources.models import Category, Tag, Book, Video
 from shutil import rmtree, copy
 
-@override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
-@override_settings(MEDIA_ROOT=BASE_DIR / 'test_media')
+
 class ResourceViewsTestCase(TestCase):
     """
     Sets up data to be shared across tests for resources.views
@@ -18,11 +17,11 @@ class ResourceViewsTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
-        cls.MEDIA_ROOT = BASE_DIR / 'test_media'
-        cls.MEDIA_ROOT.mkdir()
-        copy(cls.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            cls.MEDIA_ROOT)
+        settings.MEDIA_ROOT.mkdir()
+        copy(
+            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
+            settings.MEDIA_ROOT
+        )
 
         # users
         cls.User = get_user_model()
@@ -116,7 +115,7 @@ class ResourceViewsTestCase(TestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         # remove test media directory
-        rmtree(cls.MEDIA_ROOT)
+        rmtree(settings.MEDIA_ROOT)
 
 
 class IndexViewTestCase(ResourceViewsTestCase):

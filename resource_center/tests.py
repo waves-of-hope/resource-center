@@ -1,22 +1,19 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.test import LiveServerTestCase, tag, override_settings
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import tag
 from django.utils import timezone
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 
 import datetime
-import os
 from pathlib import WindowsPath
 from shutil import rmtree, copy
-from .settings import BASE_DIR
 
 from resources.models import Category, Tag, Book, Video
 
 @tag('functional')
-@override_settings(DEFAULT_FILE_STORAGE='django.core.files.storage.FileSystemStorage')
-@override_settings(MEDIA_ROOT=BASE_DIR / 'test_media')
-class ResourceCenterTestCase(LiveServerTestCase):
+class ResourceCenterTestCase(StaticLiveServerTestCase):
     """
     Set up data to be shared across Resource Center functional tests
     """
@@ -26,33 +23,22 @@ class ResourceCenterTestCase(LiveServerTestCase):
         # create some test users
         cls.User = get_user_model()
 
-        # location of files for tesing
-        cls.TEST_FILES_DIR = BASE_DIR / 'test_files'
-
         # set up test media directory
-        cls.MEDIA_ROOT = BASE_DIR / 'test_media'
-        cls.MEDIA_ROOT.mkdir()
-        test_images = cls.TEST_FILES_DIR / 'images'
-        copy(test_images.joinpath('default.png'), cls.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.png'), cls.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.jpg'), cls.MEDIA_ROOT)
-        copy(cls.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            cls.MEDIA_ROOT)
+        settings.MEDIA_ROOT.mkdir()
+        test_images = settings.TEST_FILES_DIR / 'images'
+        copy(test_images.joinpath('default.png'), settings.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.png'), settings.MEDIA_ROOT)
+        copy(test_images.joinpath('book-cover.jpg'), settings.MEDIA_ROOT)
+        copy(
+            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
+            settings.MEDIA_ROOT
+        )
 
     def setUp(self):
-        # set up browser in GitHub runner
-        if os.getenv('SELENIUM_JAR_PATH'):
-            options = Options()
-            options.add_argument('-headless')
-            self.browser = webdriver.Firefox(
-                executable_path='geckodriver',
-                options=options
-            )
-            self.browser.implicitly_wait(2)
-
-        else:
-            self.browser = webdriver.Firefox()
-            self.browser.implicitly_wait(2)
+        options = webdriver.firefox.options.Options()
+        options.headless = settings.HEADLESS_BROWSER_TESTS
+        self.browser = webdriver.Firefox(options=options)
+        self.browser.implicitly_wait(2)
 
         self.admin_user = self.User.objects.create_superuser(
             first_name = 'Kelvin',
@@ -237,7 +223,7 @@ class ResourceCenterTestCase(LiveServerTestCase):
     def tearDownClass(cls):
         super().tearDownClass()
         # remove test media directory
-        rmtree(cls.MEDIA_ROOT)
+        rmtree(settings.MEDIA_ROOT)
 
     def get_abs_test_file_path(self, rel_file_path):
         """
@@ -245,7 +231,7 @@ class ResourceCenterTestCase(LiveServerTestCase):
         `test_files` directory as a string
         """
         try:
-            abs_path = self.TEST_FILES_DIR.joinpath(rel_file_path)
+            abs_path = settings.TEST_FILES_DIR.joinpath(rel_file_path)
             abs_path_str = str(abs_path.as_posix())
         except TypeError as e:
             print('TypeError: {}'.format(e))
