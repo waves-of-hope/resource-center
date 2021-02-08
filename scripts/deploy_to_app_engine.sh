@@ -4,8 +4,7 @@ export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
 export RAW_SECRET_FILEPATH=$HOME/secrets
 
 # different settings for CI
-if [ "$CI" == true ]
-then
+if "$CI" == true; then
     # use a different raw secret directory in GitHub actions
     export RAW_SECRET_FILEPATH=./secrets/raw
 else
