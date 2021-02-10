@@ -11,8 +11,11 @@ from selenium import webdriver
 
 @tag('functional')
 class ResourceCenterTestCase(StaticLiveServerTestCase):
-    """
-    Set up data to be shared across Resource Center functional tests
+    """Sets up data to be shared across Resource Center functional tests
+
+    Args:
+        StaticLiveServerTestCase (object): A subclass of
+        django.test.LiveServerTestCase
     """
     @classmethod
     def setUpClass(cls):
@@ -46,8 +49,7 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         rmtree(settings.MEDIA_ROOT)
 
     def get_abs_test_file_path(self, rel_file_path):
-        """
-        Returns the absolute file path of files in the
+        """Returns the absolute file path of files in the
         `test_files` directory as a string
         """
         try:
