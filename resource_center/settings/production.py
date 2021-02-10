@@ -1,7 +1,6 @@
 import os
 
 from .base import *
-
 from .helpers import list_of_tuples
 
 # Django Settings
