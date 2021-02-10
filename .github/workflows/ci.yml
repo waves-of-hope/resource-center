@@ -29,11 +29,12 @@ jobs:
 
     - name: Run Tests
       run: |
-        pipenv run coverage run manage.py test --settings=resource_center.settings.test
+        pipenv run coverage run manage.py test
       env:
         # Django Core
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
         DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+        DJANGO_SETTINGS_MODULE: resource_center.settings.test
 
         # Email
         DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
@@ -43,6 +44,6 @@ jobs:
         HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}
 
     - name: Submit test coverage data to coverage.io
-      run: pipenv run coveralls
+      run: pipenv run coveralls --service=github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
