@@ -20,14 +20,6 @@ resource\_center.asgi module
    :undoc-members:
    :show-inheritance:
 
-resource\_center.tests module
------------------------------
-
-.. automodule:: resource_center.tests
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 resource\_center.urls module
 ----------------------------
 
