@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 from decouple import config, Csv
-# from decouple import UndefinedValueError
-
-from utils.appengine import AppEngineConfig
 
 # Django Settings
 # ===============
@@ -26,21 +23,6 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# Set environment variables from a config in datastore if running
-# in Google App Engine
-# base_config_vars = [
-#     'DJANGO_SECRET_KEY', 'ALLOWED_HOSTS',
-#     'DJANGO_EMAIL_HOST_USER', 'DJANGO_EMAIL_HOST_PASSWORD'
-# ]
-
-# try:
-#     for var in base_config_vars:
-#         config(var)
-
-# except UndefinedValueError:
-#     app_engine_config = AppEngineConfig()
-#     app_engine_config.set_environment_variables_from_config()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('DJANGO_SECRET_KEY')
@@ -214,7 +196,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 ADMIN_URL = 'admin/'
 
-HEADLESS_BROWSER_TESTS = config('HEADLESS_BROWSER_TESTS', cast=bool, default=False)
+HEADLESS_BROWSER_TESTS = config('CI', cast=bool, default=False)
 
 # Location of files used for testing
 TEST_FILES_DIR = BASE_DIR / 'test_files'
