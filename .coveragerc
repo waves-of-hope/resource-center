@@ -3,3 +3,4 @@ omit =
     *__init__.py,
 	manage.py,
     *.virtualenvs/*,
+relative_files = True
