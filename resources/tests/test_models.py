@@ -18,7 +18,7 @@ class CategoryModelTestCase(TestCase):
                 'Spiritually',
             slug='spiritual'
         )
-    
+
     def test_category_basic(self):
         """
         Test the basic functionality of Category
@@ -27,10 +27,8 @@ class CategoryModelTestCase(TestCase):
         self.assertEqual(self.category.description,
             'Materials that can help you grow Spiritually')
         self.assertEqual(self.category.slug, 'spiritual')
-        self.assertEqual(self.category.date_created.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.category.last_edit.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
+        self.assertLessEqual(self.category.date_created, timezone.now())
+        self.assertLessEqual(self.category.last_edit, timezone.now())
 
     def test_category_object_name(self):
         """
@@ -102,18 +100,16 @@ class TagModelTestCase(TestCase):
             name='Salvation',
             slug='salvation'
         )
-    
+
     def test_tag_basic(self):
         """
         Test the basic functionality of Tag
         """
         self.assertEqual(self.tag.name, 'Salvation')
         self.assertEqual(self.tag.slug, 'salvation')
-        self.assertEqual(self.tag.date_created.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.tag.last_edit.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
-        
+        self.assertLessEqual(self.tag.date_created, timezone.now())
+        self.assertLessEqual(self.tag.last_edit, timezone.now())
+
     def test_tag_object_name(self):
         """
         Test the name of the Tag object that will
@@ -186,7 +182,7 @@ class ResourceModelsTestCase(TestCase):
         )
 
         cls.User = get_user_model()
-        
+
         cls.admin_user = cls.User.objects.create_superuser(
             first_name = 'Kelvin',
             email='kelvin@murage.com',
@@ -223,7 +219,7 @@ class ResourceModelsTestCase(TestCase):
         )
         cls.video.authors.add(cls.admin_user, cls.user)
         cls.video.tags.add(cls.tag1, cls.tag2)
-    
+
 
 class BookModelTestCase(ResourceModelsTestCase):
     """
@@ -236,7 +232,7 @@ class BookModelTestCase(ResourceModelsTestCase):
         self.assertEqual(self.book.title,
             'A Christian\'s guide to wealth creation')
         self.assertIsNotNone(self.book.authors)
-        self.assertQuerysetEqual(list(self.book.authors.all()), 
+        self.assertQuerysetEqual(list(self.book.authors.all()),
             ['<User: Kelvin>', '<User: Alvin>']
         )
         self.assertEqual(self.book.summary,
@@ -252,10 +248,8 @@ class BookModelTestCase(ResourceModelsTestCase):
         self.assertEqual(self.book.file_upload, 'book.pdf')
         self.assertEqual(self.book.date_posted.date(),
             timezone.now().date())
-        self.assertEqual(self.book.date_posted.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.book.last_edit.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
+        self.assertLessEqual(self.book.date_posted, timezone.now())
+        self.assertLessEqual(self.book.last_edit, timezone.now())
 
     def test_book_object_name(self):
         """
@@ -292,7 +286,7 @@ class BookModelTestCase(ResourceModelsTestCase):
         self.assertEqual(summary__meta.max_length, 200)
         self.assertEqual(summary__meta.null, True)
         self.assertEqual(summary__meta.blank, True)
-    
+
     def test_category_meta(self):
         """
         Test meta attributes of the category field
@@ -309,7 +303,7 @@ class BookModelTestCase(ResourceModelsTestCase):
         tags__meta = self.book._meta.get_field('tags')
         self.assertEqual(tags__meta.verbose_name, 'tags')
         self.assertEqual(tags__meta.blank, True)
-        self.assertEqual(tags__meta.help_text, 
+        self.assertEqual(tags__meta.help_text,
             'Select some tags for this resource'
         )
 
@@ -386,7 +380,7 @@ class VideoModelTestCase(ResourceModelsTestCase):
         self.assertEqual(self.video.title,
             'A Christian\'s guide to wealth creation')
         self.assertIsNotNone(self.video.authors)
-        self.assertQuerysetEqual(list(self.video.authors.all()), 
+        self.assertQuerysetEqual(list(self.video.authors.all()),
             ['<User: Kelvin>', '<User: Alvin>']
         )
         self.assertEqual(self.video.summary,
@@ -402,10 +396,8 @@ class VideoModelTestCase(ResourceModelsTestCase):
             'https://youtu.be/rAKLiE658m0')
         self.assertEqual(self.video.date_posted.date(),
             timezone.now().date())
-        self.assertEqual(self.video.date_posted.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
-        self.assertEqual(self.video.last_edit.strftime('%H:%M:%S'),
-            timezone.now().strftime('%H:%M:%S'))
+        self.assertLessEqual(self.video.date_posted, timezone.now())
+        self.assertLessEqual(self.video.last_edit, timezone.now())
 
     def test_video_object_name(self):
         """
@@ -442,7 +434,7 @@ class VideoModelTestCase(ResourceModelsTestCase):
         self.assertEqual(summary__meta.max_length, 200)
         self.assertEqual(summary__meta.null, True)
         self.assertEqual(summary__meta.blank, True)
-    
+
     def test_category_meta(self):
         """
         Test meta attributes of the category field
@@ -459,7 +451,7 @@ class VideoModelTestCase(ResourceModelsTestCase):
         tags__meta = self.video._meta.get_field('tags')
         self.assertEqual(tags__meta.verbose_name, 'tags')
         self.assertEqual(tags__meta.blank, True)
-        self.assertEqual(tags__meta.help_text, 
+        self.assertEqual(tags__meta.help_text,
             'Select some tags for this resource'
         )
 
