@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Category, Tag, Book, Video
+from .models import Category, Tag, Video
 
 class ResourceGroupAdmin(admin.ModelAdmin):
     """
-    Defines common admin site configurations for 
+    Defines common admin site configurations for
     Resource Group models
     """
     prepopulated_fields = {'slug': ('name',)}
@@ -30,30 +30,9 @@ class ResourceAdmin(admin.ModelAdmin):
     """
     Defines common admin site configurations for
     Resource models
-    """    
+    """
     list_display = ['title', 'category', 'display_tags']
     prepopulated_fields = {'slug': ('title',)}
-
-
-@admin.register(Book)
-class BookAdmin(ResourceAdmin):
-    """
-    Registers the Book model to the admin site
-    """
-    fieldsets = (
-        ('Basic Info', {
-            'fields': ('title', 'slug', 'summary')
-        }),
-        ('External References', {
-            'fields': ('authors', 'category', 'tags')
-        }),
-        ('Uploads', {
-            'fields': ('cover_image', 'file_upload'),
-        }),
-        ('Additional Info', {
-            'fields': ('date_posted',)
-        })
-    )
 
 
 @admin.register(Video)
