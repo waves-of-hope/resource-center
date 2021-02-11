@@ -5,7 +5,7 @@ waves-resource-center
    :maxdepth: 4
 
    accounts
-   functional_tests
+   books
    resource_center
    resources
    utils
