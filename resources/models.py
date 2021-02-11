@@ -57,8 +57,8 @@ class Resource(ResourcesBaseModel):
         related_query_name="%(app_label)s_%(class)s_author"
     )
     summary = models.TextField(max_length=200, blank=True, null=True)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT)
-    tags = models.ManyToManyField('Tag', blank=True,
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    tags = models.ManyToManyField(Tag, blank=True,
         help_text='Select some tags for this resource',
         related_name="%(app_label)s_%(class)s_tags",
         related_query_name="%(app_label)s_%(class)s_tag"
@@ -81,23 +81,8 @@ class Resource(ResourcesBaseModel):
         if len(tags) < 3:
             return ', '.join(tag.name for tag in tags)
         return ', '.join(tag.name for tag in tags[:3]) + ' ...'
-    
+
     display_tags.short_description = 'Tags'
-
-
-class Book(Resource):
-    """
-    Model for books
-    """
-    cover_image = models.ImageField(default='book-cover.png',
-        upload_to='book_covers',
-        help_text="Upload the book's cover here"
-    )
-    file_upload = models.FileField(upload_to='books',
-        help_text='Upload the book here')
-
-    def get_absolute_url(self):
-        return reverse('book', kwargs={'slug': self.slug})
 
 
 class Video(Resource):
