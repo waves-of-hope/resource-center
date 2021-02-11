@@ -1,14 +1,6 @@
 resources package
 =================
 
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   resources.tests
-
 Submodules
 ----------
 
