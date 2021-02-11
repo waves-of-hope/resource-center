@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
-from resources.models import Category, Tag
+from core.models import Category, Tag
 
 class CategoryModelTestCase(TestCase):
     """

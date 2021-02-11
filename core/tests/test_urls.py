@@ -1,11 +1,11 @@
 from django.test import TestCase
 from django.urls import resolve
 
-from resources.views import index
+from core.views import index
 
-class ResourcesURLsTestCase(TestCase):
+class CoreURLsTestCase(TestCase):
     """
-    Test URL configuration of resources
+    Test URL configuration of core
     """
     def test_root_url_uses_index_view(self):
         """

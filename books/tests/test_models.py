@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from books.models import Book
-from resources.models import Category, Tag
+from core.models import Category, Tag
 
 
 class ResourceModelsTestCase(TestCase):

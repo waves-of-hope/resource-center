@@ -2,9 +2,9 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 
-class ResourcesURLsTestCase(TestCase):
+class BookURLsTestCase(TestCase):
     """
-    Test URL configuration of resources
+    Test URL configuration of books
     """
     def test_book_list_url(self):
         """

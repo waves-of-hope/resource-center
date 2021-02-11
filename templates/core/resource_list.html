@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+ {{ resources|title }} | Waves Resource Center 
+{% endblock title %}
+
+{% block content %}
+  {% comment %} Page title {% endcomment %}
+  <h1>{{ resources|title }}</h1>
+
+  {% comment %} Resources {% endcomment %}
+  <div class="card-deck">
+  {% if resources == "books" and book_list|length > 0 %}
+    {% for book in book_list %}
+      {% include "core/book-card.html" %}
+      {% if forloop.counter|divisibleby:"2"  %}
+        </div><div class="card-deck">
+      {% endif %}
+    {% endfor %}
+  {% elif resources == "videos" and video_list|length > 0 %}
+    {% for video in video_list %}
+      {% include "core/video-card.html" %}
+      {% if forloop.counter|divisibleby:"3"  %}
+        </div><div class="card-deck">
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p class="ml-3">There are no {{ resources }} yet.</p>
+  {% endif %}    
+  </div>
+{% endblock content %}

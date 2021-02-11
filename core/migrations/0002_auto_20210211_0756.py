@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
     atomic = False
 
     dependencies = [
-        ('resources', '0001_initial'),
+        ('core', '0001_initial'),
     ]
 
     database_operations = [

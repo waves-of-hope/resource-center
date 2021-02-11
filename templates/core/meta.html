@@ -1,0 +1,28 @@
+<p>Category: <a href="#">{{ resource.category }}</a></p>
+{% if resource.tags.all|length > 0 %}
+  <ul class="unstyled-list inline-flex m2m-attribute">
+    <li><i class="fas fa-tags"></i></li>
+    {% for tag in resource.tags.all %}
+      <li>
+        <a class="btn btn-light btn-sm" href="#">{{ tag | lower }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+<p class="ml-1">
+  <i class="far fa-calendar-alt icon"></i>
+  <time datetime="{{ resource.date_posted | date:'Y-m-d' }}">
+    {{ resource.date_posted | date:'F j, Y' }}
+  </time>
+</p>
+<ul class="unstyled-list inline-flex m2m-attribute">
+  By
+  {% for author in resource.authors.all %}
+    <li>
+      <a href="#">{{ author }}</a>
+      {% if forloop.revcounter == 2 %} and 
+      {% elif not forloop.last %},
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

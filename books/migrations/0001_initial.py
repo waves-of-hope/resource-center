@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('resources', '0002_auto_20210211_0756'),
+        ('core', '0002_auto_20210211_0756'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -28,8 +28,8 @@ class Migration(migrations.Migration):
                 ('cover_image', models.ImageField(default='book-cover.png', help_text="Upload the book's cover here", upload_to='book_covers')),
                 ('file_upload', models.FileField(help_text='Upload the book here', upload_to='books')),
                 ('authors', models.ManyToManyField(related_name='books_book_authors', related_query_name='books_book_author', to=settings.AUTH_USER_MODEL)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='resources.category')),
-                ('tags', models.ManyToManyField(blank=True, help_text='Select some tags for this resource', related_name='books_book_tags', related_query_name='books_book_tag', to='resources.Tag')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='core.category')),
+                ('tags', models.ManyToManyField(blank=True, help_text='Select some tags for this resource', related_name='books_book_tags', related_query_name='books_book_tag', to='core.Tag')),
             ],
             options={
                 'ordering': ['-date_posted'],

@@ -9,7 +9,7 @@ class VideoListView(LoginRequiredMixin, ListView):
     Creates the video list page
     """
     model = Video
-    template_name = 'resources/resource_list.html'
+    template_name = 'core/resource_list.html'
     paginate_by = 9
 
     def get_context_data(self, **kwargs):
@@ -23,4 +23,4 @@ class VideoDetailView(LoginRequiredMixin, DetailView):
     Creates the video detail pages
     """
     model = Video
-    template_name = 'resources/video.html'
+    template_name = 'core/video.html'

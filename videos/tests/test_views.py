@@ -2,14 +2,15 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory, tag
 
+
+from core.models import Category, Tag
 from videos.models import Video
-from resources.models import Category, Tag
 from shutil import rmtree, copy
 
 
-class ResourceViewsTestCase(TestCase):
+class VideoViewsTestCase(TestCase):
     """
-    Sets up data to be shared across tests for resources.views
+    Sets up data to be shared across tests for videos.views
     """
     def setUp(self):
         self.factory = RequestFactory()
@@ -93,7 +94,7 @@ class ResourceViewsTestCase(TestCase):
         rmtree(settings.MEDIA_ROOT)
 
 
-class VideoListViewTestCase(ResourceViewsTestCase):
+class VideoListViewTestCase(VideoViewsTestCase):
     """
     Tests for the VideoList view
     """
@@ -117,7 +118,7 @@ class VideoListViewTestCase(ResourceViewsTestCase):
         )
         response = self.client.get('/videos/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('resources/resource_list.html')
+        self.assertTemplateUsed('core/resource_list.html')
 
     @tag('slow')
     def test_videos_ordered_by_latest_date_posted(self):
@@ -163,7 +164,7 @@ class VideoListViewTestCase(ResourceViewsTestCase):
         self.assertTrue(len(response.context['video_list']) == 2)
 
 
-class VideoDetailViewTestCase(ResourceViewsTestCase):
+class VideoDetailViewTestCase(VideoViewsTestCase):
     """
     Tests for the VideoDetail view
     """
@@ -187,4 +188,4 @@ class VideoDetailViewTestCase(ResourceViewsTestCase):
         )
         response = self.client.get('/videos/the-gift/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('resources/resource_list.html')
+        self.assertTemplateUsed('core/resource_list.html')

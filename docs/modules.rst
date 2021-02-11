@@ -6,7 +6,7 @@ waves-resource-center
 
    accounts
    books
+   core
    resource_center
-   resources
    utils
    videos

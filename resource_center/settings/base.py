@@ -44,16 +44,16 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'phonenumber_field',
     'crispy_forms',
-    'storages',
     'embed_video',
+    'phonenumber_field',
+    'storages',
 ]
 
 LOCAL_APPS = [
-    'resources',
     'accounts',
     'books',
+    'core',
     'videos',
 ]
 

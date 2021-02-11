@@ -3,13 +3,13 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory, tag
 
 from books.models import Book
-from resources.models import Category, Tag
+from core.models import Category, Tag
 from shutil import rmtree, copy
 
 
-class ResourceViewsTestCase(TestCase):
+class BookViewsTestCase(TestCase):
     """
-    Sets up data to be shared across tests for resources.views
+    Sets up data to be shared across tests for books.views
     """
     def setUp(self):
         self.factory = RequestFactory()
@@ -94,7 +94,7 @@ class ResourceViewsTestCase(TestCase):
         rmtree(settings.MEDIA_ROOT)
 
 
-class BookListViewTestCase(ResourceViewsTestCase):
+class BookListViewTestCase(BookViewsTestCase):
     """
     Tests for the BookList view
     """    
@@ -118,7 +118,7 @@ class BookListViewTestCase(ResourceViewsTestCase):
         )
         response = self.client.get('/books/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('resources/resource_list.html')
+        self.assertTemplateUsed('core/resource_list.html')
     
     @tag('slow')
     def test_books_ordered_by_latest_date_posted(self):
@@ -164,7 +164,7 @@ class BookListViewTestCase(ResourceViewsTestCase):
         self.assertTrue(len(response.context['book_list']) == 3)
 
 
-class BookDetailViewTestCase(ResourceViewsTestCase):
+class BookDetailViewTestCase(BookViewsTestCase):
     """
     Tests for the BookDetail view
     """
@@ -188,4 +188,4 @@ class BookDetailViewTestCase(ResourceViewsTestCase):
         )
         response = self.client.get('/books/the-hydroponics-handbook/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('resources/resource_list.html')
+        self.assertTemplateUsed('core/resource_list.html')

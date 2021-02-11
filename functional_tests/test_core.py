@@ -3,7 +3,7 @@ import datetime
 from selenium import webdriver
 
 from .base import ResourceCenterTestCase
-from resources.models import Category, Tag
+from core.models import Category, Tag
 
 
 class AdminTestCase(ResourceCenterTestCase):
@@ -93,27 +93,26 @@ class AdminTestCase(ResourceCenterTestCase):
         login_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        # He sees links to RESOURCES, Categories,
-        # Tags and Videos
+        # He sees links to CORE, Categories and Tags
         self.assertEqual(
             self.browser.\
-                find_element_by_link_text('RESOURCES').\
+                find_element_by_link_text('CORE').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/'
+            self.live_server_url + '/admin/core/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Categories').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/category/'
+            self.live_server_url + '/admin/core/category/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Tags').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/tag/'
+            self.live_server_url + '/admin/core/tag/'
         )
 
         # Kelvin wants to add a record and a number of books

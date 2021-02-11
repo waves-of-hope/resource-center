@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %} {{ book.title }} | Waves Resource Center {% endblock title %}
+
+{% block content %}
+  <div class="card mt-5">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="{{ book.cover_image.url }}" class="card-img" alt="{{ book.title }}'s cover">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h1 class="card-title">{{ book.title }}</h1>              
+          {% with book as resource %}
+            {% include "core/meta.html" %}
+          {% endwith %}
+          {% if book.summary %}
+            <p class="card-text">
+              <span class="block summary-title border-bottom">Book summary</span>
+              {{ book.summary }}
+            </p>
+          {% endif %}
+          <div class="card-text">
+            <a class="btn btn-success btn-lg btn-block" href="{{ book.file_upload.url }}">
+              Download {{ book.title }} ({{ book.file_upload.size | filesizeformat }})
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
