@@ -177,10 +177,10 @@ class AdminTestCase(VideosTestCase):
         login_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        # He sees links to core, Categories, Tags and Videos
+        # He sees links to CORE, Categories, Tags and Videos
         self.assertEqual(
             self.browser.\
-                find_element_by_link_text('core').\
+                find_element_by_link_text('CORE').\
                     get_attribute('href'),
             self.live_server_url + '/admin/core/'
         )

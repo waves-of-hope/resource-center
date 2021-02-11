@@ -1,3 +1,14 @@
+-- get the ids of the rows with the information about
+-- when `resources` migrations were run
+SELECT *
+FROM database_name.`django_migrations`
+WHERE app='resources';
+
+-- set the value(s) to the ids obtained
+UPDATE database_name.`django_migrations`
+SET app='core'
+WHERE id IN (ids_of_resources_migrations);
+
 -- rename tables 
 ALTER TABLE database_name.`resources_category`
 RENAME TO database_name.`core_category`;
@@ -22,13 +33,3 @@ RENAME TO database_name.`core_video_authors`;
 
 ALTER TABLE database_name.`resources_video_tags`
 RENAME TO database_name.`core_video_tags`;
-
--- set the id value to the rows with the information about
--- when `resources` migrations were run
-SELECT *
-FROM database_name.`django_migrations`
-WHERE app='resources';
-
-UPDATE database_name.`django_migrations`
-SET app='core'
-WHERE id IN (list_ids_of_resources_migrations);
