@@ -5,6 +5,8 @@ waves-resource-center
    :maxdepth: 4
 
    accounts
-   resource_center
-   resources
+   books
+   config
+   core
    utils
+   videos

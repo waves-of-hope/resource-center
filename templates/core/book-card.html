@@ -1,0 +1,19 @@
+<div class="card book-card">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <a href="{{ book.get_absolute_url }}">
+        <img src="{{ book.cover_image.url }}" class="card-img" alt="{{ book.title }}'s cover">
+      </a>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h2 class="card-title">
+          <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+        </h2>
+        {% with book as resource %}
+          {% include "core/meta.html" %}
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+</div>

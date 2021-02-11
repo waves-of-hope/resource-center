@@ -131,3 +131,6 @@ dmypy.json
 
 # Local media directory
 media/
+
+# VS Code Settings
+.vscode/settings.json
