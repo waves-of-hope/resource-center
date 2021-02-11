@@ -5,7 +5,8 @@ from django.utils import timezone
 from selenium import webdriver
 
 from .base import ResourceCenterTestCase
-from resources.models import Category, Tag, Video
+from videos.models import Video
+from resources.models import Category, Tag
 
 class VideosTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the videos feature
@@ -154,7 +155,7 @@ class AdminTestCase(VideosTestCase):
         """Tests that a staff can manage videos
         """
         # Kelvin would like to give Christine permissions to login
-        # to the admin site and add books for other viewers to read.
+        # to the admin site and add videos for other viewers to watch.
         # He visits the admin site
         admin_root = self.browser.get(
             self.live_server_url + '/admin/'
@@ -200,9 +201,16 @@ class AdminTestCase(VideosTestCase):
 
         self.assertEqual(
             self.browser.\
+                find_element_by_link_text('VIDEOS').\
+                    get_attribute('href'),
+            self.live_server_url + '/admin/videos/'
+        )
+
+        self.assertEqual(
+            self.browser.\
                 find_element_by_link_text('Videos').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/video/'
+            self.live_server_url + '/admin/videos/video/'
         )
 
         # Kelvin wants to add a record and a number of videos to Waves
@@ -550,7 +558,7 @@ class MemberTestCase(VideosTestCase):
             '.card-title a').click()
         self.assertEqual(
             self.browser.current_url,
-            '{}/v/the-gift/'.format(self.live_server_url)
+            '{}/videos/the-gift/'.format(self.live_server_url)
         )
 
         self.assertEqual(
