@@ -11,7 +11,7 @@ class BookListView(LoginRequiredMixin, ListView):
     Creates the book list page
     """
     model = Book
-    template_name = 'resources/resource_list.html'
+    template_name = 'core/resource_list.html'
     paginate_by = 6
 
     def get_context_data(self, **kwargs):
@@ -25,4 +25,4 @@ class BookDetailView(LoginRequiredMixin, DetailView):
     Creates the book detail pages
     """
     model = Book
-    template_name = 'resources/book.html'
+    template_name = 'core/book.html'

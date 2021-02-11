@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from resources.models import Resource
+from core.models import Resource
 
 
 class Video(Resource):

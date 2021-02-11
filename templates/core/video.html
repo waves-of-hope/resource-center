@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load embed_video_tags %}
+
+{% block title %} {{ video.title }} | Waves Resource Center {% endblock title %}
+
+{% block content %}
+  <div class="card mt-5">
+    {% comment %} Youtube iframe {% endcomment %}
+    <iframe class="video-player"
+      src="{% video video.url as v %}{{ v.url }}{% endvideo %}"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+
+    <div class="card-body">
+      <h1 class="card-title mx-3">{{ video.title }}</h1>
+      <div class="container row unstyled-list resource-meta mx-3">
+        {% with video as resource %}
+          {% include "core/meta.html" %}
+        {% endwith %}
+      </div>
+      {% if video.summary %}
+        <p class="card-text mx-3">
+          <span class="block summary-title border-bottom">Video summary</span>
+          {{ video.summary }}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock content %}

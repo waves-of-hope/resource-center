@@ -2,8 +2,9 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 
+
+from core.models import Category, Tag
 from videos.models import Video
-from resources.models import Category, Tag
 
 
 class ResourceModelsTestCase(TestCase):

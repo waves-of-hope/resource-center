@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Book
-from resources.admin import ResourceAdmin
+from core.admin import ResourceAdmin
 
 
 @admin.register(Book)

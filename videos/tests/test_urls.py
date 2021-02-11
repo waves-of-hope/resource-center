@@ -2,9 +2,9 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 
-class ResourcesURLsTestCase(TestCase):
+class VideoURLsTestCase(TestCase):
     """
-    Test URL configuration of resources
+    Test URL configuration of videos
     """
     def test_video_list_url(self):
         """

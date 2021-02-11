@@ -235,8 +235,7 @@ class AdminTestCase(ResourceCenterTestCase):
             '.submit-row input').click()
 
         # He sees links to ACCOUNTS, Users, AUTHENTICATION
-        # AND AUTHORIZATION, Groups, RESOURCES, Categories,
-        # Tags, Books and Videos
+        # AND AUTHORIZATION and Groups
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('ACCOUNTS').\

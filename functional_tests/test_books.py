@@ -5,8 +5,8 @@ from django.utils import timezone
 from selenium import webdriver
 
 from .base import ResourceCenterTestCase
+from core.models import Category, Tag
 from books.models import Book
-from resources.models import Category, Tag
 
 class BooksTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the books feature
@@ -179,27 +179,26 @@ class AdminTestCase(BooksTestCase):
         login_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        # He sees links to RESOURCES, Categories,
-        # Tags and Books
+        # He sees links to CORE, Categories, Tags and Books
         self.assertEqual(
             self.browser.\
-                find_element_by_link_text('RESOURCES').\
+                find_element_by_link_text('CORE').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/'
+            self.live_server_url + '/admin/core/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Categories').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/category/'
+            self.live_server_url + '/admin/core/category/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Tags').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/tag/'
+            self.live_server_url + '/admin/core/tag/'
         )
 
         self.assertEqual(
