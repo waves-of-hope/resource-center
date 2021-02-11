@@ -36,10 +36,13 @@ jobs:
 
     - name: Deploy to App Engine Standard
       run: |
-        pipenv run python manage.py collectstatic --no-input --settings=resource_center.settings.production
+        pipenv run python manage.py collectstatic --no-input
         chmod +x ./scripts/deploy_to_app_engine.sh
         ./scripts/deploy_to_app_engine.sh
       env:
+        # For deployment
+        DJANGO_SETTINGS_MODULE: config.settings.production
+
         # Constants
         ADMINS: ${{secrets.ADMINS}}
         ADMIN_URL: ${{secrets.ADMIN_URL}}
