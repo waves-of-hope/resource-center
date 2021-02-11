@@ -34,7 +34,7 @@ jobs:
         # Django Core
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
         DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
-        DJANGO_SETTINGS_MODULE: resource_center.settings.test
+        DJANGO_SETTINGS_MODULE: config.settings.test
 
         # Email
         DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
