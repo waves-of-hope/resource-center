@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.urls import reverse
 from django.utils import timezone
+
 
 class ResourcesBaseModel(models.Model):
     """
@@ -83,13 +83,3 @@ class Resource(ResourcesBaseModel):
         return ', '.join(tag.name for tag in tags[:3]) + ' ...'
 
     display_tags.short_description = 'Tags'
-
-
-class Video(Resource):
-    """
-    Model for videos
-    """
-    url = models.URLField('URL', help_text='Enter the video URL here')
-
-    def get_absolute_url(self):
-        return reverse('video', kwargs={'slug': self.slug})
