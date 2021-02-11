@@ -5,7 +5,8 @@ from django.utils import timezone
 from selenium import webdriver
 
 from .base import ResourceCenterTestCase
-from resources.models import Category, Tag, Book
+from books.models import Book
+from resources.models import Category, Tag
 
 class BooksTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the books feature
@@ -203,9 +204,16 @@ class AdminTestCase(BooksTestCase):
 
         self.assertEqual(
             self.browser.\
+                find_element_by_link_text('BOOKS').\
+                    get_attribute('href'),
+            self.live_server_url + '/admin/books/'
+        )
+
+        self.assertEqual(
+            self.browser.\
                 find_element_by_link_text('Books').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/resources/book/'
+            self.live_server_url + '/admin/books/book/'
         )
 
         # Kelvin wants to add a record and a number of books to Waves
@@ -544,7 +552,7 @@ class MemberTestCase(BooksTestCase):
             '.card-title a').click()
         self.assertEqual(
             self.browser.current_url,
-            '{}/b/the-gift/'.format(self.live_server_url)
+            '{}/books/the-gift/'.format(self.live_server_url)
         )
 
         self.assertEqual(
