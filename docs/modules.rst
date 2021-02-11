@@ -9,3 +9,4 @@ waves-resource-center
    resource_center
    resources
    utils
+   videos

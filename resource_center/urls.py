@@ -22,9 +22,10 @@ admin.site.site_header = 'Waves Resource Center administration'
 admin.site.site_title = 'Waves Resource Center site admin'
 
 urlpatterns = [
-    path('', include('resources.urls')),
     path('accounts/', include('accounts.urls')),
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('books/', include('books.urls')),
+    path('videos/', include('videos.urls')),
+    path('', include('resources.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

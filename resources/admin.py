@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Category, Tag, Video
+from .models import Category, Tag
+
 
 class ResourceGroupAdmin(admin.ModelAdmin):
     """
@@ -33,21 +34,3 @@ class ResourceAdmin(admin.ModelAdmin):
     """
     list_display = ['title', 'category', 'display_tags']
     prepopulated_fields = {'slug': ('title',)}
-
-
-@admin.register(Video)
-class VideoAdmin(ResourceAdmin):
-    """
-    Registers the Video model to the admin site
-    """
-    fieldsets = (
-        ('Basic Info', {
-            'fields': ('title', 'slug', 'summary', 'url')
-        }),
-        ('External References', {
-            'fields': ('authors', 'category', 'tags')
-        }),
-        ('Additional Info', {
-            'fields': ('date_posted',)
-        })
-    )
