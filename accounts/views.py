@@ -5,6 +5,30 @@ from django.shortcuts import render, redirect
 
 from .forms import CustomUserCreationForm, UserProfileForm
 
+
+class LoginView(auth_views.LoginView):
+    template_name = 'accounts/login.html'
+
+
+class LogoutView(auth_views.LogoutView):
+    template_name = 'accounts/logout.html'
+
+
+class PasswordResetView(auth_views.PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+
+
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+
+class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
+
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -45,26 +69,3 @@ def profile(request):
 
     context = {'form': form }
     return render(request, 'accounts/profile.html', context)
-
-
-class LoginView(auth_views.LoginView):
-    template_name = 'accounts/login.html'
-
-
-class LogoutView(auth_views.LogoutView):
-    template_name = 'accounts/logout.html'
-
-
-class PasswordResetView(auth_views.PasswordResetView):
-    template_name = 'accounts/password_reset.html'
-
-
-class PasswordResetDoneView(auth_views.PasswordResetDoneView):
-    template_name = 'accounts/password_reset_done.html'
-
-
-class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
-    template_name = 'accounts/password_reset_confirm.html'
-
-class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
-    template_name = 'accounts/password_reset_complete.html'

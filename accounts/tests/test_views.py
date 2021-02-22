@@ -4,9 +4,12 @@ from django.test import TestCase, RequestFactory
 
 from accounts import views
 
+
 class AccountsBaseTestCase(TestCase):
-    """
-    Set up data to be shared across tests for accounts.views
+    """Sets up data to be shared across tests for accounts.views
+
+    Args:
+        TestCase (object): a subclass of django.test.TransactionTestCase
     """
     def setUp(self):
         self.factory = RequestFactory()
@@ -16,65 +19,21 @@ class AccountsBaseTestCase(TestCase):
         super().setUpClass()
 
         cls.user = get_user_model().objects.create_user(
-            first_name = 'Alvin',
-            last_name = 'Mukuna',
+            first_name='Alvin',
             email = 'alvin@mukuna.com',
-            phone_number = '+254 701 234 567',
             password = 'alvinpassword'
         )
-
-
-class RegisterViewTestCase(AccountsBaseTestCase):
-    """
-    Tests for the register view
-    """    
-    def test_register_view_basic(self):
-        """
-        Test that the register view returns a 200 response
-        and uses the correct template
-        """
-        request = self.factory.get('/accounts/register/')
-        with self.assertTemplateUsed('accounts/register.html'):
-            response = views.register(request)
-            self.assertEqual(response.status_code, 200)
-
-
-class ProfileViewTestCase(AccountsBaseTestCase):
-    """
-    Tests for the profile view
-    """
-    def test_redirect_if_not_logged_in(self):
-        """
-        Test that the profile view redirects to the login page first
-        when a user is not logged in
-        """
-        response = self.client.get('/accounts/profile/')
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response,
-            '/accounts/login/?next=/accounts/profile/')
-
-    def test_profile_view_logged_in_basic(self):
-        """
-        Test that the profile view returns a 200 response
-        and uses the correct template when a user is logged in
-        """
-        self.client.login(email = 'alvin@mukuna.com',
-            password = 'alvinpassword'
-        )
-        response = self.client.get('/accounts/profile/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed('accounts/profile.html')
-        self.assertEqual(str(response.context['user']), 'Alvin')
 
 
 class LoginViewTestCase(AccountsBaseTestCase):
+    """Tests for the Login view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
     """
-    Tests for the Login view
-    """    
     def test_login_view_basic(self):
-        """
-        Test that the login view returns a 200 response and
-        uses the correct template
+        """Test that the login view returns a 200 response and uses
+        the correct template
         """
         request = self.factory.get('/accounts/login/')
         response = views.LoginView.as_view()(request)
@@ -84,8 +43,10 @@ class LoginViewTestCase(AccountsBaseTestCase):
 
 
 class LogoutViewTestCase(AccountsBaseTestCase):
-    """
-    Tests for the Logout view
+    """Tests for the Logout view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
     """
     def test_redirect_if_not_logged_in(self):
         """
@@ -93,7 +54,6 @@ class LogoutViewTestCase(AccountsBaseTestCase):
         when a user is not logged in
         """
         response = self.client.get('/accounts/logout/')
-        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
 
     def test_logout_redirect_url(self):
@@ -105,17 +65,17 @@ class LogoutViewTestCase(AccountsBaseTestCase):
             password = 'alvinpassword'
         )
         response = self.client.get('/accounts/logout/')
-        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/')
 
 
 class PasswordResetViewTestCase(AccountsBaseTestCase):
+    """Tests for the PasswordReset view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
     """
-    Tests for the PasswordReset view
-    """    
     def test_password_reset_view_basic(self):
-        """
-        Test that the password reset view returns a 200 response
+        """Test that the password reset view returns a 200 response
         and uses the correct template
         """
         request = self.factory.get('/accounts/password_reset/')
@@ -126,12 +86,13 @@ class PasswordResetViewTestCase(AccountsBaseTestCase):
 
 
 class PasswordResetDoneViewTestCase(AccountsBaseTestCase):
-    """
-    Tests for the PasswordResetDone view
+    """Tests for the PasswordResetDone view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
     """
     def test_password_reset_done_view_basic(self):
-        """
-        Test that the password reset done view returns 
+        """Test that the password reset done view returns
         a 200 response and uses the correct template
         """
         request = self.factory.get('/accounts/password_reset_done/')
@@ -142,12 +103,13 @@ class PasswordResetDoneViewTestCase(AccountsBaseTestCase):
 
 
 class PasswordResetCompleteViewTestCase(AccountsBaseTestCase):
+    """Tests for the PasswordResetComplete view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
     """
-    Tests for the PasswordResetComplete view
-    """    
     def test_password_reset_complete_view_basic(self):
-        """
-        Test that the password reset complete view returns 
+        """Test that the password reset complete view returns
         a 200 response and uses the correct template
         """
         request = self.factory.get('/accounts/password_reset_complete/')
@@ -155,3 +117,47 @@ class PasswordResetCompleteViewTestCase(AccountsBaseTestCase):
         self.assertEqual(response.status_code, 200)
         with self.assertTemplateUsed('accounts/password_reset_complete.html'):
             response.render()
+
+
+class ProfileViewTestCase(AccountsBaseTestCase):
+    """Tests for the profile view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
+    """
+    def test_redirect_if_not_logged_in(self):
+        """Test that the profile view redirects to the login page first
+        when a user is not logged in
+        """
+        response = self.client.get('/accounts/profile/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response,
+            '/accounts/login/?next=/accounts/profile/')
+
+    def test_profile_view_logged_in_basic(self):
+        """Test that the profile view returns a 200 response
+        and uses the correct template when a user is logged in
+        """
+        self.client.login(email = 'alvin@mukuna.com',
+            password = 'alvinpassword'
+        )
+        response = self.client.get('/accounts/profile/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed('accounts/profile.html')
+        self.assertEqual(str(response.context['user']), 'Alvin')
+
+
+class RegisterViewTestCase(AccountsBaseTestCase):
+    """Tests for the register view
+
+    Args:
+        AccountsBaseTestCase (object): a subclass of django.test.TestCase
+    """
+    def test_register_view_basic(self):
+        """Test that the register view returns a 200 response
+        and uses the correct template
+        """
+        request = self.factory.get('/accounts/register/')
+        with self.assertTemplateUsed('accounts/register.html'):
+            response = views.register(request)
+            self.assertEqual(response.status_code, 200)
