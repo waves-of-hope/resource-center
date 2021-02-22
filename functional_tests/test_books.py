@@ -262,6 +262,7 @@ class AdminTestCase(BooksTestCase):
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
 
+        # TODO: add explicit wait
         self.assertEqual(
             self.browser.find_elements_by_css_selector(
                 '#result_list tr')[1].text,
@@ -574,6 +575,7 @@ class MemberTestCase(BooksTestCase):
         self.assertEqual(authors[0].text, 'Kelvin')
         self.assertEqual(authors[1].text, 'Christine')
 
+        # TODO: add explicit wait
         download_link = self.browser.find_element_by_link_text(
             'Download The Gift (13.0 KB)')
         self.assertEqual(
