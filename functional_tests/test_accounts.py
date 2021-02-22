@@ -148,6 +148,7 @@ class MemberTestCase(ResourceCenterTestCase):
         # He sees a message informing him that the profile update
         # was successful. He confirms that the bio and new profile
         # picture are already input in the profile form
+        # TODO: add explicit wait
         self.assertEqual(self.browser.find_elements_by_css_selector(
             '.alert')[0].text[:-2],
             'Your profile has been updated'
