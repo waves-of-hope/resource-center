@@ -3,5 +3,6 @@ omit =
     *__init__.py,
 	manage.py,
     *virtualenvs/*,
+    *migrations/*
 
 relative_files = True
