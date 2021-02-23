@@ -222,8 +222,9 @@ class AdminTestCase(VideosTestCase):
 
         # He's sees the title, Category and Tags of each video
         # listed with the latest videos first
-        video_rows = self.browser.find_elements_by_css_selector(
-            '#result_list tr')
+        video_rows = self.explicit_wait(
+            self.browser.find_elements_by_css_selector('#result_list tr')
+        )
 
         self.assertEqual(video_rows[1].text,
             'The Gift Spiritual Faith, Healing, Love ...')
@@ -235,7 +236,9 @@ class AdminTestCase(VideosTestCase):
         # He adds a Video to a Category, Tag and User
         # that already exists
         self.browser.find_element_by_link_text('ADD VIDEO').click()
-        video_form = self.browser.find_element_by_id('video_form')
+        video_form = self.explicit_wait(
+            self.browser.find_element_by_id('video_form')
+        )
 
         video_form.find_element_by_name('title').\
             send_keys('Divine Healing')
@@ -256,9 +259,12 @@ class AdminTestCase(VideosTestCase):
         video_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        self.assertEqual(
+        video_rows = self.explicit_wait(
             self.browser.find_elements_by_css_selector(
-                '#result_list tr')[1].text,
+                '#result_list tr')
+        )
+        self.assertEqual(
+            video_rows[1].text,
             'Divine Healing Spiritual Faith, Healing'
         )
 
@@ -267,10 +273,17 @@ class AdminTestCase(VideosTestCase):
         self.browser.find_element_by_link_text('ADD VIDEO').click()
 
         # He adds a Category from the Video page
-        self.browser.find_element_by_id('video_form')\
-            .find_element_by_id('add_id_category').click()
-        self.browser.switch_to.window(self.browser.window_handles[1])
-        category_form = self.browser.find_element_by_id('category_form')
+        video_form = self.explicit_wait(
+            self.browser.find_element_by_id('video_form')
+        )
+        video_form.find_element_by_id('add_id_category').click()
+
+        self.explicit_wait(
+            self.browser.switch_to.window(self.browser.window_handles[1])
+        )
+        category_form = self.explicit_wait(
+            self.browser.find_element_by_id('category_form')
+        )
         category_form.find_element_by_name('name').\
             send_keys('Music')
         category_form.find_element_by_css_selector(
@@ -280,8 +293,13 @@ class AdminTestCase(VideosTestCase):
         self.browser.switch_to.window(self.browser.window_handles[0])
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_tags').click()
-        self.browser.switch_to.window(self.browser.window_handles[1])
-        tag_form = self.browser.find_element_by_id('tag_form')
+
+        self.explicit_wait(
+            self.browser.switch_to.window(self.browser.window_handles[1])
+        )
+        tag_form = self.explicit_wait(
+            self.browser.find_element_by_id('tag_form')
+        )
         tag_form.find_element_by_name('name').\
             send_keys('Praise')
         tag_form.find_element_by_css_selector(
@@ -290,8 +308,13 @@ class AdminTestCase(VideosTestCase):
         self.browser.switch_to.window(self.browser.window_handles[0])
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_tags').click()
-        self.browser.switch_to.window(self.browser.window_handles[1])
-        tag_form = self.browser.find_element_by_id('tag_form')
+
+        self.explicit_wait(
+            self.browser.switch_to.window(self.browser.window_handles[1])
+        )
+        tag_form = self.explicit_wait(
+            self.browser.find_element_by_id('tag_form')
+        )
         tag_form.find_element_by_name('name').\
             send_keys('Worship')
         tag_form.find_element_by_css_selector(
@@ -301,8 +324,13 @@ class AdminTestCase(VideosTestCase):
         self.browser.switch_to.window(self.browser.window_handles[0])
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_authors').click()
-        self.browser.switch_to.window(self.browser.window_handles[1])
-        user_form = self.browser.find_element_by_id('user_form')
+
+        self.explicit_wait(
+            self.browser.switch_to.window(self.browser.window_handles[1])
+        )
+        user_form = self.explicit_wait(
+            self.browser.find_element_by_id('user_form')
+        )
         user_form.find_element_by_css_selector(
             'input#id_first_name').send_keys('Peter')
         user_form.find_element_by_css_selector(
@@ -328,9 +356,12 @@ class AdminTestCase(VideosTestCase):
         video_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        self.assertEqual(
+        video_rows = self.explicit_wait(
             self.browser.find_elements_by_css_selector(
-                '#result_list tr')[1].text,
+                '#result_list tr')
+        )
+        self.assertEqual(
+            video_rows[1].text,
             'Mastering African Praise and Worship Music '
             'Music Praise, Worship'
         )
@@ -394,8 +425,9 @@ class MemberTestCase(VideosTestCase):
         # to the register page, where he sees the inputs of the
         # register form, including labels and placeholders.
         register_link.click()
-        register_form = self.browser.\
-            find_element_by_id('register_form')
+        register_form = self.explicit_wait(
+            self.browser.find_element_by_id('register_form')
+        )
         self.assertEqual(register_form.\
                 find_element_by_css_selector('legend').text,
             'Register'
@@ -403,15 +435,17 @@ class MemberTestCase(VideosTestCase):
 
         first_name_input = register_form.\
             find_element_by_css_selector('input#id_first_name')
-        self.assertEqual(register_form.find_element_by_css_selector(
+        self.assertEqual(
+            register_form.find_element_by_css_selector(
                 'label[for="id_first_name"]').text,
             'First name*'
         )
 
         last_name_input = register_form.\
             find_element_by_css_selector('input#id_last_name')
-        self.assertEqual(register_form.find_element_by_css_selector(
-            'label[for="id_last_name"]').text,
+        self.assertEqual(
+            register_form.find_element_by_css_selector(
+                'label[for="id_last_name"]').text,
             'Last name*'
         )
 
@@ -465,17 +499,8 @@ class MemberTestCase(VideosTestCase):
         register_form.find_element_by_css_selector(
             'button[type="submit"]').click()
 
-        # He sees a message informing him that the registration was
-        # successful ...
-        # self.assertEqual(self.browser.find_element_by_css_selector(
-        #     '.alert').text[:-2],
-        #     'Your account has been created. '
-        #     'You are now able to log in.'
-        # )
-
-        # ... and he is redirected to the login page, where he sees
-        # the inputs of the login form, including labels and
-        # placeholders
+        # He is redirected to the login page, where he sees the inputs
+        # of the login form, including labels and placeholders
         login_form = self.browser.\
             find_element_by_id('login_form')
         self.assertEqual(login_form.\
@@ -533,8 +558,10 @@ class MemberTestCase(VideosTestCase):
         self.assertGreater(len(videos), 0)
 
         # The videos list page is paginated
-        pagination = self.browser.find_element_by_css_selector(
-            'nav ul.pagination')
+        # TODO: reduce complexity
+        pagination = self.explicit_wait(
+            self.browser.find_element_by_css_selector('nav ul.pagination')
+        )
         page_links, page_link_addresses = list(), list()
         for i in range(7):
             if i == 0:
@@ -567,8 +594,9 @@ class MemberTestCase(VideosTestCase):
             'The Gift'
         )
 
-        m2m_attributes = self.browser.\
-            find_elements_by_css_selector('.m2m-attribute')
+        m2m_attributes = self.explicit_wait(
+            self.browser.find_elements_by_css_selector('.m2m-attribute')
+        )
         tags = m2m_attributes[0].\
             find_elements_by_css_selector('a.btn')
         self.assertEqual(tags[0].text, 'faith')

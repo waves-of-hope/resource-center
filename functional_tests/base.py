@@ -1,5 +1,5 @@
 from pathlib import WindowsPath
-from shutil import rmtree, copy
+import time
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -7,6 +7,9 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import tag
 
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
+
+import utils.test
 
 
 @tag('functional')
@@ -20,6 +23,7 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        utils.test.set_up_test_files()
 
         # set browser options based on settings
         cls.browser_options = webdriver.firefox.options.Options()
@@ -28,40 +32,38 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         # get the user model
         cls.User = get_user_model()
 
-        # set up test media directory
-        settings.MEDIA_ROOT.mkdir()
-        test_images = settings.TEST_FILES_DIR / 'images'
-        copy(test_images.joinpath('default.png'), settings.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.png'), settings.MEDIA_ROOT)
-        copy(test_images.joinpath('book-cover.jpg'), settings.MEDIA_ROOT)
-        copy(
-            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            settings.MEDIA_ROOT
-        )
-
     def tearDown(self):
         self.browser.quit()
 
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
-        # remove test media directory
-        rmtree(settings.MEDIA_ROOT)
+        utils.test.tear_down_test_files()
 
-    def get_abs_test_file_path(self, rel_file_path):
+    def get_absolute_file_path(self, relative_file_path):
         """Returns the absolute file path of files in the
         `test_files` directory as a string
         """
         try:
-            abs_path = settings.TEST_FILES_DIR.joinpath(rel_file_path)
-            abs_path_str = str(abs_path.as_posix())
+            absolute_path = settings.TEST_FILES_DIR.joinpath(
+                relative_file_path)
+            absolute_path_string = str(absolute_path.as_posix())
+
+            if absolute_path.exists():
+                if isinstance(absolute_path, WindowsPath):
+                    return absolute_path_string.replace('/', '\\')
+                return absolute_path_string
+            else:
+                raise ValueError(f"'{absolute_path_string}' does not exist")
         except TypeError as e:
             print('TypeError: {}'.format(e))
 
-        if abs_path.exists():
-            if isinstance(abs_path, WindowsPath):
-                return abs_path_str.replace('/', '\\')
-            return abs_path_str
-        else:
-            raise ValueError("'{}' does not exist".\
-                format(abs_path_str))
+    def explicit_wait(self, test_method, max_wait_time=10):
+        start_time = time.time()
+        while True:
+            try:
+                return test_method
+            except (WebDriverException) as e:
+                if time.time() - start_time > max_wait_time:
+                    raise e
+                time.sleep(0.5)
