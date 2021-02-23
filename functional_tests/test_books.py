@@ -269,6 +269,8 @@ class AdminTestCase(BooksTestCase):
             self.browser.find_elements_by_css_selector(
                 '#result_list tr')
         )
+
+        # TODO: fails in CI
         self.assertEqual(
             book_rows[1].text,
             'Divine Healing Spiritual Faith, Healing'
@@ -299,7 +301,7 @@ class AdminTestCase(BooksTestCase):
         self.browser.switch_to.window(self.browser.window_handles[0])
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_tags').click()
-        
+
         self.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
@@ -600,6 +602,7 @@ class MemberTestCase(BooksTestCase):
         self.assertEqual(authors[0].text, 'Kelvin')
         self.assertEqual(authors[1].text, 'Christine')
 
+        # TODO: fails in CI
         download_link = self.browser.find_element_by_link_text(
             'Download The Gift (13.0 KB)')
         self.assertEqual(

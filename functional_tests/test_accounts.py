@@ -150,6 +150,7 @@ class MemberTestCase(ResourceCenterTestCase):
         # He sees a message informing him that the profile update
         # was successful. He confirms that the bio and new profile
         # picture are already input in the profile form
+        # TODO: fails in CI
         success_alert = self.explicit_wait(
             self.browser.find_elements_by_css_selector('.alert')[0].\
                 text[:-2]
