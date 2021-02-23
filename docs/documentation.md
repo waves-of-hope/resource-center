@@ -13,4 +13,4 @@
 ## Generating the Documentation
 1. Activate the development virtual environment
 1. Generate the docs by running
-    `$ sphinx apidoc -o docs . main.py manage.py *migrations* *tests*`
+    `$ sphinx-apidoc -o docs . main.py manage.py *migrations* *tests*`

@@ -12,14 +12,6 @@ config.settings.base module
    :undoc-members:
    :show-inheritance:
 
-config.settings.helpers module
-------------------------------
-
-.. automodule:: config.settings.helpers
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 config.settings.local module
 ----------------------------
 

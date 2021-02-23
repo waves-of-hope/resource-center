@@ -1,5 +1,5 @@
-waves-resource-center
-=====================
+resource-center
+===============
 
 .. toctree::
    :maxdepth: 4
