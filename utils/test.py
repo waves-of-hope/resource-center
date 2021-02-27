@@ -47,7 +47,7 @@ def get_absolute_file_path(relative_file_path):
     except TypeError as e:
         print('TypeError: {}'.format(e))
 
-def explicit_wait(test_method, max_wait_time=10):
+def explicit_wait(test_method, max_wait_time=20):
     start_time = time.time()
     while True:
         try:

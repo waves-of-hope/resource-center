@@ -58,7 +58,7 @@ class TestUtilsTestCase(unittest.TestCase):
             )
         end_time = time.time()
 
-        self.assertGreaterEqual(10, end_time - start_time)
+        self.assertGreaterEqual(20, end_time - start_time)
 
         self.browser.quit()
 
