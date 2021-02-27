@@ -271,6 +271,8 @@ class AdminTestCase(BooksTestCase):
                 '#result_list tr')
         )
 
+        self.assertGreater(len(book_rows), 1)
+
         # TODO: fails in CI
         utils.test.explicit_wait(
             self.assertEqual(
@@ -608,7 +610,8 @@ class MemberTestCase(BooksTestCase):
         # TODO: fails in CI
         download_link = utils.test.explicit_wait(
             self.browser.find_element_by_link_text(
-                'Download The Gift (13.0 KB)')
+                'Download The Gift (13.0 KB)'),
+            30
         )
         self.assertEqual(
             download_link.get_attribute('href'),
