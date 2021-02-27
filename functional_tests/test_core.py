@@ -4,6 +4,7 @@ from selenium import webdriver
 
 from .base import ResourceCenterTestCase
 from core.models import Category, Tag
+import utils.test
 
 
 class AdminTestCase(ResourceCenterTestCase):
@@ -124,7 +125,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # He clicks on Categories and sees all of the Categories
         # that have been added so far. They are ordered by name
         self.browser.find_element_by_link_text('Categories').click()
-        category_rows = self.explicit_wait(
+        category_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('#result_list tr')
         )
 
@@ -154,7 +155,7 @@ class AdminTestCase(ResourceCenterTestCase):
         self.browser.find_element_by_css_selector(
             '#site-name a').click()
         self.browser.find_element_by_link_text('Tags').click()
-        tag_rows = self.explicit_wait(
+        tag_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('#result_list tr')
         )
 

@@ -7,6 +7,7 @@ from selenium import webdriver
 from .base import ResourceCenterTestCase
 from core.models import Category, Tag
 from videos.models import Video
+import utils.test
 
 class VideosTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the videos feature
@@ -222,7 +223,7 @@ class AdminTestCase(VideosTestCase):
 
         # He's sees the title, Category and Tags of each video
         # listed with the latest videos first
-        video_rows = self.explicit_wait(
+        video_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('#result_list tr')
         )
 
@@ -236,7 +237,7 @@ class AdminTestCase(VideosTestCase):
         # He adds a Video to a Category, Tag and User
         # that already exists
         self.browser.find_element_by_link_text('ADD VIDEO').click()
-        video_form = self.explicit_wait(
+        video_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('video_form')
         )
 
@@ -259,7 +260,7 @@ class AdminTestCase(VideosTestCase):
         video_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        video_rows = self.explicit_wait(
+        video_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector(
                 '#result_list tr')
         )
@@ -273,15 +274,15 @@ class AdminTestCase(VideosTestCase):
         self.browser.find_element_by_link_text('ADD VIDEO').click()
 
         # He adds a Category from the Video page
-        video_form = self.explicit_wait(
+        video_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('video_form')
         )
         video_form.find_element_by_id('add_id_category').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        category_form = self.explicit_wait(
+        category_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('category_form')
         )
         category_form.find_element_by_name('name').\
@@ -294,10 +295,10 @@ class AdminTestCase(VideosTestCase):
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_tags').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        tag_form = self.explicit_wait(
+        tag_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('tag_form')
         )
         tag_form.find_element_by_name('name').\
@@ -309,10 +310,10 @@ class AdminTestCase(VideosTestCase):
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_tags').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        tag_form = self.explicit_wait(
+        tag_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('tag_form')
         )
         tag_form.find_element_by_name('name').\
@@ -325,10 +326,10 @@ class AdminTestCase(VideosTestCase):
         self.browser.find_element_by_id('video_form').\
             find_element_by_id('add_id_authors').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        user_form = self.explicit_wait(
+        user_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('user_form')
         )
         user_form.find_element_by_css_selector(
@@ -356,7 +357,7 @@ class AdminTestCase(VideosTestCase):
         video_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        video_rows = self.explicit_wait(
+        video_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector(
                 '#result_list tr')
         )
@@ -425,7 +426,7 @@ class MemberTestCase(VideosTestCase):
         # to the register page, where he sees the inputs of the
         # register form, including labels and placeholders.
         register_link.click()
-        register_form = self.explicit_wait(
+        register_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('register_form')
         )
         self.assertEqual(register_form.\
@@ -559,7 +560,7 @@ class MemberTestCase(VideosTestCase):
 
         # The videos list page is paginated
         # TODO: reduce complexity
-        pagination = self.explicit_wait(
+        pagination = utils.test.explicit_wait(
             self.browser.find_element_by_css_selector('nav ul.pagination')
         )
         page_links, page_link_addresses = list(), list()
@@ -594,7 +595,7 @@ class MemberTestCase(VideosTestCase):
             'The Gift'
         )
 
-        m2m_attributes = self.explicit_wait(
+        m2m_attributes = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('.m2m-attribute')
         )
         tags = m2m_attributes[0].\

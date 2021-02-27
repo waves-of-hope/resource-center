@@ -1,6 +1,7 @@
 from selenium import webdriver
 
 from .base import ResourceCenterTestCase
+import utils.test
 
 
 class MemberTestCase(ResourceCenterTestCase):
@@ -34,7 +35,7 @@ class MemberTestCase(ResourceCenterTestCase):
         # ... but is redirected to the login page first. He sees
         # the inputs of the login form, including labels and
         # placeholders
-        login_form = self.explicit_wait(
+        login_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('login_form')
         )
         self.assertEqual(login_form.\
@@ -65,7 +66,7 @@ class MemberTestCase(ResourceCenterTestCase):
 
         # ... and is taken the profile page where he sees the profile
         # update form. He can now update his profile.
-        profile_form = self.explicit_wait(
+        profile_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('profile_form')
         )
         self.assertEqual(profile_form.\
@@ -143,7 +144,7 @@ class MemberTestCase(ResourceCenterTestCase):
         "He seeks to read, do and share God's word."
         bio_input.send_keys(brians_bio)
         profile_picture_input.send_keys(
-            self.get_absolute_file_path('images/user.png'))
+            utils.test.get_absolute_file_path('images/user.png'))
         profile_form.find_element_by_css_selector(
             'button[type="submit"]').click()
 
@@ -151,7 +152,7 @@ class MemberTestCase(ResourceCenterTestCase):
         # was successful. He confirms that the bio and new profile
         # picture are already input in the profile form
         # TODO: fails in CI
-        success_alert = self.explicit_wait(
+        success_alert = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('.alert')[0].\
                 text[:-2]
         )
@@ -159,7 +160,7 @@ class MemberTestCase(ResourceCenterTestCase):
             success_alert,
             'Your profile has been updated'
         )
-        updated_profile_form = self.explicit_wait(
+        updated_profile_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('profile_form')
         )
 
@@ -281,7 +282,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # He creates a group with create, edit and view permissions
         # for the User model in the Accounts app
         self.browser.find_element_by_link_text('ADD GROUP').click()
-        group_form = self.explicit_wait(
+        group_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('group_form')
         )
         group_form.find_element_by_name('name').send_keys('Editors')
@@ -312,7 +313,7 @@ class AdminTestCase(ResourceCenterTestCase):
             '#site-name a').click()
         self.browser.find_element_by_link_text('Users').click()
 
-        user_rows = self.explicit_wait(
+        user_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector(
             '#result_list tr')
         )
@@ -354,7 +355,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # He clicks on Christine's link to add her to the
         # editors group
         self.browser.find_element_by_link_text('Christine').click()
-        user_form = self.explicit_wait(
+        user_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('user_form')
         )
         user_form.find_element_by_name('is_staff').click()

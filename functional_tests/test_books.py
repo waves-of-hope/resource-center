@@ -7,6 +7,7 @@ from selenium import webdriver
 from .base import ResourceCenterTestCase
 from core.models import Category, Tag
 from books.models import Book
+import utils.test
 
 class BooksTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the books feature
@@ -224,7 +225,7 @@ class AdminTestCase(BooksTestCase):
 
         # He's sees the title, Category and Tags of each book
         # listed with the latest books first
-        book_rows = self.explicit_wait(
+        book_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('#result_list tr')
         )
 
@@ -238,7 +239,7 @@ class AdminTestCase(BooksTestCase):
         # He adds a Book to a Category, Tag and User
         # that already exists
         self.browser.find_element_by_link_text('ADD BOOK').click()
-        book_form = self.explicit_wait(
+        book_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('book_form')
         )
 
@@ -258,14 +259,14 @@ class AdminTestCase(BooksTestCase):
                 find_elements_by_tag_name('option')[tag].click()
         book_form.find_element_by_css_selector(
             'input#id_cover_image').send_keys(
-                self.get_absolute_file_path('images/book-cover.jpg'))
+                utils.test.get_absolute_file_path('images/book-cover.jpg'))
         book_form.find_element_by_css_selector(
             'input#id_file_upload').send_keys(
-                self.get_absolute_file_path('documents/book.pdf'))
+                utils.test.get_absolute_file_path('documents/book.pdf'))
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        book_rows = self.explicit_wait(
+        book_rows = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector(
                 '#result_list tr')
         )
@@ -281,15 +282,15 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_link_text('ADD BOOK').click()
 
         # He adds a Category from the Book page
-        book_form = self.explicit_wait(
+        book_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('book_form')
         )
         book_form.find_element_by_id('add_id_category').click()
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
 
-        category_form = self.explicit_wait(
+        category_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('category_form')
         )
         category_form.find_element_by_name('name').\
@@ -302,10 +303,10 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_tags').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        tag_form = self.explicit_wait(
+        tag_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('tag_form')
         )
         tag_form.find_element_by_name('name').\
@@ -317,10 +318,10 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_tags').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        tag_form = self.explicit_wait(
+        tag_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('tag_form')
         )
         tag_form.find_element_by_name('name').\
@@ -333,10 +334,10 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_authors').click()
 
-        self.explicit_wait(
+        utils.test.explicit_wait(
             self.browser.switch_to.window(self.browser.window_handles[1])
         )
-        user_form = self.explicit_wait(
+        user_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('user_form')
         )
         user_form.find_element_by_css_selector(
@@ -361,10 +362,10 @@ class AdminTestCase(BooksTestCase):
             send_keys('Getting started with programming in Python')
         book_form.find_element_by_css_selector(
             'input#id_cover_image').send_keys(
-                self.get_absolute_file_path('images/book-cover.jpg'))
+                utils.test.get_absolute_file_path('images/book-cover.jpg'))
         book_form.find_element_by_css_selector(
             'input#id_file_upload').send_keys(
-                self.get_absolute_file_path('documents/book.pdf'))
+                utils.test.get_absolute_file_path('documents/book.pdf'))
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
 
@@ -434,7 +435,7 @@ class MemberTestCase(BooksTestCase):
         # to the register page, where he sees the inputs of the
         # register form, including labels and placeholders.
         register_link.click()
-        register_form = self.explicit_wait(
+        register_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('register_form')
         )
         self.assertEqual(register_form.\
@@ -508,7 +509,7 @@ class MemberTestCase(BooksTestCase):
 
         # He is redirected to the login page, where he sees the inputs
         # of the login form, including labels and placeholders
-        login_form = self.explicit_wait(
+        login_form = utils.test.explicit_wait(
             self.browser.find_element_by_id('login_form')
         )
         self.assertEqual(login_form.\
@@ -552,7 +553,7 @@ class MemberTestCase(BooksTestCase):
 
         # The books list page is paginated
         # TODO: reduce complexity
-        pagination = self.explicit_wait(
+        pagination = utils.test.explicit_wait(
             self.browser.find_element_by_css_selector('nav ul.pagination')
         )
         page_links, page_link_addresses = list(), list()
@@ -587,7 +588,7 @@ class MemberTestCase(BooksTestCase):
             'The Gift'
         )
 
-        m2m_attributes = self.explicit_wait(
+        m2m_attributes = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('.m2m-attribute')
         )
         tags = m2m_attributes[0].\
