@@ -283,7 +283,10 @@ class AdminTestCase(BooksTestCase):
 
         # He then adds a Book for which the Category, Tags and
         # Author do not yet exist
-        self.browser.find_element_by_link_text('ADD BOOK').click()
+        add_book_link = utils.test.explicit_wait(
+            self.browser.find_element_by_link_text('ADD BOOK')
+        )
+        add_book_link.click()
 
         # He adds a Category from the Book page
         book_form = utils.test.explicit_wait(
