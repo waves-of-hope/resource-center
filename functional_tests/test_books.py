@@ -272,9 +272,11 @@ class AdminTestCase(BooksTestCase):
         )
 
         # TODO: fails in CI
-        self.assertEqual(
-            book_rows[1].text,
-            'Divine Healing Spiritual Faith, Healing'
+        utils.test.explicit_wait(
+            self.assertEqual(
+                book_rows[1].text,
+                'Divine Healing Spiritual Faith, Healing'
+            )
         )
 
         # He then adds a Book for which the Category, Tags and
@@ -604,8 +606,10 @@ class MemberTestCase(BooksTestCase):
         self.assertEqual(authors[1].text, 'Christine')
 
         # TODO: fails in CI
-        download_link = self.browser.find_element_by_link_text(
-            'Download The Gift (13.0 KB)')
+        download_link = utils.test.explicit_wait(
+            self.browser.find_element_by_link_text(
+                'Download The Gift (13.0 KB)')
+        )
         self.assertEqual(
             download_link.get_attribute('href'),
             '{}/media/book.pdf'.format(

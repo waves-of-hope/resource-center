@@ -154,7 +154,8 @@ class MemberTestCase(ResourceCenterTestCase):
         # TODO: fails in CI
         success_alert = utils.test.explicit_wait(
             self.browser.find_elements_by_css_selector('.alert')[0].\
-                text[:-2]
+                text[:-2],
+            30
         )
         self.assertEqual(
             success_alert,
