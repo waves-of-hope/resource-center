@@ -163,7 +163,7 @@ class MemberTestCase(ResourceCenterTestCase):
 
         self.assertEqual(
             updated_profile_form.find_element_by_css_selector(
-                'div#div_id_profile_picture a').get_attribute('href'),
+                '#div_id_profile_picture a').get_attribute('href'),
             self.live_server_url + '/media/profile_pictures/'
                 'user.png'
             )

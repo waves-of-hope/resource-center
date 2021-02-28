@@ -275,6 +275,7 @@ class AdminTestCase(BooksTestCase):
 
         # He then adds a Book for which the Category, Tags and
         # Author do not yet exist
+        import time; time.sleep(2)
         add_book_link = self.browser.find_element_by_link_text('ADD BOOK')
         add_book_link.click()
 
