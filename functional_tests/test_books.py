@@ -225,9 +225,7 @@ class AdminTestCase(BooksTestCase):
 
         # He's sees the title, Category and Tags of each book
         # listed with the latest books first
-        book_rows = utils.test.explicit_wait(
-            self.browser.find_elements_by_css_selector('#result_list tr')
-        )
+        book_rows = self.browser.find_elements_by_css_selector('#result_list tr')
 
         self.assertEqual(book_rows[1].text,
             'The Gift Spiritual Faith, Healing, Love ...')
@@ -239,9 +237,7 @@ class AdminTestCase(BooksTestCase):
         # He adds a Book to a Category, Tag and User
         # that already exists
         self.browser.find_element_by_link_text('ADD BOOK').click()
-        book_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('book_form')
-        )
+        book_form = self.browser.find_element_by_id('book_form')
 
         book_form.find_element_by_name('title').\
             send_keys('Divine Healing')
@@ -266,40 +262,28 @@ class AdminTestCase(BooksTestCase):
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        book_rows = utils.test.explicit_wait(
-            self.browser.find_elements_by_css_selector(
+        book_rows = self.browser.find_elements_by_css_selector(
                 '#result_list tr')
-        )
 
-        # self.assertGreater(len(book_rows), 1)
+        self.assertGreater(len(book_rows), 1)
 
         # TODO: fails in CI
-        # utils.test.explicit_wait(
-        #     self.assertEqual(
-        #         book_rows[1].text,
-        #         'Divine Healing Spiritual Faith, Healing'
-        #     )
-        # )
+        self.assertEqual(
+            book_rows[1].text,
+            'Divine Healing Spiritual Faith, Healing'
+        )
 
         # He then adds a Book for which the Category, Tags and
         # Author do not yet exist
-        add_book_link = utils.test.explicit_wait(
-            self.browser.find_element_by_link_text('ADD BOOK')
-        )
+        add_book_link = self.browser.find_element_by_link_text('ADD BOOK')
         add_book_link.click()
 
         # He adds a Category from the Book page
-        book_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('book_form')
-        )
+        book_form = self.browser.find_element_by_id('book_form')
         book_form.find_element_by_id('add_id_category').click()
-        utils.test.explicit_wait(
-            self.browser.switch_to.window(self.browser.window_handles[1])
-        )
+        self.browser.switch_to.window(self.browser.window_handles[1])
 
-        category_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('category_form')
-        )
+        category_form = self.browser.find_element_by_id('category_form')
         category_form.find_element_by_name('name').\
             send_keys('Technology')
         category_form.find_element_by_css_selector(
@@ -310,12 +294,8 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_tags').click()
 
-        utils.test.explicit_wait(
-            self.browser.switch_to.window(self.browser.window_handles[1])
-        )
-        tag_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('tag_form')
-        )
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Programming')
         tag_form.find_element_by_css_selector(
@@ -325,12 +305,8 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_tags').click()
 
-        utils.test.explicit_wait(
-            self.browser.switch_to.window(self.browser.window_handles[1])
-        )
-        tag_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('tag_form')
-        )
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
         tag_form.find_element_by_name('name').\
             send_keys('Python')
         tag_form.find_element_by_css_selector(
@@ -341,12 +317,8 @@ class AdminTestCase(BooksTestCase):
         self.browser.find_element_by_id('book_form').\
             find_element_by_id('add_id_authors').click()
 
-        utils.test.explicit_wait(
-            self.browser.switch_to.window(self.browser.window_handles[1])
-        )
-        user_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('user_form')
-        )
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        user_form = self.browser.find_element_by_id('user_form')
         user_form.find_element_by_css_selector(
             'input#id_first_name').send_keys('Karen')
         user_form.find_element_by_css_selector(
@@ -442,9 +414,7 @@ class MemberTestCase(BooksTestCase):
         # to the register page, where he sees the inputs of the
         # register form, including labels and placeholders.
         register_link.click()
-        register_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('register_form')
-        )
+        register_form = self.browser.find_element_by_id('register_form')
         self.assertEqual(register_form.\
                 find_element_by_css_selector('legend').text,
             'Register'
@@ -516,9 +486,7 @@ class MemberTestCase(BooksTestCase):
 
         # He is redirected to the login page, where he sees the inputs
         # of the login form, including labels and placeholders
-        login_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('login_form')
-        )
+        login_form = self.browser.find_element_by_id('login_form')
         self.assertEqual(login_form.\
                 find_element_by_css_selector('legend').text,
             'Login'
@@ -560,9 +528,8 @@ class MemberTestCase(BooksTestCase):
 
         # The books list page is paginated
         # TODO: reduce complexity
-        pagination = utils.test.explicit_wait(
-            self.browser.find_element_by_css_selector('nav ul.pagination')
-        )
+        pagination = self.browser.find_element_by_css_selector(
+            'nav ul.pagination')
         page_links, page_link_addresses = list(), list()
         for i in range(7):
             if i == 0:
@@ -595,9 +562,8 @@ class MemberTestCase(BooksTestCase):
             'The Gift'
         )
 
-        m2m_attributes = utils.test.explicit_wait(
-            self.browser.find_elements_by_css_selector('.m2m-attribute')
-        )
+        m2m_attributes = self.browser.find_elements_by_css_selector(
+            '.m2m-attribute')
         tags = m2m_attributes[0].\
             find_elements_by_css_selector('a.btn')
         self.assertEqual(tags[0].text, 'faith')
@@ -611,13 +577,10 @@ class MemberTestCase(BooksTestCase):
         self.assertEqual(authors[1].text, 'Christine')
 
         # TODO: fails in CI
-        # download_link = utils.test.explicit_wait(
-        #     self.browser.find_element_by_link_text(
-        #         'Download The Gift (13.0 KB)'),
-        #     30
-        # )
-        # self.assertEqual(
-        #     download_link.get_attribute('href'),
-        #     '{}/media/book.pdf'.format(
-        #         self.live_server_url)
-        # )
+        download_link = self.browser.find_element_by_link_text(
+            'Download The Gift (13.0 KB)')
+        self.assertEqual(
+            download_link.get_attribute('href'),
+            '{}/media/book.pdf'.format(
+                self.live_server_url)
+        )

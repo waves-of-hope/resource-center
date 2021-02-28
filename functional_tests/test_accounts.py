@@ -35,9 +35,7 @@ class MemberTestCase(ResourceCenterTestCase):
         # ... but is redirected to the login page first. He sees
         # the inputs of the login form, including labels and
         # placeholders
-        login_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('login_form')
-        )
+        login_form = self.browser.find_element_by_id('login_form')
         self.assertEqual(login_form.\
                 find_element_by_css_selector('legend').text,
             'Login'
@@ -66,9 +64,7 @@ class MemberTestCase(ResourceCenterTestCase):
 
         # ... and is taken the profile page where he sees the profile
         # update form. He can now update his profile.
-        profile_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('profile_form')
-        )
+        profile_form = self.browser.find_element_by_id('profile_form')
         self.assertEqual(profile_form.\
                 find_element_by_css_selector('legend').text,
             'Profile info'
@@ -152,30 +148,25 @@ class MemberTestCase(ResourceCenterTestCase):
         # was successful. He confirms that the bio and new profile
         # picture are already input in the profile form
         # TODO: fails in CI
-        # success_alert = utils.test.explicit_wait(
-        #     self.browser.find_elements_by_css_selector('.alert')[0].\
-        #         text[:-2],
-        #     30
-        # )
-        # self.assertEqual(
-        #     success_alert,
-        #     'Your profile has been updated'
-        # )
-        updated_profile_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('profile_form')
+        success_alert = self.browser.find_elements_by_css_selector(
+            '.alert')[0].text[:-2]
+        self.assertEqual(
+            success_alert,
+            'Your profile has been updated'
         )
+        updated_profile_form = self.browser.find_element_by_id('profile_form')
 
         self.assertEqual(
             updated_profile_form.find_element_by_css_selector(
                 'textarea#id_bio').get_attribute('value'),
             brians_bio)
 
-        # self.assertEqual(
-        #     updated_profile_form.find_element_by_css_selector(
-        #         'div#div_id_profile_picture a').get_attribute('href'),
-        #     self.live_server_url + '/media/profile_pictures/'
-        #         'user.png'
-        #     )
+        self.assertEqual(
+            updated_profile_form.find_element_by_css_selector(
+                'div#div_id_profile_picture a').get_attribute('href'),
+            self.live_server_url + '/media/profile_pictures/'
+                'user.png'
+            )
 
 
 class AdminTestCase(ResourceCenterTestCase):
@@ -283,9 +274,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # He creates a group with create, edit and view permissions
         # for the User model in the Accounts app
         self.browser.find_element_by_link_text('ADD GROUP').click()
-        group_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('group_form')
-        )
+        group_form = self.browser.find_element_by_id('group_form')
         group_form.find_element_by_name('name').send_keys('Editors')
         group_form.find_element_by_id('id_permissions_input').\
             send_keys('accounts')
@@ -314,10 +303,8 @@ class AdminTestCase(ResourceCenterTestCase):
             '#site-name a').click()
         self.browser.find_element_by_link_text('Users').click()
 
-        user_rows = utils.test.explicit_wait(
-            self.browser.find_elements_by_css_selector(
+        user_rows = self.browser.find_elements_by_css_selector(
             '#result_list tr')
-        )
         self.assertEqual(user_rows[1].text,
             'Alvin Mukuna alvin@mukuna.com +254701234567')
         self.assertEqual(user_rows[2].text,
@@ -356,9 +343,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # He clicks on Christine's link to add her to the
         # editors group
         self.browser.find_element_by_link_text('Christine').click()
-        user_form = utils.test.explicit_wait(
-            self.browser.find_element_by_id('user_form')
-        )
+        user_form = self.browser.find_element_by_id('user_form')
         user_form.find_element_by_name('is_staff').click()
         user_form.find_element_by_name('groups_old').\
             find_elements_by_tag_name('option')[0].click()

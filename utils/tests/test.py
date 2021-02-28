@@ -4,7 +4,7 @@ import unittest
 from django.conf import settings
 
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
+from selenium.common import exceptions
 
 import utils.test
 
@@ -50,7 +50,7 @@ class TestUtilsTestCase(unittest.TestCase):
         self.browser.get('http://google.com/')
         
         start_time = time.time()
-        with self.assertRaises(WebDriverException):
+        with self.assertRaises(exceptions.WebDriverException):
             utils.test.explicit_wait(
                 self.assertEqual(
                     self.browser.find_element_by_name('Does not exist')
@@ -58,7 +58,7 @@ class TestUtilsTestCase(unittest.TestCase):
             )
         end_time = time.time()
 
-        self.assertGreaterEqual(20, end_time - start_time)
+        self.assertGreaterEqual(10, end_time - start_time)
 
         self.browser.quit()
 

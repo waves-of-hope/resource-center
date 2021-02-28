@@ -4,7 +4,7 @@ import time
 
 from django.conf import settings
 
-from selenium.common.exceptions import WebDriverException
+from selenium.common import exceptions
 
 
 images = ['default.png', 'book-cover.png', 'book-cover.jpg']
@@ -47,12 +47,15 @@ def get_absolute_file_path(relative_file_path):
     except TypeError as e:
         print('TypeError: {}'.format(e))
 
-def explicit_wait(test_method, max_wait_time=20):
+def explicit_wait(test_method, max_wait_time=10):
     start_time = time.time()
     while True:
         try:
             return test_method
-        except (WebDriverException) as e:
+        except (
+            exceptions.WebDriverException,
+            exceptions.NoSuchElementException
+        ) as e:
             if time.time() - start_time > max_wait_time:
                 raise e
             time.sleep(0.5)
