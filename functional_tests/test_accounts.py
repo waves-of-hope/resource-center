@@ -148,11 +148,11 @@ class MemberTestCase(ResourceCenterTestCase):
         # was successful. He confirms that the bio and new profile
         # picture are already input in the profile form
         # TODO: fails in CI
-        success_alert = self.browser.find_elements_by_css_selector(
-            '.alert')[0].text[:-2]
-        self.assertEqual(
-            success_alert,
-            'Your profile has been updated'
+        alerts = self.browser.find_elements_by_css_selector(
+            '.alert')
+        self.assertIn(
+            'Your profile has been updated\n×',
+            [alert.text for alert in alerts]
         )
         updated_profile_form = self.browser.find_element_by_id('profile_form')
 
