@@ -23,7 +23,7 @@ def set_up_test_files():
 
     for doc in documents:
         copy(test_docs_dir.joinpath(doc), settings.MEDIA_ROOT)
-    
+
     return test_images_dir, test_docs_dir
 
 def tear_down_test_files():

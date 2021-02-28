@@ -48,7 +48,7 @@ class TestUtilsTestCase(unittest.TestCase):
         self.browser_options.headless = settings.HEADLESS_BROWSER_TESTS
         self.browser = webdriver.Firefox(options=self.browser_options)
         self.browser.get('http://google.com/')
-        
+
         start_time = time.time()
         with self.assertRaises(exceptions.WebDriverException):
             utils.test.explicit_wait(

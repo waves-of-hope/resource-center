@@ -54,10 +54,10 @@ def profile(request):
         form = UserProfileForm(request.POST, request.FILES,
             instance=request.user
         )
-        
+
         if form.is_valid():
             form.save()
-            messages.success(request, 
+            messages.success(request,
                 'Your profile has been updated'
             )
             # avoid the redirect alert from browser
