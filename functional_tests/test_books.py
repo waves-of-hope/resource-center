@@ -262,98 +262,98 @@ class AdminTestCase(BooksTestCase):
         book_form.find_element_by_css_selector(
             '.submit-row input').click()
 
-        # book_rows = self.browser.find_elements_by_css_selector(
-        #         '#result_list tr')
+        book_rows = self.browser.find_elements_by_css_selector(
+                '#result_list tr')
 
-        # self.assertGreater(len(book_rows), 1)
+        self.assertGreater(len(book_rows), 1)
 
-        # # TODO: fails in CI
-        # self.assertEqual(
-        #     book_rows[1].text,
-        #     'Divine Healing Spiritual Faith, Healing'
-        # )
+        # TODO: fails in CI
+        self.assertEqual(
+            book_rows[1].text,
+            'Divine Healing Spiritual Faith, Healing'
+        )
 
         # He then adds a Book for which the Category, Tags and
         # Author do not yet exist
-        # add_book_link = self.browser.find_element_by_link_text('ADD BOOK')
-        # add_book_link.click()
+        add_book_link = self.browser.find_element_by_link_text('ADD BOOK')
+        add_book_link.click()
 
-        # # He adds a Category from the Book page
-        # book_form = self.browser.find_element_by_id('book_form')
-        # book_form.find_element_by_id('add_id_category').click()
-        # self.browser.switch_to.window(self.browser.window_handles[1])
+        # He adds a Category from the Book page
+        book_form = self.browser.find_element_by_id('book_form')
+        book_form.find_element_by_id('add_id_category').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
 
-        # category_form = self.browser.find_element_by_id('category_form')
-        # category_form.find_element_by_name('name').\
-        #     send_keys('Technology')
-        # category_form.find_element_by_css_selector(
-        #     '.submit-row input').click()
+        category_form = self.browser.find_element_by_id('category_form')
+        category_form.find_element_by_name('name').\
+            send_keys('Technology')
+        category_form.find_element_by_css_selector(
+            '.submit-row input').click()
 
-        # # He adds some Tags from the Book page
-        # self.browser.switch_to.window(self.browser.window_handles[0])
-        # self.browser.find_element_by_id('book_form').\
-        #     find_element_by_id('add_id_tags').click()
+        # He adds some Tags from the Book page
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        self.browser.find_element_by_id('book_form').\
+            find_element_by_id('add_id_tags').click()
 
-        # self.browser.switch_to.window(self.browser.window_handles[1])
-        # tag_form = self.browser.find_element_by_id('tag_form')
-        # tag_form.find_element_by_name('name').\
-        #     send_keys('Programming')
-        # tag_form.find_element_by_css_selector(
-        #     '.submit-row input').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
+        tag_form.find_element_by_name('name').\
+            send_keys('Programming')
+        tag_form.find_element_by_css_selector(
+            '.submit-row input').click()
 
-        # self.browser.switch_to.window(self.browser.window_handles[0])
-        # self.browser.find_element_by_id('book_form').\
-        #     find_element_by_id('add_id_tags').click()
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        self.browser.find_element_by_id('book_form').\
+            find_element_by_id('add_id_tags').click()
 
-        # self.browser.switch_to.window(self.browser.window_handles[1])
-        # tag_form = self.browser.find_element_by_id('tag_form')
-        # tag_form.find_element_by_name('name').\
-        #     send_keys('Python')
-        # tag_form.find_element_by_css_selector(
-        #     '.submit-row input').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        tag_form = self.browser.find_element_by_id('tag_form')
+        tag_form.find_element_by_name('name').\
+            send_keys('Python')
+        tag_form.find_element_by_css_selector(
+            '.submit-row input').click()
 
-        # # He adds an Author from the Book page
-        # self.browser.switch_to.window(self.browser.window_handles[0])
-        # self.browser.find_element_by_id('book_form').\
-        #     find_element_by_id('add_id_authors').click()
+        # He adds an Author from the Book page
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        self.browser.find_element_by_id('book_form').\
+            find_element_by_id('add_id_authors').click()
 
-        # self.browser.switch_to.window(self.browser.window_handles[1])
-        # user_form = self.browser.find_element_by_id('user_form')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_first_name').send_keys('Karen')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_last_name').send_keys('Wangui')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_email').send_keys('karen@wangui.com')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_phone_number').send_keys('+254 756 789 012')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_password1').send_keys('karenpassword')
-        # user_form.find_element_by_css_selector(
-        #     'input#id_password2').send_keys('karenpassword')
-        # user_form.find_element_by_css_selector(
-        #     '.submit-row input').click()
+        self.browser.switch_to.window(self.browser.window_handles[1])
+        user_form = self.browser.find_element_by_id('user_form')
+        user_form.find_element_by_css_selector(
+            'input#id_first_name').send_keys('Karen')
+        user_form.find_element_by_css_selector(
+            'input#id_last_name').send_keys('Wangui')
+        user_form.find_element_by_css_selector(
+            'input#id_email').send_keys('karen@wangui.com')
+        user_form.find_element_by_css_selector(
+            'input#id_phone_number').send_keys('+254 756 789 012')
+        user_form.find_element_by_css_selector(
+            'input#id_password1').send_keys('karenpassword')
+        user_form.find_element_by_css_selector(
+            'input#id_password2').send_keys('karenpassword')
+        user_form.find_element_by_css_selector(
+            '.submit-row input').click()
 
-        # # He adds the Book's details and saves it
-        # self.browser.switch_to.window(self.browser.window_handles[0])
-        # book_form = self.browser.find_element_by_id('book_form')
-        # book_form.find_element_by_name('title').\
-        #     send_keys('Getting started with programming in Python')
-        # book_form.find_element_by_css_selector(
-        #     'input#id_cover_image').send_keys(
-        #         utils.test.get_absolute_file_path('images/book-cover.jpg'))
-        # book_form.find_element_by_css_selector(
-        #     'input#id_file_upload').send_keys(
-        #         utils.test.get_absolute_file_path('documents/book.pdf'))
-        # book_form.find_element_by_css_selector(
-        #     '.submit-row input').click()
+        # He adds the Book's details and saves it
+        self.browser.switch_to.window(self.browser.window_handles[0])
+        book_form = self.browser.find_element_by_id('book_form')
+        book_form.find_element_by_name('title').\
+            send_keys('Getting started with programming in Python')
+        book_form.find_element_by_css_selector(
+            'input#id_cover_image').send_keys(
+                utils.test.get_absolute_file_path('images/book-cover.jpg'))
+        book_form.find_element_by_css_selector(
+            'input#id_file_upload').send_keys(
+                utils.test.get_absolute_file_path('documents/book.pdf'))
+        book_form.find_element_by_css_selector(
+            '.submit-row input').click()
 
-        # self.assertEqual(
-        #     self.browser.find_elements_by_css_selector(
-        #         '#result_list tr')[1].text,
-        #     'Getting started with programming in Python '
-        #     'Technology Programming, Python'
-        # )
+        self.assertEqual(
+            self.browser.find_elements_by_css_selector(
+                '#result_list tr')[1].text,
+            'Getting started with programming in Python '
+            'Technology Programming, Python'
+        )
 
 
 class MemberTestCase(BooksTestCase):
