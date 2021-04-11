@@ -15,6 +15,7 @@ django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 docutils = "*"
 pygments = "*"
 dj-database-url = "*"
+psycopg2 = "*"
 
 [dev-packages]
 coverage = "*"
