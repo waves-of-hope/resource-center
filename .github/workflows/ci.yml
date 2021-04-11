@@ -8,10 +8,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 4
       matrix:
+        os: [ubuntu-latest, windows-latest]
         python-version: [3.7, 3.8, 3.9]
 
     steps:
@@ -29,7 +29,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        pipenv run coverage run manage.py test
+        pipenv run coverage run manage.py test --exclude-tag=functional
       env:
         # Django Core
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
@@ -39,9 +39,6 @@ jobs:
         # Email
         DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
         DJANGO_EMAIL_HOST_PASSWORD: ${{secrets.DJANGO_EMAIL_HOST_PASSWORD}}
-
-        # Running tests
-        HEADLESS_BROWSER_TESTS: ${{secrets.HEADLESS_BROWSER_TESTS}}
 
     - name: Submit test coverage data to coverage.io
       run: pipenv run coveralls --service=github

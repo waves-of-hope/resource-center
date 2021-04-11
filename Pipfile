@@ -12,10 +12,10 @@ Django = "*"
 Pillow = "*"
 django-storages = {extras = ["google"], version = "*"}
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
-pyyaml = "*"
 docutils = "*"
 pygments = "*"
-google-cloud-datastore = "*"
+dj-database-url = "*"
+psycopg2 = "*"
 
 [dev-packages]
 coverage = "*"

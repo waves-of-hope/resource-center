@@ -1,7 +1,7 @@
 import os
 
 from .base import *
-from .helpers import list_of_tuples
+from utils.config import list_of_tuples
 
 # Django Settings
 # ===============
@@ -10,38 +10,6 @@ from .helpers import list_of_tuples
 ADMINS = config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
-
-
-# Cloud SQL Database with App Engine
-# https://cloud.google.com/python/django/appengine#understanding_the_code
-
-if os.getenv('GAE_APPLICATION', None):
-    # If running on App Engine, connect to Google
-    # Cloud SQL using the unix socket
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/' + config('DATABASE_INSTANCE_CONNECTION_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'NAME': config('DATABASE'),
-        }
-    }
-
-else:
-    # Alternatively, connect to either a local MySQL instance
-    #  or connect to Cloud SQL via the proxy.
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': config('DATABASE'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-        }
-    }
-
 
 
 

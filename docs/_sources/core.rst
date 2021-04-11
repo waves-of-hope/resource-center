@@ -1,11 +1,11 @@
 core package
-=================
+============
 
 Submodules
 ----------
 
 core.admin module
-----------------------
+-----------------
 
 .. automodule:: core.admin
    :members:
@@ -13,7 +13,7 @@ core.admin module
    :show-inheritance:
 
 core.apps module
----------------------
+----------------
 
 .. automodule:: core.apps
    :members:
@@ -21,7 +21,7 @@ core.apps module
    :show-inheritance:
 
 core.models module
------------------------
+------------------
 
 .. automodule:: core.models
    :members:
@@ -29,7 +29,7 @@ core.models module
    :show-inheritance:
 
 core.urls module
----------------------
+----------------
 
 .. automodule:: core.urls
    :members:
@@ -37,7 +37,7 @@ core.urls module
    :show-inheritance:
 
 core.views module
-----------------------
+-----------------
 
 .. automodule:: core.views
    :members:

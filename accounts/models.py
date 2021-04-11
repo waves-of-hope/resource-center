@@ -5,10 +5,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from .managers import UserManager
 
+
 class User(AbstractUser):
-    """
-    A custom user model that extends AbstractUser to support
-    addition of custom fields and overriding some default fields
+    """A custom user model
+
+    Args:
+        AbstractUser (object): A subclass of
+            django.contrib.auth.models.AbstractBaseUser
     """
     username = None
     email = models.EmailField('email address',
