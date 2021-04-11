@@ -29,7 +29,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        pipenv run coverage run manage.py test --exclude-tags=functional
+        pipenv run coverage run manage.py test --exclude-tag=functional
       env:
         # Django Core
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
