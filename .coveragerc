@@ -3,6 +3,7 @@ omit =
     *__init__.py,
 	manage.py,
     *virtualenvs/*,
-    *migrations/*
+    *migrations/*,
+    functional_tests/*,
 
 relative_files = True
