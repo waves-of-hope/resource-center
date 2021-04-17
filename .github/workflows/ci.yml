@@ -32,8 +32,6 @@ jobs:
         pipenv run coverage run manage.py test --exclude-tag=functional
       env:
         # Django Core
-        ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
-        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
         DJANGO_SETTINGS_MODULE: config.settings.test
 
         # Email
