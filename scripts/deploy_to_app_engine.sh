@@ -13,7 +13,7 @@ else
 
     # Copy the raw credentials for deployment
     mkdir ./secrets/raw/
-    cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
+    cp $RAW_SECRET_FILEPATH/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE ./secrets/raw/
 fi
 
 # Set project id
@@ -35,16 +35,13 @@ echo "env_variables:" >> $APP_YAML
 echo "  ADMINS: ${ADMINS}" >> $APP_YAML
 echo "  ADMIN_URL: ${ADMIN_URL}" >> $APP_YAML
 echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> $APP_YAML
-echo "  DATABASE_INSTANCE_CONNECTION_NAME: ${DATABASE_INSTANCE_CONNECTION_NAME}" >> $APP_YAML
-echo "  DATABASE: ${DATABASE}" >> $APP_YAML
-echo "  DB_USER: ${DB_USER}" >> $APP_YAML
-echo "  DB_PASSWORD: ${DB_PASSWORD}" >> $APP_YAML
+echo "  DATABASE_URL: ${DATABASE_URL}" >> $APP_YAML
 echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> $APP_YAML
 echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> $APP_YAML
 echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> $APP_YAML
 echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> $APP_YAML
 echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> $APP_YAML
-echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${SECRET_FILE}" >> $APP_YAML
+echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}" >> $APP_YAML
 
 # Deploy the application
 gcloud -q app deploy $APP_YAML --version $VERSION
