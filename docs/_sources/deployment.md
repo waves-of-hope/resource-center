@@ -26,15 +26,8 @@
 1. Create an App Engine app
 
 ## App Engine Deployment
-1. Create the following **environment variables**:
-    - [`APP_ENGINE_DEPLOYER_SERVICE_ACCOUNT_FILE`](#app-engine-deployer)
-    - [`DATABASE_INSTANCE_CONNECTION_NAME`](#instance-connection-name)
-    - [`GCP_PROJECT_ID`](#gcp-project-id)
-    - [`GOOGLE_APPLICATION_CREDENTIALS`](#google-app-credentials)
-    - [`GS_BUCKET_NAME`](#gs-bucket-name)
-
-1. Create `app.yaml` by running `$ python app.yaml.py`
-1. Run `.github/scripts/deploy-gae.sh` in a Linux terminal.
+1. Set the required **environment variables**
+1. Run `./scripts/deploy_to_app_engine.sh` in a Linux terminal.
     - Use Git bash or WSL if using Windows OS.
 
 ## Notes
