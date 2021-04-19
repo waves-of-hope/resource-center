@@ -28,7 +28,8 @@ jobs:
 
     - name: Run Tests
       run: |
-        pipenv run coverage run manage.py test --exclude-tag=functional
+        git-lfs checkout
+        pipenv run coverage run manage.py test
       env:
         # Django Core
         DJANGO_SETTINGS_MODULE: config.settings.test
