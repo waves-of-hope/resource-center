@@ -1,6 +1,8 @@
 name: Production Deploy
 
 on:
+  push:
+    
   pull_request:
     types:
     - closed
@@ -47,7 +49,11 @@ jobs:
         ADMIN_URL: ${{secrets.ADMIN_URL}}
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
 
-        DATABASE_URL: ${{secrets.DATABASE_URL}}
+        DATABASE_INSTANCE_CONNECTION_NAME: ${{secrets.DATABASE_INSTANCE_CONNECTION_NAME}}
+        DB_NAME: ${{secrets.DB_NAME}}
+        DB_USER: ${{secrets.DB_USER}}
+        DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
         DJANGO_DEBUG: ${{secrets.DJANGO_DEBUG}}
         DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
         DJANGO_EMAIL_HOST_PASSWORD: ${{secrets.DJANGO_EMAIL_HOST_PASSWORD}}
