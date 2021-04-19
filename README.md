@@ -2,7 +2,7 @@
 A digital platform for sharing educational resources
 
 ![Continuous Integration](https://github.com/waves-of-hope/resource-center/workflows/Continuous%20Integration/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/waves-of-hope/resource-center/badge.svg?branch=main)](https://coveralls.io/github/waves-of-hope/resource-center?branch=dev)
+[![Coverage Status](https://coveralls.io/repos/github/waves-of-hope/resource-center/badge.svg)](https://coveralls.io/github/waves-of-hope/resource-center)
 [![Documentation Status](https://readthedocs.org/projects/waves-resource-center/badge/?version=stable)](https://resource-center.readthedocs.io/en/stable/?badge=stable)
 
 Contribute
