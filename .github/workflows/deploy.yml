@@ -1,13 +1,9 @@
 name: Production Deploy
 
 on:
-  push:
-    
   pull_request:
-    types:
-    - closed
-    branches:
-      - prod
+  push:
+    - branches: main
 
 jobs:
   deploy:
