@@ -35,11 +35,17 @@ echo "env_variables:" >> app.yaml
 echo "  ADMINS: ${ADMINS}" >> app.yaml
 echo "  ADMIN_URL: ${ADMIN_URL}" >> app.yaml
 echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> app.yaml
-echo "  DATABASE_URL: ${DATABASE_URL}" >> app.yaml
+echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> app.yaml
+
+echo "  DATABASE_INSTANCE_CONNECTION_NAME: ${DATABASE_INSTANCE_CONNECTION_NAME}" >> app.yaml
+echo "  DB_NAME: ${DB_NAME}" >> app.yaml
+echo "  DB_USER: ${DB_USER}" >> app.yaml
+echo "  DB_PASSWORD: ${DB_PASSWORD}" >> app.yaml
 echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> app.yaml
+
 echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> app.yaml
 echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> app.yaml
-echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> app.yaml
+
 echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> app.yaml
 echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}" >> app.yaml
 
