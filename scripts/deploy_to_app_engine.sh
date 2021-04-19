@@ -30,24 +30,24 @@ mv Pipfile Pipfile.txt
 mv Pipfile.lock Pipfile.lock.txt
 
 # Add the environment variables to app.yaml
-echo "" >> $APP_YAML
-echo "env_variables:" >> $APP_YAML
-echo "  ADMINS: ${ADMINS}" >> $APP_YAML
-echo "  ADMIN_URL: ${ADMIN_URL}" >> $APP_YAML
-echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> $APP_YAML
-echo "  DATABASE_URL: ${DATABASE_URL}" >> $APP_YAML
-echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> $APP_YAML
-echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> $APP_YAML
-echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> $APP_YAML
-echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> $APP_YAML
-echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> $APP_YAML
-echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}" >> $APP_YAML
+echo "" >> app.yaml
+echo "env_variables:" >> app.yaml
+echo "  ADMINS: ${ADMINS}" >> app.yaml
+echo "  ADMIN_URL: ${ADMIN_URL}" >> app.yaml
+echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> app.yaml
+echo "  DATABASE_URL: ${DATABASE_URL}" >> app.yaml
+echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> app.yaml
+echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> app.yaml
+echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> app.yaml
+echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> app.yaml
+echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> app.yaml
+echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}" >> app.yaml
 
 # Deploy the application
-gcloud -q app deploy $APP_YAML --version $VERSION
+gcloud -q app deploy app.yaml --version $VERSION
 
 # Undo changes made to app.yaml
-git checkout -- $APP_YAML
+git checkout -- app.yaml
 
 # Delete the raw credentials from the repo to avoid accidental commit
 rm -rf ./secrets/raw/
