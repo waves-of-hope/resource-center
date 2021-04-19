@@ -11,6 +11,19 @@ ADMINS = config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
 
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DB_ENGINE', default='django.db.backends.mysql'),
+            'HOST': '/cloudsql/' + config('DATABASE_INSTANCE_CONNECTION_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'NAME': config('DB_NAME'),
+        }
+    }
+
 
 
 # Third Party Apps Settings
