@@ -150,10 +150,10 @@ class MemberTestCase(ResourceCenterTestCase):
         # TODO: fails in CI
         alerts = self.browser.find_elements_by_css_selector(
             '.alert')
-        self.assertIn(
+        utils.test.explicit_wait(self.assertIn(
             'Your profile has been updated\n×',
             [alert.text for alert in alerts]
-        )
+        ))
         updated_profile_form = self.browser.find_element_by_id('profile_form')
 
         self.assertEqual(
