@@ -268,10 +268,10 @@ class AdminTestCase(BooksTestCase):
         # utils.test.explicit_wait(self.assertGreater(len(book_rows), 1))
 
         # TODO: fails in CI
-        self.assertEqual(
+        utils.test.explicit_wait(self.assertEqual(
             book_rows[1].text,
             'Divine Healing Spiritual Faith, Healing'
-        )
+        ))
 
         # He then adds a Book for which the Category, Tags and
         # Author do not yet exist
