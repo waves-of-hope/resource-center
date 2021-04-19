@@ -28,7 +28,7 @@ jobs:
 
     - name: Run Tests
       run: |
-        git-lfs checkout
+        git-lfs fetch
         pipenv run coverage run manage.py test
       env:
         # Django Core
