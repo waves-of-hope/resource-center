@@ -47,7 +47,7 @@ echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> app.yaml
 echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> app.yaml
 
 echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> app.yaml
-echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}" >> app.yaml
+echo "  GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}" >> app.yaml
 
 # Deploy the application
 gcloud -q app deploy app.yaml --version $VERSION
