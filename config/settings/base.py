@@ -33,7 +33,9 @@ SECRET_KEY = config('DJANGO_SECRET_KEY',
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(),
+    default='127.0.0.1, localhost'
+)
 
 # Application definition
 DJANGO_APPS = [

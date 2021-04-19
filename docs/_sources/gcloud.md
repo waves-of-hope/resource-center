@@ -39,7 +39,7 @@
 - Create a Cloud SQL instance:
     ```
     $ gcloud sql instances create [INSTANCE_NAME] \
-      > --region=[REGION] --tier=[TIER] \
+      > --database-version [DATABASE_VERSION] --region=[REGION] --tier=[TIER] \
       > --backup-start-time=[BACKUP_START_TIME] \
       > --storage-auto-increase
     ```

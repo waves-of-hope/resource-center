@@ -1,11 +1,9 @@
-name: Staging Deploy
+name: Production Deploy
 
 on:
   pull_request:
-    types:
-    - closed
-    branches:
-      - main
+  push:
+    - branches: main
 
 jobs:
   deploy:
@@ -40,26 +38,23 @@ jobs:
         chmod +x ./scripts/deploy_to_app_engine.sh
         ./scripts/deploy_to_app_engine.sh
       env:
-        # For deployment
+        # Important
         DJANGO_SETTINGS_MODULE: config.settings.production
 
-        # Constants
         ADMINS: ${{secrets.ADMINS}}
         ADMIN_URL: ${{secrets.ADMIN_URL}}
+        ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
+
         DATABASE_INSTANCE_CONNECTION_NAME: ${{secrets.DATABASE_INSTANCE_CONNECTION_NAME}}
+        DB_NAME: ${{secrets.DB_NAME}}
+        DB_USER: ${{secrets.DB_USER}}
+        DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+
         DJANGO_DEBUG: ${{secrets.DJANGO_DEBUG}}
         DJANGO_EMAIL_HOST_USER: ${{secrets.DJANGO_EMAIL_HOST_USER}}
         DJANGO_EMAIL_HOST_PASSWORD: ${{secrets.DJANGO_EMAIL_HOST_PASSWORD}}
+        DJANGO_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+
+        GCP_STORAGE_BUCKET_NAME: ${{secrets.GCP_STORAGE_BUCKET_NAME}}
         GOOGLE_APPLICATION_CREDENTIALS: ./secrets/raw/${{secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}}
         GOOGLE_CLOUD_PROJECT: ${{secrets.GOOGLE_CLOUD_PROJECT}}
-        SECRET_FILE: ${{secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE}}
-
-        # Environment related
-        APP_YAML: staging_app.yaml
-
-        DJANGO_SECRET_KEY: ${{secrets.STAGING_SECRET_KEY}}
-        DATABASE: ${{secrets.STAGING_DATABASE}}
-        DB_USER: ${{secrets.STAGING_DB_USER}}
-        DB_PASSWORD: ${{secrets.STAGING_DB_PASSWORD}}
-        GCP_STORAGE_BUCKET_NAME: ${{secrets.STAGING_GCP_STORAGE_BUCKET_NAME}}
-        ALLOWED_HOSTS: ${{secrets.STAGING_ALLOWED_HOSTS}}
