@@ -1,5 +1,9 @@
 #!/bin/sh
 
+## Usage:
+## Set the SECRET_FILE and SECRET_FILE_PASSPHRASE environment variables
+## Run `$ ./decrypt_secret.sh`
+
 export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
 export RAW_SECRET_FILEPATH=$HOME/secrets
 

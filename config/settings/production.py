@@ -1,7 +1,7 @@
 import os
 
 from .base import *
-from .helpers import list_of_tuples
+from utils.config import list_of_tuples
 
 # Django Settings
 # ===============
@@ -11,37 +11,18 @@ ADMINS = config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
 
-
-# Cloud SQL Database with App Engine
-# https://cloud.google.com/python/django/appengine#understanding_the_code
-
 if os.getenv('GAE_APPLICATION', None):
-    # If running on App Engine, connect to Google
-    # Cloud SQL using the unix socket
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
+            'ENGINE': config('DB_ENGINE', default='django.db.backends.mysql'),
             'HOST': '/cloudsql/' + config('DATABASE_INSTANCE_CONNECTION_NAME'),
             'USER': config('DB_USER'),
             'PASSWORD': config('DB_PASSWORD'),
-            'NAME': config('DATABASE'),
+            'NAME': config('DB_NAME'),
         }
     }
-
-else:
-    # Alternatively, connect to either a local MySQL instance
-    #  or connect to Cloud SQL via the proxy.
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': config('DATABASE'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-        }
-    }
-
 
 
 
@@ -63,15 +44,16 @@ GS_BUCKET_NAME = config('GCP_STORAGE_BUCKET_NAME')
 ## the env var GOOGLE_APPLICATION_CREDENTIALS
 ## For environments where storage of files isn't allowed, e.g: Heroku
 ## TODO: Test if this works
-# try:
-#     import json
-#     from google.oauth2 import service_account
+if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None):
+    try:
+        import json
+        from google.oauth2 import service_account
 
-#     GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-#         json.loads(config('GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_CREDENTIALS'))
-#     )
-# except Exception as e:
-#     print(e)
+        GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+            json.loads(config('GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_CREDENTIALS'))
+        )
+    except Exception as e:
+        print(e)
 
 
 # Django Settings that depend on 3rd party app settings

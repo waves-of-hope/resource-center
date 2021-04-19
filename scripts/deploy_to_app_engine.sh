@@ -13,7 +13,7 @@ else
 
     # Copy the raw credentials for deployment
     mkdir ./secrets/raw/
-    cp $RAW_SECRET_FILEPATH/$SECRET_FILE ./secrets/raw/
+    cp $RAW_SECRET_FILEPATH/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE ./secrets/raw/
 fi
 
 # Set project id
@@ -30,27 +30,34 @@ mv Pipfile Pipfile.txt
 mv Pipfile.lock Pipfile.lock.txt
 
 # Add the environment variables to app.yaml
-echo "" >> $APP_YAML
-echo "env_variables:" >> $APP_YAML
-echo "  ADMINS: ${ADMINS}" >> $APP_YAML
-echo "  ADMIN_URL: ${ADMIN_URL}" >> $APP_YAML
-echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> $APP_YAML
-echo "  DATABASE_INSTANCE_CONNECTION_NAME: ${DATABASE_INSTANCE_CONNECTION_NAME}" >> $APP_YAML
-echo "  DATABASE: ${DATABASE}" >> $APP_YAML
-echo "  DB_USER: ${DB_USER}" >> $APP_YAML
-echo "  DB_PASSWORD: ${DB_PASSWORD}" >> $APP_YAML
-echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> $APP_YAML
-echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> $APP_YAML
-echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> $APP_YAML
-echo "  DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}" >> $APP_YAML
-echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> $APP_YAML
-echo "  GOOGLE_APPLICATION_CREDENTIALS: secrets/raw/${SECRET_FILE}" >> $APP_YAML
+echo "" >> app.yaml
+echo "env_variables:" >> app.yaml
+# Django
+echo "  ADMINS: ${ADMINS}" >> app.yaml
+echo "  ADMIN_URL: ${ADMIN_URL}" >> app.yaml
+echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> app.yaml
+echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> app.yaml
+echo "  DJANGO_SECRET_KEY: '${DJANGO_SECRET_KEY}'" >> app.yaml
+
+# Database
+echo "  DATABASE_INSTANCE_CONNECTION_NAME: ${DATABASE_INSTANCE_CONNECTION_NAME}" >> app.yaml
+echo "  DB_NAME: ${DB_NAME}" >> app.yaml
+echo "  DB_USER: ${DB_USER}" >> app.yaml
+echo "  DB_PASSWORD: '${DB_PASSWORD}'" >> app.yaml
+
+# Email
+echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> app.yaml
+echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> app.yaml
+
+# File storage
+echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> app.yaml
+echo "  GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}" >> app.yaml
 
 # Deploy the application
-gcloud -q app deploy $APP_YAML --version $VERSION
+gcloud -q app deploy app.yaml --version $VERSION
 
 # Undo changes made to app.yaml
-git checkout -- $APP_YAML
+git checkout -- app.yaml
 
 # Delete the raw credentials from the repo to avoid accidental commit
 rm -rf ./secrets/raw/

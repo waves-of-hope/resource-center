@@ -22,7 +22,7 @@ copyright = '2021, Harison Gachuru'
 author = 'Harison Gachuru'
 
 # The full version, including alpha/beta/rc tags
-release = '0.3.0'
+release = '0.4.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -33,6 +33,7 @@ release = '0.3.0'
 extensions = [
     'recommonmark',
     'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

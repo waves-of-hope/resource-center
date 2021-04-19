@@ -110,6 +110,7 @@ ENV/
 env.bak/
 venv.bak/
 *.ini
+.envs/
 
 # Spyder project settings
 .spyderproject
@@ -134,3 +135,6 @@ media/
 
 # VS Code Settings
 .vscode/settings.json
+
+# SQL exports
+data/

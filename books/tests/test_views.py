@@ -1,10 +1,9 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, RequestFactory, tag
 
 from books.models import Book
 from core.models import Category, Tag
-from shutil import rmtree, copy
+import utils.test
 
 
 class BookViewsTestCase(TestCase):
@@ -17,11 +16,7 @@ class BookViewsTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        settings.MEDIA_ROOT.mkdir()
-        copy(
-            settings.TEST_FILES_DIR.joinpath('documents/book.pdf'),
-            settings.MEDIA_ROOT
-        )
+        utils.test.set_up_test_files()
 
         # users
         cls.User = get_user_model()
@@ -90,8 +85,7 @@ class BookViewsTestCase(TestCase):
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
-        # remove test media directory
-        rmtree(settings.MEDIA_ROOT)
+        utils.test.tear_down_test_files()
 
 
 class BookListViewTestCase(BookViewsTestCase):
