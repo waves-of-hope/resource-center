@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from .models import Video
 from core.admin import ResourceAdmin
+
+from .models import Video
 
 
 @admin.register(Video)

@@ -1,7 +1,8 @@
 from selenium import webdriver
 
-from .base import ResourceCenterTestCase
 from core.models import Category, Tag
+
+from .base import ResourceCenterTestCase
 
 
 class AdminTestCase(ResourceCenterTestCase):

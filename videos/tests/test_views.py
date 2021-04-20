@@ -1,11 +1,11 @@
+from shutil import copy, rmtree
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.test import TestCase, RequestFactory, tag
-
+from django.test import RequestFactory, TestCase, tag
 
 from core.models import Category, Tag
 from videos.models import Video
-from shutil import rmtree, copy
 
 
 class VideoViewsTestCase(TestCase):

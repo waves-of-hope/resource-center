@@ -1,7 +1,8 @@
 from selenium import webdriver
 
-from .base import ResourceCenterTestCase
 import utils.test
+
+from .base import ResourceCenterTestCase
 
 
 class MemberTestCase(ResourceCenterTestCase):

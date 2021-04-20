@@ -2,6 +2,7 @@ import unittest
 
 import utils.config
 
+
 class ConfigUtilsTestCase(unittest.TestCase):
 
     def test_list_of_tuples(self):

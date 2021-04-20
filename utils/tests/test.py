@@ -2,7 +2,6 @@ import time
 import unittest
 
 from django.conf import settings
-
 from selenium import webdriver
 from selenium.common import exceptions
 

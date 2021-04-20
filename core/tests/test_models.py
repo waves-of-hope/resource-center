@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from core.models import Category, Tag
 
+
 class CategoryModelTestCase(TestCase):
     """
     Tests for the Category model
