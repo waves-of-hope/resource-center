@@ -2,8 +2,10 @@ name: Production Deploy
 
 on:
   pull_request:
+    branches: [main, prod]
+
   push:
-    - branches: main
+    branches: [main]
 
 jobs:
   deploy:
