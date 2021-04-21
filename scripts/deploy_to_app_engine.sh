@@ -61,7 +61,7 @@ env_variables=(
     "GOOGLE_APPLICATION_CREDENTIALS"
 )
 
-for var in ${env_variables[@]}; do
+for var in "${env_variables[@]}"; do
     # get the environment variable string(key) and actual value
     case "$var" in
         *"CREDENTIALS"* | *"PASSWORD"* | *"SECRET"*)
