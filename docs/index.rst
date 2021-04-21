@@ -1,5 +1,5 @@
 .. Waves Resource Center documentation master file, created by
-   sphinx-quickstart on Thu Jan  7 15:13:23 2021.
+   sphinx-quickstart on Wed Apr 21 23:56:02 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -10,12 +10,11 @@ Welcome to Waves Resource Center's documentation!
    :maxdepth: 2
    :glob:
 
-   _sources/installation
-   _sources/modules
-   _sources/deployment
-   _sources/gcloud 
-   _sources/documentation
-
+   guides/installation
+   guides/deployment
+   modules
+   guides/google-cloud-command-reference
+   guides/documentation
 
 
 Indices and tables
