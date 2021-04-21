@@ -3,6 +3,7 @@ from django.urls import resolve, reverse
 
 from accounts import views
 
+
 class AccountsURLsTestCase(SimpleTestCase):
     """Tests the URL configuration of accounts
 

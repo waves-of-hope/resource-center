@@ -3,6 +3,7 @@ from django.urls import resolve
 
 from core.views import index
 
+
 class CoreURLsTestCase(TestCase):
     """
     Test URL configuration of core

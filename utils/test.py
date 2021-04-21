@@ -1,11 +1,9 @@
-from pathlib import WindowsPath
-from shutil import rmtree, copy
 import time
+from pathlib import WindowsPath
+from shutil import copy, rmtree
 
 from django.conf import settings
-
 from selenium.common import exceptions
-
 
 images = ['default.png', 'book-cover.png', 'book-cover.jpg']
 documents = ['book.pdf']

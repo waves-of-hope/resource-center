@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase, RequestFactory, tag
+from django.test import RequestFactory, TestCase, tag
 
+import utils.test
 from books.models import Book
 from core.models import Category, Tag
-import utils.test
 
 
 class BookViewsTestCase(TestCase):

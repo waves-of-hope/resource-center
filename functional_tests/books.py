@@ -1,13 +1,14 @@
 import datetime
 
 from django.utils import timezone
-
 from selenium import webdriver
 
-from .base import ResourceCenterTestCase
-from core.models import Category, Tag
-from books.models import Book
 import utils.test
+from books.models import Book
+from core.models import Category, Tag
+
+from .base import ResourceCenterTestCase
+
 
 class BooksTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the books feature

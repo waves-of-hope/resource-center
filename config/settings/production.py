@@ -1,7 +1,8 @@
 import os
 
-from .base import *
 from utils.config import list_of_tuples
+
+from .base import *
 
 # Django Settings
 # ===============
@@ -47,6 +48,7 @@ GS_BUCKET_NAME = config('GCP_STORAGE_BUCKET_NAME')
 if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None):
     try:
         import json
+
         from google.oauth2 import service_account
 
         GS_CREDENTIALS = service_account.Credentials.from_service_account_info(

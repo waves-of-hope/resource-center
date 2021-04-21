@@ -1,12 +1,13 @@
 import datetime
 
 from django.utils import timezone
-
 from selenium import webdriver
 
-from .base import ResourceCenterTestCase
 from core.models import Category, Tag
 from videos.models import Video
+
+from .base import ResourceCenterTestCase
+
 
 class VideosTestCase(ResourceCenterTestCase):
     """Sets up data to be shared across tests for the videos feature
