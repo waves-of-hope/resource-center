@@ -14,6 +14,7 @@ else
     # Copy the raw credentials for deployment
     mkdir ./secrets/raw/
     cp $RAW_SECRET_FILEPATH/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE ./secrets/raw/
+    export GOOGLE_APPLICATION_CREDENTIALS=./secrets/raw/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE
 fi
 
 # Set project id
