@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## Usage:
 ## Set the PROXY_LOCATION and INSTANCE_CONNECTION_NAME

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
 export RAW_SECRET_FILEPATH="$HOME"/secrets

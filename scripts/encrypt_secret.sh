@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## Usage:
 ## Set the SECRET_FILE environment variable
