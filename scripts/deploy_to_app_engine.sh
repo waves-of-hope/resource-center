@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export ENCRYPTED_SECRET_FILEPATH=./secrets/encrypted/
-export RAW_SECRET_FILEPATH=$HOME/secrets
+export RAW_SECRET_FILEPATH="$HOME"/secrets
 
 # different settings for CI
 if "$CI" == true; then
@@ -9,16 +9,16 @@ if "$CI" == true; then
     export RAW_SECRET_FILEPATH=./secrets/raw
 else
     # Authenticate using service account
-    gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
 
     # Copy the raw credentials for deployment
     mkdir ./secrets/raw/
-    cp $RAW_SECRET_FILEPATH/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE ./secrets/raw/
-    export GOOGLE_APPLICATION_CREDENTIALS=./secrets/raw/$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE
+    cp "$RAW_SECRET_FILEPATH"/"$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE" ./secrets/raw/
+    export GOOGLE_APPLICATION_CREDENTIALS=./secrets/raw/"$GOOGLE_CLOUD_SERVICE_ACCOUNT_FILE"
 fi
 
 # Set project id
-gcloud config set project $GOOGLE_CLOUD_PROJECT
+gcloud config set project "$GOOGLE_CLOUD_PROJECT"
 
 # Create a version using the latest commit hash
 export VERSION=$(git rev-parse --short HEAD)
@@ -26,33 +26,53 @@ export VERSION=$(git rev-parse --short HEAD)
 # Create requirements.txt
 pipenv lock -r > requirements.txt
 
-# Rename Pipfile and Pipfile.lock
+# Rename .env, Pipfile and Pipfile.lock
+if test -e ".env"; then
+    mv .env env.txt
+fi
 mv Pipfile Pipfile.txt
 mv Pipfile.lock Pipfile.lock.txt
 
 # Add the environment variables to app.yaml
 echo "" >> app.yaml
 echo "env_variables:" >> app.yaml
-# Django
-echo "  ADMINS: ${ADMINS}" >> app.yaml
-echo "  ADMIN_URL: ${ADMIN_URL}" >> app.yaml
-echo "  ALLOWED_HOSTS: $ALLOWED_HOSTS" >> app.yaml
-echo "  DJANGO_DEBUG: ${DJANGO_DEBUG}" >> app.yaml
-echo "  DJANGO_SECRET_KEY: '${DJANGO_SECRET_KEY}'" >> app.yaml
 
-# Database
-echo "  DATABASE_INSTANCE_CONNECTION_NAME: ${DATABASE_INSTANCE_CONNECTION_NAME}" >> app.yaml
-echo "  DB_NAME: ${DB_NAME}" >> app.yaml
-echo "  DB_USER: ${DB_USER}" >> app.yaml
-echo "  DB_PASSWORD: '${DB_PASSWORD}'" >> app.yaml
+env_variables=(
+    # Django
+    "ADMINS"
+    "ADMIN_URL"
+    "ALLOWED_HOSTS"
+    "DJANGO_DEBUG"
+    "DJANGO_SECRET_KEY"
 
-# Email
-echo "  DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}" >> app.yaml
-echo "  DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}" >> app.yaml
+    # Database
+    "DATABASE_INSTANCE_CONNECTION_NAME"
+    "DB_ENGINE"
+    "DB_NAME"
+    "DB_USER"
+    "DB_PASSWORD"
 
-# File storage
-echo "  GCP_STORAGE_BUCKET_NAME: ${GCP_STORAGE_BUCKET_NAME}" >> app.yaml
-echo "  GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}" >> app.yaml
+    # Email
+    "DJANGO_EMAIL_HOST_USER"
+    "DJANGO_EMAIL_HOST_PASSWORD"
+
+    # File storage
+    "GCP_STORAGE_BUCKET_NAME"
+    "GOOGLE_APPLICATION_CREDENTIALS"
+)
+
+for var in "${env_variables[@]}"; do
+    # get the environment variable string(key) and actual value
+    case "$var" in
+        *"CREDENTIALS"* | *"PASSWORD"* | *"SECRET"*)
+            echo "  $var: '${!var}'" >> app.yaml
+            ;;
+
+        *)
+            echo "  $var: ${!var}" >> app.yaml
+            ;;
+    esac
+done
 
 # Deploy the application
 gcloud -q app deploy app.yaml --version $VERSION
@@ -63,7 +83,10 @@ git checkout -- app.yaml
 # Delete the raw credentials from the repo to avoid accidental commit
 rm -rf ./secrets/raw/
 
-# Restore Pipfile and Pipfile.lock
+# Restore .env, Pipfile and Pipfile.lock
+if test -e "env.txt"; then
+    mv env.txt .env
+fi
 mv Pipfile.txt Pipfile
 mv Pipfile.lock.txt Pipfile.lock
 
