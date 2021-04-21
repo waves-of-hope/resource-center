@@ -3,6 +3,8 @@ name: Production Deploy
 on:
   pull_request:
     branches: [main, prod]
+    types:
+      - closed
 
   push:
     branches: [main]
