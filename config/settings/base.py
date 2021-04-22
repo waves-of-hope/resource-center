@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import decouple
 import dj_database_url
-from decouple import Csv, config
 
 # Django Settings
 # ===============
@@ -26,14 +26,14 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('DJANGO_SECRET_KEY',
+SECRET_KEY =  decouple.config('DJANGO_SECRET_KEY',
     default='nd_3b#di47ij(&qp!&!#mdbl3fuzcj+meu@=!h4u=531(=bti1'
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DJANGO_DEBUG', cast=bool, default=False)
+DEBUG =  decouple.config('DJANGO_DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(),
+ALLOWED_HOSTS =  decouple.config('ALLOWED_HOSTS', cast=decouple.Csv(),
     default='127.0.0.1, localhost'
 )
 
@@ -139,15 +139,15 @@ DATABASES = {'default': dj_database_url.config(conn_max_age=600)}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = config('DJANGO_EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_HOST =  decouple.config('DJANGO_EMAIL_HOST', default='smtp.gmail.com')
 
-EMAIL_PORT = config('DJANGO_EMAIL_PORT', default=587)
+EMAIL_PORT =  decouple.config('DJANGO_EMAIL_PORT', default=587)
 
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = config('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_USER =  decouple.config('DJANGO_EMAIL_HOST_USER')
 
-EMAIL_HOST_PASSWORD = config('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD =  decouple.config('DJANGO_EMAIL_HOST_PASSWORD')
 
 
 # Media (user uploaded files)
@@ -198,7 +198,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 ADMIN_URL = 'admin/'
 
-HEADLESS_BROWSER_TESTS = config('CI', cast=bool, default=False)
+HEADLESS_BROWSER_TESTS =  decouple.config('CI', cast=bool, default=False)
 
 # Location of files used for testing
 TEST_FILES_DIR = BASE_DIR / 'test_files'
