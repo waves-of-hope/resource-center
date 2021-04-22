@@ -16,6 +16,7 @@ docutils = "*"
 pygments = "*"
 dj-database-url = "*"
 psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 coverage = "*"

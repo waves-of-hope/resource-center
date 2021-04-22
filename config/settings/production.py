@@ -8,7 +8,7 @@ from .base import *
 # ===============
 
 # Email
-ADMINS = config('ADMINS', cast=list_of_tuples)
+ADMINS =  decouple.config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
 
@@ -17,11 +17,11 @@ if os.getenv('GAE_APPLICATION', None):
     # the unix socket at /cloudsql/<your-cloudsql-connection string>
     DATABASES = {
         'default': {
-            'ENGINE': config('DB_ENGINE', default='django.db.backends.mysql'),
-            'HOST': '/cloudsql/' + config('DATABASE_INSTANCE_CONNECTION_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'NAME': config('DB_NAME'),
+            'ENGINE':  decouple.config('DB_ENGINE', default='django.db.backends.mysql'),
+            'HOST': '/cloudsql/' +  decouple.config('DATABASE_INSTANCE_CONNECTION_NAME'),
+            'USER':  decouple.config('DB_USER'),
+            'PASSWORD':  decouple.config('DB_PASSWORD'),
+            'NAME':  decouple.config('DB_NAME'),
         }
     }
 
@@ -33,29 +33,13 @@ if os.getenv('GAE_APPLICATION', None):
 # Django Storages: Google Cloud Storage
 # https://django-storages.readthedocs.io/en/latest/backends/gcloud.html#settings
 
-GS_BUCKET_NAME = config('GCP_STORAGE_BUCKET_NAME')
+GS_BUCKET_NAME =  decouple.config('GCP_STORAGE_BUCKET_NAME')
 
 ## Commented out this because it causes the following error:
 ## "Anonymous caller does not have storage.objects.get access
 ##  to the Google Cloud Storage object" when trying to access
 ## files uploaded by another entity (user/ service account)
 # GS_DEFAULT_ACL = 'publicRead'
-
-## The default authentication method is getting credentials from
-## the env var GOOGLE_APPLICATION_CREDENTIALS
-## For environments where storage of files isn't allowed, e.g: Heroku
-## TODO: Test if this works
-if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS', None):
-    try:
-        import json
-
-        from google.oauth2 import service_account
-
-        GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-            json.loads(config('GOOGLE_CLOUD_STORAGE_SERVICE_ACCOUNT_CREDENTIALS'))
-        )
-    except Exception as e:
-        print(e)
 
 
 # Django Settings that depend on 3rd party app settings
@@ -81,4 +65,4 @@ DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'
 # Project Specific Settings
 # =========================
 
-ADMIN_URL = config('ADMIN_URL')
+ADMIN_URL =  decouple.config('ADMIN_URL')
