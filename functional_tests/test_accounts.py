@@ -49,9 +49,7 @@ class AdminTestCase(ResourceCenterTestCase):
         # Kelvin would like to give Christine permissions to login
         # to the admin site and add books for other viewers to read.
         # He visits the admin site
-        admin_root = self.browser.get(
-            self.live_server_url + '/admin/'
-        )
+        self.browser.get(self.get_admin_url())
 
         # He can tell he's in the right place because of the title
         self.assertEqual(self.browser.title,
@@ -75,28 +73,28 @@ class AdminTestCase(ResourceCenterTestCase):
             self.browser.\
                 find_element_by_link_text('ACCOUNTS').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/accounts/'
+            self.get_admin_url() + 'accounts/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Users').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/accounts/user/'
+            self.get_admin_url() + 'accounts/user/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('AUTHENTICATION AND AUTHORIZATION').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/auth/'
+            self.get_admin_url() + 'auth/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Groups').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/auth/group/'
+            self.get_admin_url() + 'auth/group/'
         )
 
         # He clicks on the Groups link

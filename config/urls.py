@@ -23,11 +23,12 @@ from django.urls import include, path
 
 admin.site.site_header = 'Waves Resource Center administration'
 admin.site.site_title = 'Waves Resource Center site admin'
+admin_url = settings.ADMIN_URL + '/'
 
 urlpatterns = [
     path('accounts/', include('accounts.urls')),
-    path('admin/doc/', include('django.contrib.admindocs.urls')),
-    path('admin/', admin.site.urls),
+    path(admin_url + 'doc/', include('django.contrib.admindocs.urls')),
+    path(admin_url, admin.site.urls),
     path('books/', include('books.urls')),
     path('videos/', include('videos.urls')),
     path('', include('core.urls')),
