@@ -158,9 +158,7 @@ class AdminTestCase(VideosTestCase):
         # Kelvin would like to give Christine permissions to login
         # to the admin site and add videos for other viewers to watch.
         # He visits the admin site
-        admin_root = self.browser.get(
-            self.live_server_url + '/admin/'
-        )
+        self.browser.get(self.get_admin_url())
 
         # He can tell he's in the right place because of the title
         self.assertEqual(self.browser.title,
@@ -183,35 +181,35 @@ class AdminTestCase(VideosTestCase):
             self.browser.\
                 find_element_by_link_text('CORE').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/'
+            self.get_admin_url() + 'core/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Categories').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/category/'
+            self.get_admin_url() + 'core/category/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Tags').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/tag/'
+            self.get_admin_url() + 'core/tag/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('VIDEOS').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/videos/'
+            self.get_admin_url() + 'videos/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Videos').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/videos/video/'
+            self.get_admin_url() + 'videos/video/'
         )
 
         # Kelvin wants to add a record and a number of videos to Waves

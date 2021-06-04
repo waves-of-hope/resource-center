@@ -72,9 +72,7 @@ class AdminTestCase(ResourceCenterTestCase):
         """
         # Kelvin would like to view categories and tags in the
         # resource center. He visits the admin site
-        admin_root = self.browser.get(
-            self.live_server_url + '/admin/'
-        )
+        self.browser.get(self.get_admin_url())
 
         # He can tell he's in the right place because of the title
         self.assertEqual(self.browser.title,
@@ -97,21 +95,21 @@ class AdminTestCase(ResourceCenterTestCase):
             self.browser.\
                 find_element_by_link_text('CORE').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/'
+           self.get_admin_url() + 'core/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Categories').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/category/'
+            self.get_admin_url() + 'core/category/'
         )
 
         self.assertEqual(
             self.browser.\
                 find_element_by_link_text('Tags').\
                     get_attribute('href'),
-            self.live_server_url + '/admin/core/tag/'
+            self.get_admin_url() + 'core/tag/'
         )
 
         # Kelvin wants to add a record and a number of books

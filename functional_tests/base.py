@@ -24,8 +24,10 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         cls.browser_options = webdriver.firefox.options.Options()
         cls.browser_options.headless = settings.HEADLESS_BROWSER_TESTS
 
-        # get the user model
         cls.User = get_user_model()
+    
+    def get_admin_url(self):
+        return  f'{self.live_server_url}/{settings.ADMIN_URL}/'
 
     def tearDown(self):
         self.browser.quit()
