@@ -12,7 +12,7 @@ ADMINS =  decouple.config('ADMINS', cast=list_of_tuples)
 
 MANAGERS = ADMINS
 
-if os.getenv('GAE_APPLICATION', None):
+if os.getenv('GAE_APPLICATION', None) and not DATABASES:
     # Running on production App Engine, so connect to Google Cloud SQL using
     # the unix socket at /cloudsql/<your-cloudsql-connection string>
     DATABASES = {
