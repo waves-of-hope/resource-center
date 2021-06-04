@@ -25,9 +25,14 @@ class ResourceCenterTestCase(StaticLiveServerTestCase):
         cls.browser_options.headless = settings.HEADLESS_BROWSER_TESTS
 
         cls.User = get_user_model()
-    
+
     def get_admin_url(self):
-        return  f'{self.live_server_url}/{settings.ADMIN_URL}/'
+        """Returns the admin URL from the `ADMIN_URL` configuration
+
+        Returns:
+            string: The link to the homepage of the admin site
+        """
+        return f'{self.live_server_url}/{settings.ADMIN_URL}/'
 
     def tearDown(self):
         self.browser.quit()
