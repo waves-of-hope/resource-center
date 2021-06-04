@@ -66,3 +66,9 @@ DEFAULT_FILE_STORAGE = 'utils.storages.MediaRootGoogleCloudStorage'
 # =========================
 
 ADMIN_URL =  decouple.config('ADMIN_URL')
+
+GOOGLE_ANALYTICS_ID = decouple.config('GOOGLE_ANALYTICS_ID', default=None)
+
+TEMPLATES[0]['OPTIONS']['context_processors'].append(
+    'core.context_processors.google_analytics'
+)
