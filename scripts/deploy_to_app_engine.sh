@@ -47,6 +47,7 @@ env_variables=(
 
     # Database
     "DATABASE_INSTANCE_CONNECTION_NAME"
+    "DATABASE_URL"
     "DB_ENGINE"
     "DB_NAME"
     "DB_USER"
@@ -64,7 +65,7 @@ env_variables=(
 for var in "${env_variables[@]}"; do
     # get the environment variable string(key) and actual value
     case "$var" in
-        *"CREDENTIALS"* | *"PASSWORD"* | *"SECRET"*)
+        *"CREDENTIALS"* | *"PASSWORD"* | *"SECRET"* | *"URL"*)
             echo "  $var: '${!var}'" >> app.yaml
             ;;
 
