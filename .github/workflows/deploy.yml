@@ -50,6 +50,7 @@ jobs:
         ALLOWED_HOSTS: ${{secrets.ALLOWED_HOSTS}}
 
         DATABASE_INSTANCE_CONNECTION_NAME: ${{secrets.DATABASE_INSTANCE_CONNECTION_NAME}}
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
         DB_ENGINE: ${{secrets.DB_ENGINE}}
         DB_NAME: ${{secrets.DB_NAME}}
         DB_USER: ${{secrets.DB_USER}}
