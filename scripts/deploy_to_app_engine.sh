@@ -60,12 +60,15 @@ env_variables=(
     # File storage
     "GCP_STORAGE_BUCKET_NAME"
     "GOOGLE_APPLICATION_CREDENTIALS"
+
+    # Analytics
+    "GOOGLE_ANALYTICS_ID"
 )
 
 for var in "${env_variables[@]}"; do
     # get the environment variable string(key) and actual value
     case "$var" in
-        *"CREDENTIALS"* | *"PASSWORD"* | *"SECRET"* | *"URL"*)
+        *"CREDENTIALS"* | *"ID"* | *"PASSWORD"* | *"SECRET"* | *"URL"*)
             echo "  $var: '${!var}'" >> app.yaml
             ;;
 

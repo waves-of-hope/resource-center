@@ -21,10 +21,13 @@
 
     {% comment %} Font Awesome {% endcomment %}
     <script src="https://kit.fontawesome.com/66f8b8b8ce.js" crossorigin="anonymous"></script>
+
+    {% comment %} Google Analytics {% endcomment %}
+    {% if GOOGLE_ANALYTICS_ID %}{% include "google_analytics.html" %}{% endif %}
   </head>
 
   <body>
-    
+
     <header>
       {% comment %} Navigation bar {% endcomment %}
       {% include "navbar.html" %}
