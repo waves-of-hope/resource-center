@@ -1,3 +1,5 @@
+{% load static %}
+  
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -8,11 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="A digital platform for Waves of Hope Foundation to share resources to it's members">
 
+    {% comment %} Favicon {% endcomment %}    
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
     {% comment %} Bootstrap CSS {% endcomment %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     {% comment %} CSS {% endcomment %}
-    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
     {% comment %} Font Awesome {% endcomment %}
